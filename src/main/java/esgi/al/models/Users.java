@@ -1,23 +1,24 @@
 package esgi.al.models;
 
-import esgi.al.exceptions.FailedToCreateException;
-import esgi.al.exceptions.NoUserFoundException;
-import esgi.al.exceptions.FailedToUpdateException;
+import esgi.al.exceptions.FailedToCreateUser;
+import esgi.al.exceptions.NoUserFound;
+import esgi.al.exceptions.FailedToUpdateUser;
 import esgi.al.enumerators.PaymentMethod;
 import java.util.List;
+import java.util.UUID;
 
 public interface Users
 {
-    void add(User user) throws FailedToCreateException;
+    void add(User user) throws FailedToCreateUser;
 
-    User getById(int id) throws NoUserFoundException;
-    User getByLogin(String login) throws NoUserFoundException;
-    List<User> getByName(String name) throws NoUserFoundException;
-    List<User> getByPaymentMethod(PaymentMethod paymentMethod) throws NoUserFoundException;
+    User getById(UUID id) throws NoUserFound;
+    User getByLogin(String login) throws NoUserFound;
+    List<User> getByName(String name) throws NoUserFound;
+    List<User> getByPaymentMethod(PaymentMethod paymentMethod) throws NoUserFound;
 
-    void updateById(int id) throws FailedToUpdateException;
-    void updateByLogin(int id) throws FailedToUpdateException;
+    void updateById(UUID id) throws FailedToUpdateUser;
+    void updateByLogin(UUID id) throws FailedToUpdateUser;
 
-    void deleteById(int id) throws NoUserFoundException;
-    void deleteByLogin(int id) throws NoUserFoundException;
+    void deleteById(UUID id) throws NoUserFound;
+    void deleteByLogin(UUID id) throws NoUserFound;
 }
