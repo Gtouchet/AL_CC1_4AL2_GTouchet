@@ -1,24 +1,41 @@
 package esgi.al.models;
 
-import esgi.al.enums.PaymentMethod;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import esgi.al.enumerators.PaymentMethod;
 
 public class User
 {
-    private String login;
+    private final String login;
     private String password;
-    private String name;
-    private Address address;
-    private PaymentMethod paymentMethod;
+    private final String name;
+    private final Address address;
+    private final PaymentMethod paymentMethod;
 
-    private User()
+    private User(String login, String password, String name, Address address, PaymentMethod paymentMethod)
     {
-        // Todo: implements
-        throw new NotImplementedException();
+        this.login = login;
+        this.password = password;
+        this.name = name;
+        this.address = address;
+        this.paymentMethod = paymentMethod;
     }
 
-    public static User init()
+    public static User of(String login, String password, String name, Address address, PaymentMethod paymentMethod)
     {
-        return new User();
+        return new User(login, password, name, address, paymentMethod);
+    }
+
+    public void updatePassword(String password)
+    {
+        this.password = password;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "Login: " + this.login +
+                "\nPassword: " + this.password +
+                "\nName: " + this.name +
+                "\nAddress: " + this.address +
+                "\nPayment method: " + this.paymentMethod;
     }
 }

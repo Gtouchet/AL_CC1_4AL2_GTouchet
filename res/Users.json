@@ -1,0 +1,14 @@
+[
+  {
+    "login": "GTouchet",
+    "password": "Abcd1234!",
+    "name": "Touchet",
+    "address": {
+      "city": "Draveil",
+      "streetType": "rue",
+      "street": "Pierre Brossolette",
+      "streetNumber" : 134
+    },
+    "paymentMethod": "CARD"
+  }
+]
