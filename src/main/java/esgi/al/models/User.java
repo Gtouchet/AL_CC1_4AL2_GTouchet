@@ -7,7 +7,7 @@ public class User
 {
     private final UUID id;
     private final String login;
-    private String password;
+    private final String password;
     private final String name;
     private final Address address;
     private final PaymentMethod paymentMethod;
@@ -51,11 +51,6 @@ public class User
     public PaymentMethod getPaymentMethod()
     {
         return this.paymentMethod;
-    }
-
-    public void updatePassword(String password)
-    {
-        this.password = password;
     }
 
     @Override

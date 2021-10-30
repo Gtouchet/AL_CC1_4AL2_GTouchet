@@ -4,52 +4,47 @@ import esgi.al.enumerators.PaymentMethod;
 import esgi.al.exceptions.FailedToCreateUser;
 import esgi.al.exceptions.NoUserFound;
 import esgi.al.models.User;
-import esgi.al.services.UserService;
+import esgi.al.repositories.UsersRepository;
 
 import java.util.UUID;
 import java.util.stream.Stream;
 
 public class UserController
 {
-    private final UserService userService;
+    private final UsersRepository userRepository;
 
-    public UserController(UserService userService)
+    public UserController(UsersRepository userRepository)
     {
-        this.userService = userService;
+        this.userRepository = userRepository;
     }
 
     public void createUser(User user) throws FailedToCreateUser
     {
-        this.userService.createUser(user);
+        this.userRepository.create(user);
     }
 
     public Stream<User> getAll() throws NoUserFound
     {
-        return this.userService.getAll();
+        return this.userRepository.getAll();
     }
 
     public User getById(UUID id) throws NoUserFound
     {
-        return this.userService.getById(id);
+        return this.userRepository.getById(id);
     }
 
     public User getByLogin(String login) throws NoUserFound
     {
-        return this.userService.getByLogin(login);
+        return this.userRepository.getByLogin(login);
     }
 
     public Stream<User> getByName(String name) throws NoUserFound
     {
-        return this.userService.getByName(name);
+        return this.userRepository.getByName(name);
     }
 
     public Stream<User> getByPaymentMethod(PaymentMethod paymentMethod) throws NoUserFound
     {
-        return this.userService.getByPaymentMethod(paymentMethod);
-    }
-
-    public void updatePassword(UUID id, String password) throws NoUserFound, FailedToCreateUser
-    {
-        this.userService.updatePassword(id, password);
+        return this.userRepository.getByPaymentMethod(paymentMethod);
     }
 }

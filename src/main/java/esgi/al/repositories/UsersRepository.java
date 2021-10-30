@@ -5,7 +5,6 @@ import esgi.al.exceptions.FailedToCreateUser;
 import esgi.al.exceptions.FailedToUpdateUser;
 import esgi.al.exceptions.NoUserFound;
 import esgi.al.models.User;
-import esgi.al.models.Users;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,13 +14,13 @@ import java.util.stream.Stream;
 
 // Todo: FailedToCreateUser and FailedToUpdateUser exceptions
 // Todo: also implements exceptions I guess
-public class SQLUsers implements Users
+public class UsersRepository implements Users
 {
     private final List<User> users = new ArrayList<>();
     Supplier<Stream<User>> streamSupplier = () -> Stream.of(this.users.toArray(new User[0]));
 
     @Override
-    public void add(User user) throws FailedToCreateUser
+    public void create(User user) throws FailedToCreateUser
     {
         this.users.add(user);
     }
@@ -89,13 +88,13 @@ public class SQLUsers implements Users
     }
 
     @Override
-    public void updateById(UUID id, User user) throws FailedToUpdateUser
+    public void updateById(UUID id, User user) throws NoUserFound, FailedToUpdateUser
     {
 
     }
 
     @Override
-    public void updateByLogin(String login, User user) throws FailedToUpdateUser
+    public void updateByLogin(String login, User user) throws NoUserFound, FailedToUpdateUser
     {
 
     }
