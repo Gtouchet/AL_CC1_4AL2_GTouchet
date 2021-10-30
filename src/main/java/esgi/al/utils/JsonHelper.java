@@ -26,6 +26,6 @@ public class JsonHelper
 
     public static void deleteUserFromFile(String path, UUID id)
     {
-        // Todo: implements
+        // Todo: implements user's deletion in json file
     }
 }

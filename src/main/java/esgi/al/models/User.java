@@ -29,7 +29,7 @@ public class User
         this.password = Objects.requireNonNull(user.password);
         this.name = Objects.requireNonNullElse(user.name, "<Unspecified name>");
         this.address = Address.of(user.address);
-        this.paymentMethod = user.paymentMethod;
+        this.paymentMethod = Objects.requireNonNullElse(user.paymentMethod, PaymentMethod.UNSPECIFIED);
     }
 
     public static User of(User user)

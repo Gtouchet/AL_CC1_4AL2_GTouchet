@@ -13,14 +13,14 @@ import java.util.stream.Stream;
 
 public class App
 {
-    public static void main(String[] args) throws NoUserFound
+    public static void main(String[] args)
     {
         final UsersRepository userRepository = new UsersRepository();
         final UserController userController = new UserController(userRepository);
 
         // Initialize repository by fetching json file's data
-        Stream<User> jsonUsers = JsonHelper.getUserDataFromFile("./res/registeredUsers.json");
-        jsonUsers.forEach(jsonUser ->{
+        Stream<User> jsonUsers = JsonHelper.getUserDataFromFile(Globals.JSON_USER_FILE_PATH);
+        jsonUsers.forEach(jsonUser -> {
             try {
                 userController.createUser(User.of(jsonUser));
             } catch (FailedToCreateUser e) {
@@ -28,20 +28,25 @@ public class App
             }
         });
 
-        // Testing
-        System.out.println("\n---------- All users ----------");
-        userController.getAll().forEach(System.out::println);
+        try {
+            // Testing
+            System.out.println("\n---------- All users ----------");
+            userController.getAll().forEach(System.out::println);
 
-        System.out.println("\n---------- By ID ----------");
-        System.out.println(userController.getById(UUID.fromString("ffa3734b-b34c-43cd-b986-95cff858a81b")));
+            System.out.println("\n---------- By ID ----------");
+            System.out.println(userController.getById(UUID.fromString("ffa3734b-b34c-43cd-b986-95cff858a81b")));
 
-        System.out.println("\n---------- By login ----------");
-        System.out.println(userController.getByLogin("GTouchet2"));
+            System.out.println("\n---------- By login ----------");
+            System.out.println(userController.getByLogin("GTouchet2"));
 
-        System.out.println("\n---------- By name ----------");
-        userController.getByName("Touchet").forEach(System.out::println);
+            System.out.println("\n---------- By name ----------");
+            userController.getByName("Touchet").forEach(System.out::println);
 
-        System.out.println("\n---------- By payment method ----------");
-        userController.getByPaymentMethod(PaymentMethod.CARD).forEach(System.out::println);
+            System.out.println("\n---------- By payment method ----------");
+            userController.getByPaymentMethod(PaymentMethod.CARD).forEach(System.out::println);
+
+        } catch (NoUserFound e) {
+            e.printStackTrace();
+        }
     }
 }

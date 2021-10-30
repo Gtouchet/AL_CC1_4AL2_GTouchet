@@ -1,10 +1,12 @@
 package esgi.al.repositories;
 
+import esgi.al.Globals;
 import esgi.al.enumerators.PaymentMethod;
 import esgi.al.exceptions.FailedToCreateUser;
 import esgi.al.exceptions.FailedToUpdateUser;
 import esgi.al.exceptions.NoUserFound;
 import esgi.al.models.User;
+import esgi.al.utils.JsonHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +23,13 @@ public class UsersRepository implements Users
     @Override
     public void create(User user) throws FailedToCreateUser
     {
+        for (User registeredUser : this.users)
+        {
+            if (registeredUser.getLogin().equals(user.getLogin()))
+            {
+                throw new FailedToCreateUser(user.getLogin(), registeredUser.getId());
+            }
+        }
         this.users.add(user);
     }
 
@@ -44,7 +53,7 @@ public class UsersRepository implements Users
 
         if (user == null)
         {
-            throw new NoUserFound();
+            throw new NoUserFound(id.toString());
         }
         return user;
     }
@@ -59,7 +68,7 @@ public class UsersRepository implements Users
 
         if (user == null)
         {
-            throw new NoUserFound();
+            throw new NoUserFound(login);
         }
         return user;
     }
@@ -69,7 +78,7 @@ public class UsersRepository implements Users
     {
         if (this.streamSupplier.get().noneMatch(user -> user.getName().equals(name)))
         {
-            throw new NoUserFound();
+            throw new NoUserFound(name);
         }
         return this.streamSupplier.get()
                 .filter(user -> user.getName().equals(name));
@@ -80,33 +89,73 @@ public class UsersRepository implements Users
     {
         if (this.streamSupplier.get().noneMatch(user -> user.getPaymentMethod().equals(paymentMethod)))
         {
-            throw new NoUserFound();
+            throw new NoUserFound(paymentMethod.toString());
         }
         return this.streamSupplier.get()
                 .filter(user -> user.getPaymentMethod().equals(paymentMethod));
     }
 
     @Override
-    public void updateById(UUID id, User user) throws NoUserFound, FailedToUpdateUser
+    public void updateById(UUID id, User newUser) throws NoUserFound, FailedToUpdateUser
     {
+        User user = this.users.stream()
+                .filter(streamUser -> streamUser.getId().equals(id))
+                .findFirst()
+                .orElse(null);
 
+        if (user == null)
+        {
+            throw new NoUserFound(id.toString());
+        }
+
+        // Todo: implements update
     }
 
     @Override
-    public void updateByLogin(String login, User user) throws NoUserFound, FailedToUpdateUser
+    public void updateByLogin(String login, User newUser) throws NoUserFound, FailedToUpdateUser
     {
+        User user = this.users.stream()
+                .filter(streamUser -> streamUser.getLogin().equals(login))
+                .findFirst()
+                .orElse(null);
 
+        if (user == null)
+        {
+            throw new NoUserFound(login);
+        }
+
+        // Todo: implements update
     }
 
     @Override
     public void deleteById(UUID id) throws NoUserFound
     {
+        User user = this.users.stream()
+                .filter(streamUser -> streamUser.getId().equals(id))
+                .findFirst()
+                .orElse(null);
 
+        if (user == null)
+        {
+            throw new NoUserFound(id.toString());
+        }
+
+        JsonHelper.deleteUserFromFile(Globals.JSON_USER_FILE_PATH, user.getId());
     }
 
     @Override
     public void deleteByLogin(String login) throws NoUserFound
     {
+        User user = this.users.stream()
+                .filter(streamUser -> streamUser.getLogin().equals(login))
+                .findFirst()
+                .orElse(null);
 
+        if (user == null)
+        {
+            throw new NoUserFound(login);
+        }
+
+        JsonHelper.deleteUserFromFile(Globals.JSON_USER_FILE_PATH, user.getId());
     }
 }
