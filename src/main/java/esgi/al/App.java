@@ -22,7 +22,7 @@ public class App
         Stream<User> jsonUsers = JsonHelper.getUserDataFromFile("./res/registeredUsers.json");
         jsonUsers.forEach(jsonUser ->{
             try {
-                userController.createUser(jsonUser);
+                userController.createUser(User.of(jsonUser));
             } catch (FailedToCreateUser e) {
                 e.printStackTrace();
             }

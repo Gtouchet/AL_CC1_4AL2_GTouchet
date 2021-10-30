@@ -2,6 +2,8 @@ package esgi.al.models;
 
 import esgi.al.enumerators.StreetType;
 
+import java.util.Objects;
+
 public class Address
 {
     private final String city;
@@ -9,17 +11,22 @@ public class Address
     private final String streetName;
     private final int streetNumber;
 
-    private Address(String city, StreetType streetType, String streetName, int streetNumber)
+    private Address(Address address)
     {
-        this.city = city;
-        this.streetType = streetType;
-        this.streetName = streetName;
-        this.streetNumber = streetNumber;
+        if (!this.verifyAddressValidity(address))
+        {
+            throw new IllegalArgumentException();
+        }
+
+        this.city = Objects.requireNonNullElse(address.city, "<Unspecified city>");
+        this.streetType = Objects.requireNonNullElse(address.streetType, StreetType.unspecified);
+        this.streetName = Objects.requireNonNullElse(address.streetName, "<Unspecified street name>");
+        this.streetNumber = Objects.requireNonNullElse(address.streetNumber, -1);
     }
 
-    public static Address of(String city, StreetType streetType, String streetName, int streetNumber)
+    public static Address of(Address address)
     {
-        return new Address(city, streetType, streetName, streetNumber);
+        return new Address(address);
     }
 
     public String getCity()
@@ -37,6 +44,13 @@ public class Address
     public int getStreetNumber()
     {
         return this.streetNumber;
+    }
+
+    private Boolean verifyAddressValidity(Address address)
+    {
+        return (address.city == null || !address.city.equals("")) &&
+                (address.streetName == null || !address.streetName.equals("")) &&
+                address.streetNumber > 0;
     }
 
     @Override

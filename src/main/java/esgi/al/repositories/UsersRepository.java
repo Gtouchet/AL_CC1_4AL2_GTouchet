@@ -13,7 +13,6 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 // Todo: FailedToCreateUser and FailedToUpdateUser exceptions
-// Todo: also implements exceptions I guess
 public class UsersRepository implements Users
 {
     private final List<User> users = new ArrayList<>();

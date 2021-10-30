@@ -5,7 +5,7 @@
     "password": "Abcd1234!",
     "name": "Touchet",
     "address": {
-      "city": "Draveil",
+      "city": null,
       "streetType": "rue",
       "streetName": "Pierre Brossolette",
       "streetNumber" : 134

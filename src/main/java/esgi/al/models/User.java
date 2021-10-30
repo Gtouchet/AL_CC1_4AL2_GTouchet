@@ -1,7 +1,12 @@
 package esgi.al.models;
 
 import esgi.al.enumerators.PaymentMethod;
+import esgi.al.utils.Uuid;
+
+import java.util.Objects;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class User
 {
@@ -12,20 +17,24 @@ public class User
     private final Address address;
     private final PaymentMethod paymentMethod;
 
-    private User(UUID id, String login, String password, String name, Address address, PaymentMethod paymentMethod)
+    private User(User user)
     {
-        // Todo: implements properties verifications here
-        this.id = id;
-        this.login = login;
-        this.password = password;
-        this.name = name;
-        this.address = address;
-        this.paymentMethod = paymentMethod;
+        if (!this.verifyUserValidity(user))
+        {
+            throw new IllegalArgumentException();
+        }
+
+        this.id = Objects.requireNonNullElse(user.id, Uuid.generate());
+        this.login = Objects.requireNonNull(user.login);
+        this.password = Objects.requireNonNull(user.password);
+        this.name = Objects.requireNonNullElse(user.name, "<Unspecified name>");
+        this.address = Address.of(user.address);
+        this.paymentMethod = user.paymentMethod;
     }
 
-    public static User of(UUID id, String login, String password, String name, Address address, PaymentMethod paymentMethod)
+    public static User of(User user)
     {
-        return new User(id, login, password, name, address, paymentMethod);
+        return new User(user);
     }
 
     public UUID getId()
@@ -51,6 +60,19 @@ public class User
     public PaymentMethod getPaymentMethod()
     {
         return this.paymentMethod;
+    }
+
+    private Boolean verifyUserValidity(User user)
+    {
+        return !user.login.equals("") && this.verifyPasswordValidity(user.password);
+    }
+
+    private Boolean verifyPasswordValidity(String password)
+    {
+        String passwordRegex = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%,?;.:/!§]).{4,}$";
+        Pattern pattern = Pattern.compile(passwordRegex);
+        Matcher matcher = pattern.matcher(password);
+        return matcher.matches();
     }
 
     @Override

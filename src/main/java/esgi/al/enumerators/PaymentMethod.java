@@ -4,4 +4,6 @@ public enum PaymentMethod
 {
     CARD,
     PAYPAL,
+
+    UNSPECIFIED,
 }
