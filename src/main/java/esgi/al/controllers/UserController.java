@@ -2,6 +2,7 @@ package esgi.al.controllers;
 
 import esgi.al.enumerators.PaymentMethod;
 import esgi.al.exceptions.FailedToCreateUser;
+import esgi.al.exceptions.FailedToUpdateUser;
 import esgi.al.exceptions.NoUserFound;
 import esgi.al.models.User;
 import esgi.al.repositories.UsersRepository;
@@ -9,7 +10,7 @@ import esgi.al.repositories.UsersRepository;
 import java.util.UUID;
 import java.util.stream.Stream;
 
-public class UserController
+public class UserController<T>
 {
     private final UsersRepository userRepository;
 
@@ -46,6 +47,11 @@ public class UserController
     public Stream<User> getByPaymentMethod(PaymentMethod paymentMethod) throws NoUserFound
     {
         return this.userRepository.getByPaymentMethod(paymentMethod);
+    }
+
+    public void updatePasswordBy(Boolean isId, String idOrLogin, String newPassword) throws NoUserFound, FailedToUpdateUser
+    {
+        this.userRepository.updatePasswordBy(isId, idOrLogin, newPassword);
     }
 
     public void deleteById(UUID id) throws NoUserFound

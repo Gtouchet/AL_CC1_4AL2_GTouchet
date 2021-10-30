@@ -7,8 +7,8 @@ public class NoUserFound extends Throwable
         super("No user registered");
     }
 
-    public NoUserFound(String message)
+    public NoUserFound(String value)
     {
-        super("No user registered with ID, login, name or payment method [" + message + "]");
+        super("No user registered with ID, login, name or payment method [" + value + "]");
     }
 }

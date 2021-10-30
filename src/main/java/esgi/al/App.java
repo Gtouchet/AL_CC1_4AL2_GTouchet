@@ -3,6 +3,7 @@ package esgi.al;
 import esgi.al.controllers.UserController;
 import esgi.al.enumerators.PaymentMethod;
 import esgi.al.exceptions.FailedToCreateUser;
+import esgi.al.exceptions.FailedToUpdateUser;
 import esgi.al.exceptions.NoUserFound;
 import esgi.al.models.User;
 import esgi.al.repositories.UsersRepository;
@@ -11,6 +12,16 @@ import esgi.al.utils.JsonHelper;
 import java.util.UUID;
 import java.util.stream.Stream;
 
+/**
+ * Todo: SQL like command handler
+ * The user can write a command per line in a text file
+ * The command handler engine will read, line by line, the file
+ * Then it will extract the command and parameters of the line
+ * Ex. user creation : CREATE, GTouchet, 1234Abcd?, Guillaume, Paris, rue, Faubourg Saint Antoine, 242, PAYPAL
+ * Ex. get all users : GETALL
+ * Ex. get user by login : GETBYLOGIN, GTouchet
+ * Ex: user deletion by ID : DELETEBYID, 123abcd-ef456[...]
+ */
 public class App
 {
     public static void main(String[] args)
@@ -46,9 +57,12 @@ public class App
             userController.getByPaymentMethod(PaymentMethod.CARD).forEach(System.out::println);
 
             System.out.println("\n---------- Deletion ----------");
-            userController.deleteById(UUID.fromString("bfa3734b-b34c-43cd-b986-95cff858a81b"));
+            //userController.deleteById(UUID.fromString(""));
 
-        } catch (NoUserFound e) {
+            System.out.println("\n---------- Update password ----------");
+            userController.updatePasswordBy(false, "GTouchet", "789_Test_:)");
+
+        } catch (NoUserFound | FailedToUpdateUser e) {
             e.printStackTrace();
         }
     }

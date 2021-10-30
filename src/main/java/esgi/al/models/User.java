@@ -12,10 +12,10 @@ public class User
 {
     private final UUID id;
     private final String login;
-    private final String password;
-    private final String name;
-    private final Address address;
-    private final PaymentMethod paymentMethod;
+    private String password;
+    private String name;
+    private Address address;
+    private PaymentMethod paymentMethod;
 
     private User(User user)
     {
@@ -41,25 +41,55 @@ public class User
     {
         return this.id;
     }
+
     public String getLogin()
     {
         return this.login;
     }
+
     public String getPassword()
     {
         return this.password;
     }
+
     public String getName()
     {
         return this.name;
     }
+
     public Address getAddress()
     {
         return this.address;
     }
+
     public PaymentMethod getPaymentMethod()
     {
         return this.paymentMethod;
+    }
+
+    public Boolean setPassword(String password)
+    {
+        if (this.verifyPasswordValidity(password))
+        {
+            this.password = password;
+            return true;
+        }
+        return false;
+    }
+
+    public void setName()
+    {
+        this.name = name;
+    }
+
+    public void setAddress(Address address)
+    {
+        this.address = Address.of(address);
+    }
+
+    public void setPaymentMethod(PaymentMethod paymentMethod)
+    {
+        this.paymentMethod = paymentMethod;
     }
 
     private Boolean verifyUserValidity(User user)

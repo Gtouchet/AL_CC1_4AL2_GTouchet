@@ -94,34 +94,23 @@ public class UsersRepository implements Users
     }
 
     @Override
-    public void updateById(UUID id, User newUser) throws NoUserFound, FailedToUpdateUser
+    public void updatePasswordBy(Boolean isId, String idOrLogin, String newPassword) throws NoUserFound, FailedToUpdateUser
     {
-        User user = this.users.stream()
-                .filter(streamUser -> streamUser.getId().equals(id))
-                .findFirst()
-                .orElse(null);
-
-        if (user == null)
+        User user = isId ? this.getById(UUID.fromString(idOrLogin)) : this.getByLogin(idOrLogin);
+        this.users.remove(user);
+        if (!user.setPassword(newPassword))
         {
-            throw new NoUserFound(id.toString());
+            throw new FailedToUpdateUser(idOrLogin, "invalid password");
         }
-
-        // Todo: implements update
+        this.users.add(user);
+        System.out.println(users);
+        JsonHelper.rewriteFile(this.users);
     }
 
     @Override
     public void updateByLogin(String login, User newUser) throws NoUserFound, FailedToUpdateUser
     {
-        User user = this.users.stream()
-                .filter(streamUser -> streamUser.getLogin().equals(login))
-                .findFirst()
-                .orElse(null);
-
-        if (user == null)
-        {
-            throw new NoUserFound(login);
-        }
-
+        User user = this.getByLogin(login);
         // Todo: implements update
     }
 
