@@ -1,6 +1,5 @@
 package esgi.al.repositories;
 
-import esgi.al.Globals;
 import esgi.al.enumerators.PaymentMethod;
 import esgi.al.exceptions.FailedToCreateUser;
 import esgi.al.exceptions.FailedToUpdateUser;
@@ -130,32 +129,16 @@ public class UsersRepository implements Users
     @Override
     public void deleteById(UUID id) throws NoUserFound
     {
-        User user = this.users.stream()
-                .filter(streamUser -> streamUser.getId().equals(id))
-                .findFirst()
-                .orElse(null);
-
-        if (user == null)
-        {
-            throw new NoUserFound(id.toString());
-        }
-
-        JsonHelper.deleteUserFromFile(Globals.JSON_USER_FILE_PATH, user.getId());
+        User user = this.getById(id);
+        this.users.remove(user);
+        JsonHelper.rewriteFile(this.users);
     }
 
     @Override
     public void deleteByLogin(String login) throws NoUserFound
     {
-        User user = this.users.stream()
-                .filter(streamUser -> streamUser.getLogin().equals(login))
-                .findFirst()
-                .orElse(null);
-
-        if (user == null)
-        {
-            throw new NoUserFound(login);
-        }
-
-        JsonHelper.deleteUserFromFile(Globals.JSON_USER_FILE_PATH, user.getId());
+        User user = this.getByLogin(login);
+        this.users.remove(user);
+        JsonHelper.rewriteFile(this.users);
     }
 }

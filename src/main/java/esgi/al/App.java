@@ -19,7 +19,7 @@ public class App
         final UserController userController = new UserController(userRepository);
 
         // Initialize repository by fetching json file's data
-        Stream<User> jsonUsers = JsonHelper.getUserDataFromFile(Globals.JSON_USER_FILE_PATH);
+        Stream<User> jsonUsers = JsonHelper.getUserDataFromFile();
         jsonUsers.forEach(jsonUser -> {
             try {
                 userController.createUser(User.of(jsonUser));
@@ -44,6 +44,8 @@ public class App
 
             System.out.println("\n---------- By payment method ----------");
             userController.getByPaymentMethod(PaymentMethod.CARD).forEach(System.out::println);
+
+            userController.deleteById(UUID.fromString("bfa3734b-b34c-43cd-b986-95cff858a81b"));
 
         } catch (NoUserFound e) {
             e.printStackTrace();

@@ -8,7 +8,7 @@
       "city": "Draveil",
       "streetType": "rue",
       "streetName": "Pierre Brossolette",
-      "streetNumber" : 134
+      "streetNumber": 134
     },
     "paymentMethod": "CARD"
   },
@@ -21,34 +21,8 @@
       "city": "Draveil2",
       "streetType": "avenue",
       "streetName": "Pierre Brossolette2",
-      "streetNumber" : 1342
+      "streetNumber": 1342
     },
     "paymentMethod": "PAYPAL"
-  },
-  {
-    "id": "bfa3734b-b34c-43cd-b986-95cff858a81b",
-    "login": "GTouchet3",
-    "password": "Abcd1234!",
-    "name": null,
-    "address": {
-      "city": null,
-      "streetType": "rue",
-      "streetName": "Pierre Brossolette",
-      "streetNumber": 134
-    },
-    "paymentMethod": null
-  },
-  {
-    "id": "bfa3734b-b34c-43cd-b986-95cff858a81b",
-    "login": "GTouchet",
-    "password": "Abcd1234!",
-    "name": "Touchet",
-    "address": {
-      "city": "Draveil",
-      "streetType": "rue",
-      "streetName": "Pierre Brossolette",
-      "streetNumber": 134
-    },
-    "paymentMethod": "CARD"
   }
 ]

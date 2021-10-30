@@ -47,4 +47,9 @@ public class UserController
     {
         return this.userRepository.getByPaymentMethod(paymentMethod);
     }
+
+    public void deleteById(UUID id) throws NoUserFound
+    {
+        this.userRepository.deleteById(id);
+    }
 }
