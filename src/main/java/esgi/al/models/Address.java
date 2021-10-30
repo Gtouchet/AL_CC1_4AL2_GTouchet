@@ -22,6 +22,23 @@ public class Address
         return new Address(city, streetType, streetName, streetNumber);
     }
 
+    public String getCity()
+    {
+        return this.city;
+    }
+    public StreetType getStreetType()
+    {
+        return this.streetType;
+    }
+    public String getStreetName()
+    {
+        return this.streetName;
+    }
+    public int getStreetNumber()
+    {
+        return this.streetNumber;
+    }
+
     @Override
     public String toString()
     {

@@ -19,10 +19,23 @@
     "name": "Touchet2",
     "address": {
       "city": "Draveil2",
-      "streetType": "rue2",
+      "streetType": "avenue",
       "streetName": "Pierre Brossolette2",
       "streetNumber" : 1342
     },
     "paymentMethod": "PAYPAL"
+  },
+  {
+    "id": "bfa3734b-b34c-43cd-b986-95cff858a81b",
+    "login": "GTouchet2",
+    "password": "Abcd1234!",
+    "name": "Touchet",
+    "address": {
+      "city": "Draveil",
+      "streetType": "rue",
+      "streetName": "Pierre Brossolette",
+      "streetNumber": 134
+    },
+    "paymentMethod": "CARD"
   }
 ]

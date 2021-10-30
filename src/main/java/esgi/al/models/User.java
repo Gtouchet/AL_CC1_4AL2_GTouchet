@@ -32,6 +32,26 @@ public class User
     {
         return this.id;
     }
+    public String getLogin()
+    {
+        return this.login;
+    }
+    public String getPassword()
+    {
+        return this.password;
+    }
+    public String getName()
+    {
+        return this.name;
+    }
+    public Address getAddress()
+    {
+        return this.address;
+    }
+    public PaymentMethod getPaymentMethod()
+    {
+        return this.paymentMethod;
+    }
 
     public void updatePassword(String password)
     {
