@@ -13,7 +13,6 @@ import java.util.UUID;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-// Todo: FailedToCreateUser and FailedToUpdateUser exceptions
 public class UsersRepository implements Users
 {
     private final List<User> users = new ArrayList<>();

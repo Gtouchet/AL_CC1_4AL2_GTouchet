@@ -45,6 +45,7 @@ public class App
             System.out.println("\n---------- By payment method ----------");
             userController.getByPaymentMethod(PaymentMethod.CARD).forEach(System.out::println);
 
+            System.out.println("\n---------- Deletion ----------");
             userController.deleteById(UUID.fromString("bfa3734b-b34c-43cd-b986-95cff858a81b"));
 
         } catch (NoUserFound e) {
