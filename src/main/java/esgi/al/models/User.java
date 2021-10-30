@@ -77,7 +77,7 @@ public class User
         return false;
     }
 
-    public void setName()
+    public void setName(String name)
     {
         this.name = name;
     }

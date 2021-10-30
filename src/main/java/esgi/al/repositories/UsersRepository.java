@@ -103,15 +103,17 @@ public class UsersRepository implements Users
             throw new FailedToUpdateUser(idOrLogin, "invalid password");
         }
         this.users.add(user);
-        System.out.println(users);
         JsonHelper.rewriteFile(this.users);
     }
 
     @Override
-    public void updateByLogin(String login, User newUser) throws NoUserFound, FailedToUpdateUser
+    public void updateNameBy(Boolean isId, String idOrLogin, String newName) throws NoUserFound, FailedToUpdateUser
     {
-        User user = this.getByLogin(login);
-        // Todo: implements update
+        User user = isId ? this.getById(UUID.fromString(idOrLogin)) : this.getByLogin(idOrLogin);
+        this.users.remove(user);
+        user.setName(newName);
+        this.users.add(user);
+        JsonHelper.rewriteFile(this.users);
     }
 
     @Override

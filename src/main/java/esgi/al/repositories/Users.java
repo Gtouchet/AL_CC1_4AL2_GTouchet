@@ -20,7 +20,7 @@ public interface Users
     Stream<User> getByPaymentMethod(PaymentMethod paymentMethod) throws NoUserFound;
 
     void updatePasswordBy(Boolean isId, String idOrLogin, String newPassword) throws NoUserFound, FailedToUpdateUser;
-    void updateByLogin(String login, User user) throws NoUserFound, FailedToUpdateUser;
+    void updateNameBy(Boolean isId, String idOrLogin, String newName) throws NoUserFound, FailedToUpdateUser;
 
     void deleteById(UUID id) throws NoUserFound;
     void deleteByLogin(String login) throws NoUserFound;

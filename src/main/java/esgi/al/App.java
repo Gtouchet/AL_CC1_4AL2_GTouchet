@@ -62,6 +62,9 @@ public class App
             System.out.println("\n---------- Update password ----------");
             userController.updatePasswordBy(false, "GTouchet", "789_Test_:)");
 
+            System.out.println("\n---------- Update name ----------");
+            userController.updateNameBy(false, "GTouchet", "Guy");
+
         } catch (NoUserFound | FailedToUpdateUser e) {
             e.printStackTrace();
         }

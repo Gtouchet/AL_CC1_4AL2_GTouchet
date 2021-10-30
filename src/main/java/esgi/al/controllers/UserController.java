@@ -54,6 +54,11 @@ public class UserController<T>
         this.userRepository.updatePasswordBy(isId, idOrLogin, newPassword);
     }
 
+    public void updateNameBy(Boolean isId, String idOrLogin, String newName) throws NoUserFound, FailedToUpdateUser
+{
+    this.userRepository.updateNameBy(isId, idOrLogin, newName);
+}
+
     public void deleteById(UUID id) throws NoUserFound
     {
         this.userRepository.deleteById(id);
