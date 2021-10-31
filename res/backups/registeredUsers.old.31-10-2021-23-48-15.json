@@ -24,18 +24,5 @@
       "streetName": "Pierre Brossolette",
       "streetNumber": 134
     }
-  },
-  {
-    "id": "dd37c25c-3129-4785-bb12-a1743c37d37f",
-    "login": "newGTouchet",
-    "password": "123AZEqsd!:;",
-    "name": "Guy",
-    "paymentMethod": "PAYPAL",
-    "address": {
-      "city": "paris",
-      "streetType": "avenue",
-      "streetName": "picpus",
-      "streetNumber": 45
-    }
   }
 ]

@@ -17,14 +17,14 @@ public class UserController
         this.userRepository = userRepository;
     }
 
-    public void registerUser(User user) throws FailedToCreateUser
+    public void create(
+            String login, String password, String name, String paymentMethod,
+            String city, String streetType, String streetName, int streetNumber) throws FailedToCreateUser
     {
-        this.userRepository.create(user, true);
-    }
-
-    public void createUser(User user) throws FailedToCreateUser
-    {
-        this.userRepository.create(user, false);
+        this.userRepository.create(
+                login, password, name, paymentMethod,
+                city, streetType, streetName, streetNumber
+        );
     }
 
     public Stream<User> getAll() throws NoUserFound
@@ -65,5 +65,10 @@ public class UserController
     public void deleteBy(String isId, String idOrLogin) throws NoUserFound, FailedToUpdateUser
     {
         this.userRepository.deleteBy(isId, idOrLogin);
+    }
+
+    public void register(User user) throws FailedToCreateUser
+    {
+        this.userRepository.register(user);
     }
 }
