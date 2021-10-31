@@ -1,6 +1,5 @@
 package esgi.al.controllers;
 
-import esgi.al.enumerators.PaymentMethod;
 import esgi.al.exceptions.FailedToCreateUser;
 import esgi.al.exceptions.FailedToUpdateUser;
 import esgi.al.exceptions.NoUserFound;
@@ -48,22 +47,22 @@ public class UserController
         return this.userRepository.getByName(name);
     }
 
-    public Stream<User> getByPaymentMethod(PaymentMethod paymentMethod) throws NoUserFound
+    public Stream<User> getByPaymentMethod(String paymentMethod) throws NoUserFound
     {
         return this.userRepository.getByPaymentMethod(paymentMethod);
     }
 
-    public void updatePasswordBy(Boolean isId, String idOrLogin, String newPassword) throws NoUserFound, FailedToUpdateUser
+    public void updatePasswordBy(String isId, String idOrLogin, String newPassword) throws NoUserFound, FailedToUpdateUser
     {
         this.userRepository.updatePasswordBy(isId, idOrLogin, newPassword);
     }
 
-    public void updateNameBy(Boolean isId, String idOrLogin, String newName) throws NoUserFound
-{
-    this.userRepository.updateNameBy(isId, idOrLogin, newName);
-}
+    public void updateNameBy(String isId, String idOrLogin, String newName) throws NoUserFound, FailedToUpdateUser
+    {
+        this.userRepository.updateNameBy(isId, idOrLogin, newName);
+    }
 
-    public void deleteById(Boolean isId, String idOrLogin) throws NoUserFound
+    public void deleteById(String isId, String idOrLogin) throws NoUserFound, FailedToUpdateUser
     {
         this.userRepository.deleteBy(isId, idOrLogin);
     }

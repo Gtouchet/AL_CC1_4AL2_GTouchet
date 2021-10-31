@@ -1,6 +1,5 @@
 package esgi.al.repositories;
 
-import esgi.al.enumerators.PaymentMethod;
 import esgi.al.exceptions.FailedToCreateUser;
 import esgi.al.exceptions.FailedToUpdateUser;
 import esgi.al.exceptions.NoUserFound;
@@ -16,10 +15,10 @@ public interface Users
     User getById(String id) throws NoUserFound;
     User getByLogin(String login) throws NoUserFound;
     Stream<User> getByName(String name) throws NoUserFound;
-    Stream<User> getByPaymentMethod(PaymentMethod paymentMethod) throws NoUserFound;
+    Stream<User> getByPaymentMethod(String paymentMethod) throws NoUserFound;
 
-    void updatePasswordBy(Boolean isId, String idOrLogin, String newPassword) throws NoUserFound, FailedToUpdateUser;
-    void updateNameBy(Boolean isId, String idOrLogin, String newName) throws NoUserFound;
+    void updatePasswordBy(String isId, String idOrLogin, String newPassword) throws NoUserFound, FailedToUpdateUser;
+    void updateNameBy(String isId, String idOrLogin, String newName) throws NoUserFound, FailedToUpdateUser;
 
-    void deleteBy(Boolean isId, String idOrLogin) throws NoUserFound;
+    void deleteBy(String isId, String idOrLogin) throws NoUserFound, FailedToUpdateUser;
 }

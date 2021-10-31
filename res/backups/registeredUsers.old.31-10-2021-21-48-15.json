@@ -1,5 +1,18 @@
 [
   {
+    "id": "9ccad235-0eb6-40d1-b5d6-c0e93e919ad8",
+    "login": "GTouchet",
+    "password": "Abcd1234!",
+    "name": "Touchet",
+    "paymentMethod": "PAYPAL",
+    "address": {
+      "city": "Draveil",
+      "streetType": "rue",
+      "streetName": "Pierre Brossolette",
+      "streetNumber": 134
+    }
+  },
+  {
     "id": "f92c2719-baec-4ed3-8dbb-6d4aa4266180",
     "login": "GTouchet2",
     "password": "456DFGtt!:;",
@@ -10,19 +23,6 @@
       "streetType": "boulevard",
       "streetName": "Pierre Brossolette 2",
       "streetNumber": 1342
-    }
-  },
-  {
-    "id": "9ccad235-0eb6-40d1-b5d6-c0e93e919ad8",
-    "login": "GTouchet",
-    "password": "112233!!AAbb",
-    "name": "Touchet",
-    "paymentMethod": "PAYPAL",
-    "address": {
-      "city": "Draveil",
-      "streetType": "rue",
-      "streetName": "Pierre Brossolette",
-      "streetNumber": 134
     }
   }
 ]

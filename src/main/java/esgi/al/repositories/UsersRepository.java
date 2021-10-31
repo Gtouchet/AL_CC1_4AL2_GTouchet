@@ -30,6 +30,7 @@ public class UsersRepository implements Users
         {
             throw new FailedToCreateUser(newUser.getLogin(), registeredUser.getId());
         }
+
         this.users.add(newUser);
         if (!isJson)
         {
@@ -44,6 +45,7 @@ public class UsersRepository implements Users
         {
             throw new NoUserFound();
         }
+
         return this.streamSupplier.get();
     }
 
@@ -59,6 +61,7 @@ public class UsersRepository implements Users
         {
             throw new NoUserFound(id);
         }
+
         return user;
     }
 
@@ -74,6 +77,7 @@ public class UsersRepository implements Users
         {
             throw new NoUserFound(login);
         }
+
         return user;
     }
 
@@ -84,31 +88,43 @@ public class UsersRepository implements Users
         {
             throw new NoUserFound(name);
         }
+
         return this.streamSupplier.get()
                 .filter(user -> user.getName().equals(name));
     }
 
     @Override
-    public Stream<User> getByPaymentMethod(PaymentMethod paymentMethod) throws NoUserFound
+    public Stream<User> getByPaymentMethod(String paymentMethod) throws NoUserFound
     {
-        if (this.streamSupplier.get().noneMatch(user -> user.getPaymentMethod().equals(paymentMethod)))
+        if (!Validator.isPaymentMethodValid(paymentMethod))
         {
-            throw new NoUserFound(paymentMethod.toString());
+            System.out.println("Unknown payment method [" + paymentMethod + "], it should be 'card', 'paypal' or 'unspecified'");
+            return Stream.empty();
         }
+
+        PaymentMethod method = PaymentMethod.valueOf(paymentMethod);
+        if (this.streamSupplier.get().noneMatch(user -> user.getPaymentMethod().equals(method)))
+        {
+            throw new NoUserFound(paymentMethod);
+        }
+
         return this.streamSupplier.get()
-                .filter(user -> user.getPaymentMethod().equals(paymentMethod));
+                .filter(user -> user.getPaymentMethod().equals(method));
     }
 
     @Override
-    public void updatePasswordBy(Boolean isId, String idOrLogin, String newPassword) throws NoUserFound, FailedToUpdateUser
+    public void updatePasswordBy(String isId, String idOrLogin, String newPassword) throws NoUserFound, FailedToUpdateUser
     {
-        User user = isId ? this.getById(idOrLogin) : this.getByLogin(idOrLogin);
+        if (!isId.equals("ID") && !isId.equals("LOGIN"))
+        {
+            throw new FailedToUpdateUser(idOrLogin, "invalid get method ('ID' or 'LOGIN')");
+        }
 
         if (!Validator.isPasswordValid(newPassword))
         {
             throw new FailedToUpdateUser(idOrLogin, "invalid password");
         }
-
+        User user = isId.equals("ID") ? this.getById(idOrLogin) : this.getByLogin(idOrLogin);
         this.users.remove(user);
         user.setPassword(newPassword);
         this.users.add(user);
@@ -116,9 +132,14 @@ public class UsersRepository implements Users
     }
 
     @Override
-    public void updateNameBy(Boolean isId, String idOrLogin, String newName) throws NoUserFound
+    public void updateNameBy(String isId, String idOrLogin, String newName) throws NoUserFound, FailedToUpdateUser
     {
-        User user = isId ? this.getById(idOrLogin) : this.getByLogin(idOrLogin);
+        if (!isId.equals("ID") && !isId.equals("LOGIN"))
+        {
+            throw new FailedToUpdateUser(idOrLogin, "invalid get method ('ID' or 'LOGIN')");
+        }
+
+        User user = isId.equals("ID") ? this.getById(idOrLogin) : this.getByLogin(idOrLogin);
         this.users.remove(user);
         user.setName(newName);
         this.users.add(user);
@@ -126,9 +147,14 @@ public class UsersRepository implements Users
     }
 
     @Override
-    public void deleteBy(Boolean isId, String idOrLogin) throws NoUserFound
+    public void deleteBy(String isId, String idOrLogin) throws NoUserFound, FailedToUpdateUser
     {
-        User user = isId ? this.getById(idOrLogin) : this.getByLogin(idOrLogin);
+        if (!isId.equals("ID") && !isId.equals("LOGIN"))
+        {
+            throw new FailedToUpdateUser(idOrLogin, "invalid get method ('ID' or 'LOGIN')");
+        }
+
+        User user = isId.equals("ID") ? this.getById(idOrLogin) : this.getByLogin(idOrLogin);
         this.users.remove(user);
         JsonHelper.rewriteFile(this.users);
     }

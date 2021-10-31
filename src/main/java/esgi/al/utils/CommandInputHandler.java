@@ -1,7 +1,6 @@
 package esgi.al.utils;
 
 import esgi.al.controllers.UserController;
-import esgi.al.enumerators.PaymentMethod;
 import esgi.al.exceptions.FailedToUpdateUser;
 import esgi.al.exceptions.NoUserFound;
 
@@ -66,9 +65,12 @@ public class CommandInputHandler
 
     private void processGetByIdCommand(String[] params) throws NoUserFound
     {
-        if (params.length <= 1)
+        if (params.length != 2)
         {
-            System.out.println("Please indicate an ID to look for");
+            System.out.println(
+                    "Wrong number of parameters for GETBYID command\n" +
+                    "Example: GETBYID 9ccad235-0eb6-40d1-b5d6-c0e93e919ad8"
+            );
             return;
         }
 
@@ -77,9 +79,12 @@ public class CommandInputHandler
 
     private void processGetByLoginCommand(String[] params) throws NoUserFound
     {
-        if (params.length <= 1)
+        if (params.length != 2)
         {
-            System.out.println("Please indicate a login to look for");
+            System.out.println(
+                    "Wrong number of parameters for GETBYLOGIN command\n" +
+                    "Example: GETBYLOGIN userLogin"
+            );
             return;
         }
 
@@ -88,55 +93,44 @@ public class CommandInputHandler
 
     private void processGetByNameCommand(String[] params) throws NoUserFound
     {
-        if (params.length <= 1)
+        if (params.length != 2)
         {
-            System.out.println("Please indicate a name to look for");
+            System.out.println(
+                    "Wrong number of parameters for GETBYNAME command\n" +
+                    "Example: GETBYNAME userName"
+            );
             return;
         }
 
-        this.userController.getByName(params[1])
-                .forEach(System.out::println);
+        this.userController.getByName(params[1]).forEach(System.out::println);
     }
 
     private void processGetByPaymentMethodCommand(String[] params) throws NoUserFound
     {
-        if (params.length <= 1)
+        if (params.length != 2)
         {
-            System.out.println("Please indicate a payment method ('card', 'paypal' or 'unspecified') to look for");
+            System.out.println(
+                    "Wrong number of parameters for GETBYPAYMENTMETHOD command\n" +
+                    "Example: GETBYPAYMENTMETHOD card"
+            );
             return;
         }
 
-        String paymentMethod = params[1].toUpperCase();
-        if (!Validator.isPaymentMethodValid(paymentMethod))
-        {
-            System.out.println("Unknown payment method [" + paymentMethod + "], it should be 'card', 'paypal' or 'unspecified'");
-            return;
-        }
-
-        this.userController.getByPaymentMethod(PaymentMethod.valueOf(paymentMethod))
-                .forEach(System.out::println);
+        this.userController.getByPaymentMethod(params[1].toUpperCase()).forEach(System.out::println);
     }
 
     private void processUpdatePasswordCommand(String[] params) throws NoUserFound, FailedToUpdateUser
     {
-        if (params.length <= 2)
+        if (params.length != 4)
         {
-            System.out.println("Please indicate a user get method ('id' or 'login'), an ID or login and the new password");
+            System.out.println(
+                    "Wrong number of parameters for UPDATEPASSWORD command\n" +
+                    "Example: UPDATEPASSWORD login userLogin newPassword"
+            );
             return;
         }
 
-        String getMethod = params[1].toUpperCase();
-        if (!getMethod.equals("ID") && !getMethod.equals("LOGIN"))
-        {
-            System.out.println("Unknown get method [" + getMethod + "], it should be 'id' or 'login'");
-            return;
-        }
-
-        this.userController.updatePasswordBy(
-                getMethod.equals("ID"),
-                getMethod.equals("ID") ? params[2].toLowerCase() : params[2],
-                params[3]
-        );
+        this.userController.updatePasswordBy(params[1].toUpperCase(), params[2], params[3]);
     }
 
     private void processUpdateNameCommand(String[] params)
@@ -158,8 +152,8 @@ public class CommandInputHandler
                 "GETBYLOGIN login -> same with login\n" +
                 "GETBYNAME name -> get all users registered with the specified name\n" +
                 "GETBYPAYMENTMETHOD paymentMethod -> same with payment method\n\n" +
-                "CREATE login password name paymentMethod city streetType streetName streetNumber -> create a new user\n\n" +
-                "UPDATEPASSWORD method('id' 'login') idOrLogin newPassword -> update user's password\n" +
+                // todo "CREATE login password name paymentMethod city streetType streetName streetNumber -> create a new user\n\n" +
+                "UPDATEPASSWORD method idOrLogin newPassword -> update user's password\n" +
                 "UPDATENAME method idOrLogin newName -> update user's name\n\n" +
                 "DELETE method idOrLogin -> delete the user registered under the specified id or login\n\n" +
                 "QUIT -> quit the program\n" +
