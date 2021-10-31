@@ -133,14 +133,32 @@ public class CommandInputHandler
         this.userController.updatePasswordBy(params[1].toUpperCase(), params[2], params[3]);
     }
 
-    private void processUpdateNameCommand(String[] params)
+    private void processUpdateNameCommand(String[] params) throws NoUserFound, FailedToUpdateUser
     {
-        // Todo: implements
+        if (params.length != 4)
+        {
+            System.out.println(
+                    "Wrong number of parameters for UPDATENAME command\n" +
+                    "Example: UPDATENAME login userLogin newName"
+            );
+            return;
+        }
+
+        this.userController.updateNameBy(params[1].toUpperCase(), params[2], params[3]);
     }
 
-    private void processDeleteCommand(String[] params)
+    private void processDeleteCommand(String[] params) throws NoUserFound, FailedToUpdateUser
     {
-        // Todo: implements
+        if (params.length != 3)
+        {
+            System.out.println(
+                    "Wrong number of parameters for DELETE command\n" +
+                    "Example: DELETE login userLogin"
+            );
+            return;
+        }
+
+        this.userController.deleteBy(params[1].toUpperCase(), params[2]);
     }
 
     private void displayCommandList()
@@ -153,8 +171,8 @@ public class CommandInputHandler
                 "GETBYNAME name -> get all users registered with the specified name\n" +
                 "GETBYPAYMENTMETHOD paymentMethod -> same with payment method\n\n" +
                 // todo "CREATE login password name paymentMethod city streetType streetName streetNumber -> create a new user\n\n" +
-                "UPDATEPASSWORD method idOrLogin newPassword -> update user's password\n" +
-                "UPDATENAME method idOrLogin newName -> update user's name\n\n" +
+                "UPDATEPASSWORD method idOrLogin newPassword -> update the user's password registered under the specified id or login\n" +
+                "UPDATENAME method idOrLogin newName -> same with name\n\n" +
                 "DELETE method idOrLogin -> delete the user registered under the specified id or login\n\n" +
                 "QUIT -> quit the program\n" +
                 "----- ----- ----- ----- ----- ----- -----"

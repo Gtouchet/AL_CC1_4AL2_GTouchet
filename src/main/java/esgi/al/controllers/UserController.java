@@ -62,7 +62,7 @@ public class UserController
         this.userRepository.updateNameBy(isId, idOrLogin, newName);
     }
 
-    public void deleteById(String isId, String idOrLogin) throws NoUserFound, FailedToUpdateUser
+    public void deleteBy(String isId, String idOrLogin) throws NoUserFound, FailedToUpdateUser
     {
         this.userRepository.deleteBy(isId, idOrLogin);
     }
