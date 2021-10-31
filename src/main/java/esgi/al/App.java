@@ -1,10 +1,9 @@
 package esgi.al;
 
 import esgi.al.controllers.UserController;
-import esgi.al.exceptions.FailedToCreateUser;
 import esgi.al.models.User;
 import esgi.al.repositories.UsersRepository;
-import esgi.al.utils.CommandInputHandler;
+import esgi.al.utils.CliProcessingEngine;
 import esgi.al.utils.JsonHelper;
 
 import java.util.stream.Stream;
@@ -17,15 +16,9 @@ public class App
         final UserController userController = new UserController(userRepository);
 
         // Initialize repository by fetching json file's data
-        Stream<User> jsonUsers = JsonHelper.getUserDataFromFile();
-        jsonUsers.forEach(jsonUser -> {
-            try {
-                userController.register(User.of(jsonUser));
-            } catch (FailedToCreateUser e) {
-                e.printStackTrace();
-            }
-        });
+        final Stream<User> jsonUsers = JsonHelper.getUserDataFromFile();
+        jsonUsers.forEach(jsonUser -> userController.register(User.of(jsonUser)));
 
-        new CommandInputHandler(userController).launch();
+        new CliProcessingEngine(userController).launch();
     }
 }

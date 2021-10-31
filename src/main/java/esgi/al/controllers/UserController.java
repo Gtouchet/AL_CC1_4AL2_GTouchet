@@ -67,7 +67,7 @@ public class UserController
         this.userRepository.deleteBy(isId, idOrLogin);
     }
 
-    public void register(User user) throws FailedToCreateUser
+    public void register(User user)
     {
         this.userRepository.register(user);
     }

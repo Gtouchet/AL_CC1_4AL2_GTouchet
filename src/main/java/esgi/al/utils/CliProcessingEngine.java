@@ -9,13 +9,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
-public class CommandInputHandler
+public class CliProcessingEngine
 {
     private final UserController userController;
     private final Scanner scanner;
     private final Map<Integer, String> commandsExs = new HashMap<>();
 
-    public CommandInputHandler(UserController userController)
+    public CliProcessingEngine(UserController userController)
     {
         this.userController = userController;
         this.scanner = new Scanner(System.in);
