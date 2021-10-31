@@ -1,10 +1,8 @@
 package esgi.al.exceptions;
 
-import java.util.UUID;
-
 public class FailedToCreateUser extends Throwable
 {
-    public FailedToCreateUser(String userLogin, UUID registeredUserId)
+    public FailedToCreateUser(String userLogin, String registeredUserId)
     {
         super(
                 "Login [" + userLogin + "]" +

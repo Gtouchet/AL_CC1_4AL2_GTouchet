@@ -7,7 +7,6 @@ import esgi.al.exceptions.NoUserFound;
 import esgi.al.models.User;
 import esgi.al.repositories.UsersRepository;
 
-import java.util.UUID;
 import java.util.stream.Stream;
 
 public class UserController
@@ -34,7 +33,7 @@ public class UserController
         return this.userRepository.getAll();
     }
 
-    public User getById(UUID id) throws NoUserFound
+    public User getById(String id) throws NoUserFound
     {
         return this.userRepository.getById(id);
     }

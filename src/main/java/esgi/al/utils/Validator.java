@@ -3,7 +3,6 @@ package esgi.al.utils;
 import esgi.al.enumerators.PaymentMethod;
 import esgi.al.enumerators.StreetType;
 
-import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -51,15 +50,5 @@ public class Validator
             }
         }
         return false;
-    }
-
-    public static Boolean isUuidValid(String strValue)
-    {
-        try {
-            UUID uuid = UUID.fromString(strValue);
-            return true;
-        } catch (IllegalArgumentException e) {
-            return false;
-        }
     }
 }

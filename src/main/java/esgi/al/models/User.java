@@ -4,25 +4,24 @@ import esgi.al.enumerators.PaymentMethod;
 import esgi.al.utils.Validator;
 
 import java.util.Objects;
-import java.util.UUID;
 
 public class User
 {
-    private final UUID id;
+    private final String id;
     private final String login;
     private String password;
     private String name;
     private PaymentMethod paymentMethod;
     private Address address;
 
-    private User(UUID id, String login, String password, String name, PaymentMethod paymentMethod, Address address)
+    private User(String id, String login, String password, String name, PaymentMethod paymentMethod, Address address)
     {
         if (!Validator.isUserValid(login, password))
         {
             throw new IllegalArgumentException();
         }
 
-        this.id = Objects.requireNonNullElse(id, java.util.UUID.randomUUID());
+        this.id = Objects.requireNonNullElse(id, java.util.UUID.randomUUID().toString());
         this.login = Objects.requireNonNull(login);
         this.password = Objects.requireNonNull(password);
         this.name = Objects.requireNonNullElse(name, "<Unspecified name>");
@@ -35,7 +34,7 @@ public class User
         );
     }
 
-    public static User of(UUID id, String login, String password, String name, PaymentMethod paymentMethod, Address address)
+    public static User of(String id, String login, String password, String name, PaymentMethod paymentMethod, Address address)
     {
         return new User(id, login, password, name, paymentMethod, address);
     }
@@ -48,9 +47,9 @@ public class User
     /**
      * Getters
      */
-    public UUID getId()
+    public String getId()
     {
-        return this.id;
+        return this.id.toString();
     }
 
     public String getLogin()

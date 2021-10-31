@@ -6,7 +6,6 @@ import esgi.al.exceptions.FailedToUpdateUser;
 import esgi.al.exceptions.NoUserFound;
 import esgi.al.models.User;
 
-import java.util.UUID;
 import java.util.stream.Stream;
 
 public interface Users
@@ -14,7 +13,7 @@ public interface Users
     void create(User newUser, Boolean isJson) throws FailedToCreateUser;
 
     Stream<User> getAll() throws NoUserFound;
-    User getById(UUID id) throws NoUserFound;
+    User getById(String id) throws NoUserFound;
     User getByLogin(String login) throws NoUserFound;
     Stream<User> getByName(String name) throws NoUserFound;
     Stream<User> getByPaymentMethod(PaymentMethod paymentMethod) throws NoUserFound;

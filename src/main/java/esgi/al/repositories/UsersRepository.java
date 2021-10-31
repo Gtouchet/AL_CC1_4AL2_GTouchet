@@ -10,7 +10,6 @@ import esgi.al.utils.Validator;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
@@ -49,7 +48,7 @@ public class UsersRepository implements Users
     }
 
     @Override
-    public User getById(UUID id) throws NoUserFound
+    public User getById(String id) throws NoUserFound
     {
         User user = this.users.stream()
                 .filter(streamUser -> streamUser.getId().equals(id))
@@ -58,7 +57,7 @@ public class UsersRepository implements Users
 
         if (user == null)
         {
-            throw new NoUserFound(id.toString());
+            throw new NoUserFound(id);
         }
         return user;
     }
@@ -103,7 +102,7 @@ public class UsersRepository implements Users
     @Override
     public void updatePasswordBy(Boolean isId, String idOrLogin, String newPassword) throws NoUserFound, FailedToUpdateUser
     {
-        User user = isId ? this.getById(UUID.fromString(idOrLogin)) : this.getByLogin(idOrLogin);
+        User user = isId ? this.getById(idOrLogin) : this.getByLogin(idOrLogin);
 
         if (!Validator.isPasswordValid(newPassword))
         {
@@ -119,7 +118,7 @@ public class UsersRepository implements Users
     @Override
     public void updateNameBy(Boolean isId, String idOrLogin, String newName) throws NoUserFound
     {
-        User user = isId ? this.getById(UUID.fromString(idOrLogin)) : this.getByLogin(idOrLogin);
+        User user = isId ? this.getById(idOrLogin) : this.getByLogin(idOrLogin);
         this.users.remove(user);
         user.setName(newName);
         this.users.add(user);
@@ -129,7 +128,7 @@ public class UsersRepository implements Users
     @Override
     public void deleteBy(Boolean isId, String idOrLogin) throws NoUserFound
     {
-        User user = isId ? this.getById(UUID.fromString(idOrLogin)) : this.getByLogin(idOrLogin);
+        User user = isId ? this.getById(idOrLogin) : this.getByLogin(idOrLogin);
         this.users.remove(user);
         JsonHelper.rewriteFile(this.users);
     }

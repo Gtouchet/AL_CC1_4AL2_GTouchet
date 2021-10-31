@@ -5,9 +5,7 @@ import esgi.al.enumerators.PaymentMethod;
 import esgi.al.exceptions.FailedToUpdateUser;
 import esgi.al.exceptions.NoUserFound;
 
-import java.util.Locale;
 import java.util.Scanner;
-import java.util.UUID;
 
 public class CommandInputHandler
 {
@@ -25,7 +23,7 @@ public class CommandInputHandler
         this.displayCommandList();
 
         String command = "";
-        while (!command.trim().toUpperCase(Locale.ROOT).equals("QUIT"))
+        while (!command.trim().equalsIgnoreCase("QUIT"))
         {
             System.out.print("Command -> ");
             command = scanner.nextLine();
@@ -38,7 +36,7 @@ public class CommandInputHandler
         try {
             String[] params = command.split(" ");
 
-            switch (params[0].toUpperCase(Locale.ROOT))
+            switch (params[0].toUpperCase())
             {
                 case "GETALL": this.processGetAllCommand(); break;
                 case "GETBYID": this.processGetByIdCommand(params); break;
@@ -53,7 +51,7 @@ public class CommandInputHandler
 
                 case "QUIT": System.out.println("See ya !"); break;
 
-                default: System.out.println("Unrecognized command [" + params[0].toUpperCase(Locale.ROOT) + "]"); break;
+                default: System.out.println("Unrecognized command [" + params[0].toUpperCase() + "]"); break;
             }
         } catch (NoUserFound | FailedToUpdateUser e) {
             e.printStackTrace();
@@ -74,14 +72,7 @@ public class CommandInputHandler
             return;
         }
 
-        String id = params[1].toLowerCase(Locale.ROOT);
-        if (!Validator.isUuidValid(id))
-        {
-            System.out.println("Invalid ID format");
-            return;
-        }
-
-        System.out.println(this.userController.getById(UUID.fromString(id)));
+        System.out.println(this.userController.getById(params[1].toLowerCase()));
     }
 
     private void processGetByLoginCommand(String[] params) throws NoUserFound
@@ -115,7 +106,7 @@ public class CommandInputHandler
             return;
         }
 
-        String paymentMethod = params[1].toUpperCase(Locale.ROOT);
+        String paymentMethod = params[1].toUpperCase();
         if (!Validator.isPaymentMethodValid(paymentMethod))
         {
             System.out.println("Unknown payment method [" + paymentMethod + "], it should be 'card', 'paypal' or 'unspecified'");
@@ -134,22 +125,16 @@ public class CommandInputHandler
             return;
         }
 
-        String getMethod = params[1].toUpperCase(Locale.ROOT);
+        String getMethod = params[1].toUpperCase();
         if (!getMethod.equals("ID") && !getMethod.equals("LOGIN"))
         {
             System.out.println("Unknown get method [" + getMethod + "], it should be 'id' or 'login'");
             return;
         }
 
-        if (getMethod.equals("ID") && !Validator.isUuidValid(params[2].toLowerCase(Locale.ROOT)))
-        {
-            System.out.println("Invalid ID format");
-            return;
-        }
-
         this.userController.updatePasswordBy(
                 getMethod.equals("ID"),
-                getMethod.equals("ID") ? params[2].toLowerCase(Locale.ROOT) : params[2],
+                getMethod.equals("ID") ? params[2].toLowerCase() : params[2],
                 params[3]
         );
     }
