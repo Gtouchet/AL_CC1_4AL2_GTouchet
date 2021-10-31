@@ -11,46 +11,60 @@ public class Address
     private final String streetName;
     private final int streetNumber;
 
-    private Address(Address address)
+    private Address(String city, StreetType streetType, String streetName, int streetNumber)
     {
-        if (!this.verifyAddressValidity(address))
+        if (!this.verifyAddressValidity(city, streetName, streetNumber))
         {
             throw new IllegalArgumentException();
         }
 
-        this.city = Objects.requireNonNullElse(address.city, "<Unspecified city>");
-        this.streetType = Objects.requireNonNullElse(address.streetType, StreetType.unspecified);
-        this.streetName = Objects.requireNonNullElse(address.streetName, "<Unspecified street name>");
-        this.streetNumber = Objects.requireNonNullElse(address.streetNumber, -1);
+        this.city = Objects.requireNonNullElse(city, "<Unspecified city>");
+        this.streetType = Objects.requireNonNullElse(streetType, StreetType.unspecified);
+        this.streetName = Objects.requireNonNullElse(streetName, "<Unspecified street name>");
+        this.streetNumber = Objects.requireNonNullElse(streetNumber, -1);
     }
 
-    public static Address of(Address address)
+    public static Address of(String city, StreetType streetType, String streetName, int streetNumber)
     {
-        return new Address(address);
+        return new Address(city, streetType, streetName, streetNumber);
     }
 
+    /**
+     * Getters
+     */
     public String getCity()
     {
         return this.city;
     }
+
     public StreetType getStreetType()
     {
         return this.streetType;
     }
+
     public String getStreetName()
     {
         return this.streetName;
     }
+
     public int getStreetNumber()
     {
         return this.streetNumber;
     }
 
-    private Boolean verifyAddressValidity(Address address)
+    /**
+     * Setters
+     */
+    // Todo: address setters
+
+    /**
+     * Properties validation
+     */
+    private Boolean verifyAddressValidity(String city, String streetName, int streetNumber)
     {
-        return (address.city == null || !address.city.equals("")) &&
-                (address.streetName == null || !address.streetName.equals("")) &&
-                address.streetNumber > 0;
+        return (city == null || !city.equals("")) &&
+                (streetName == null || !streetName.equals("")) &&
+                streetNumber > 0;
     }
 
     @Override

@@ -1,7 +1,6 @@
 package esgi.al.models;
 
 import esgi.al.enumerators.PaymentMethod;
-import esgi.al.utils.Uuid;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -14,29 +13,42 @@ public class User
     private final String login;
     private String password;
     private String name;
-    private Address address;
     private PaymentMethod paymentMethod;
+    private Address address;
 
-    private User(User user)
+    private User(String login, String password, String name, PaymentMethod paymentMethod, Address address)
     {
-        if (!this.verifyUserValidity(user))
+        if (!this.verifyUserValidity(login, password))
         {
             throw new IllegalArgumentException();
         }
 
-        this.id = Objects.requireNonNullElse(user.id, Uuid.generate());
-        this.login = Objects.requireNonNull(user.login);
-        this.password = Objects.requireNonNull(user.password);
-        this.name = Objects.requireNonNullElse(user.name, "<Unspecified name>");
-        this.address = Address.of(user.address);
-        this.paymentMethod = Objects.requireNonNullElse(user.paymentMethod, PaymentMethod.UNSPECIFIED);
+        this.id = java.util.UUID.randomUUID();
+        this.login = Objects.requireNonNull(login);
+        this.password = Objects.requireNonNull(password);
+        this.name = Objects.requireNonNullElse(name, "<Unspecified name>");
+        this.paymentMethod = Objects.requireNonNullElse(paymentMethod, PaymentMethod.UNSPECIFIED);
+        this.address = Address.of(
+                address.getCity(),
+                address.getStreetType(),
+                address.getStreetName(),
+                address.getStreetNumber()
+        );
     }
 
-    public static User of(User user)
+    public static User of(String login, String password, String name, PaymentMethod paymentMethod, Address address)
     {
-        return new User(user);
+        return new User(login, password, name, paymentMethod, address);
     }
 
+    public static User of(User jsonUser)
+    {
+        return new User(jsonUser.login, jsonUser.password, jsonUser.name, jsonUser.paymentMethod, jsonUser.address);
+    }
+
+    /**
+     * Getters
+     */
     public UUID getId()
     {
         return this.id;
@@ -57,16 +69,19 @@ public class User
         return this.name;
     }
 
-    public Address getAddress()
-    {
-        return this.address;
-    }
-
     public PaymentMethod getPaymentMethod()
     {
         return this.paymentMethod;
     }
 
+    public Address getAddress()
+    {
+        return this.address;
+    }
+
+    /**
+     * Setters
+     */
     public Boolean setPassword(String password)
     {
         if (this.verifyPasswordValidity(password))
@@ -82,19 +97,27 @@ public class User
         this.name = name;
     }
 
-    public void setAddress(Address address)
-    {
-        this.address = Address.of(address);
-    }
-
     public void setPaymentMethod(PaymentMethod paymentMethod)
     {
         this.paymentMethod = paymentMethod;
     }
 
-    private Boolean verifyUserValidity(User user)
+    public void setAddress(Address address)
     {
-        return !user.login.equals("") && this.verifyPasswordValidity(user.password);
+        this.address = Address.of(
+                address.getCity(),
+                address.getStreetType(),
+                address.getStreetName(),
+                address.getStreetNumber()
+        );
+    }
+
+    /**
+     * Properties validation
+     */
+    private Boolean verifyUserValidity(String login, String password)
+    {
+        return !login.equals("") && this.verifyPasswordValidity(password);
     }
 
     private Boolean verifyPasswordValidity(String password)

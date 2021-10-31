@@ -1,41 +1,28 @@
 [
   {
-    "id": "e99f2456-3469-4871-a3b7-1534a9b0203b",
-    "login": "GTouchet2",
-    "password": "Abcd1234!2",
-    "name": "Touchet2",
-    "address": {
-      "city": "Draveil2",
-      "streetType": "avenue",
-      "streetName": "Pierre Brossolette2",
-      "streetNumber": 1342
-    },
-    "paymentMethod": "PAYPAL"
-  },
-  {
-    "id": "abcd1666-3469-4871-a3b7-1534a9b0203b",
-    "login": "GTouchet3",
-    "password": "Abcd1234!2",
-    "name": "Touchet2",
-    "address": {
-      "city": "Draveil2",
-      "streetType": "avenue",
-      "streetName": "Pierre Brossolette2",
-      "streetNumber": 1342
-    },
-    "paymentMethod": "PAYPAL"
-  },
-  {
-    "id": "ffa3734b-b34c-43cd-b986-95cff858a81b",
+    "id": "eaee3fd2-5ee7-4187-b426-bd790fe60224",
     "login": "GTouchet",
-    "password": "789_Test_:)",
-    "name": "Guy",
+    "password": "Abcd1234!",
+    "name": "Touchet",
+    "paymentMethod": "PAYPAL",
     "address": {
       "city": "Draveil",
       "streetType": "rue",
       "streetName": "Pierre Brossolette",
       "streetNumber": 134
-    },
-    "paymentMethod": "CARD"
+    }
+  },
+  {
+    "id": "ea2768f9-fe7e-4ff5-9410-d756b1183613",
+    "login": "GTouchet 2",
+    "password": "Abcd1234! 2",
+    "name": "Touchet 2",
+    "paymentMethod": "CARD",
+    "address": {
+      "city": "Draveil 2",
+      "streetType": "boulevard",
+      "streetName": "Pierre Brossolette 2",
+      "streetNumber": 1342
+    }
   }
 ]

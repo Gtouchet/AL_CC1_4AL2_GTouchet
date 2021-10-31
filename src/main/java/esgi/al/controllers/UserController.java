@@ -10,7 +10,7 @@ import esgi.al.repositories.UsersRepository;
 import java.util.UUID;
 import java.util.stream.Stream;
 
-public class UserController<T>
+public class UserController
 {
     private final UsersRepository userRepository;
 
@@ -54,7 +54,7 @@ public class UserController<T>
         this.userRepository.updatePasswordBy(isId, idOrLogin, newPassword);
     }
 
-    public void updateNameBy(Boolean isId, String idOrLogin, String newName) throws NoUserFound, FailedToUpdateUser
+    public void updateNameBy(Boolean isId, String idOrLogin, String newName) throws NoUserFound
 {
     this.userRepository.updateNameBy(isId, idOrLogin, newName);
 }

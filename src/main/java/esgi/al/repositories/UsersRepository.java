@@ -19,16 +19,19 @@ public class UsersRepository implements Users
     Supplier<Stream<User>> streamSupplier = () -> Stream.of(this.users.toArray(new User[0]));
 
     @Override
-    public void create(User user) throws FailedToCreateUser
+    public void create(User newUser) throws FailedToCreateUser
     {
-        for (User registeredUser : this.users)
+        User registeredUser = this.streamSupplier.get()
+                .filter(user -> user.getLogin().equals(newUser.getLogin()))
+                .findFirst()
+                .orElse(null);
+
+        if (registeredUser != null)
         {
-            if (registeredUser.getLogin().equals(user.getLogin()))
-            {
-                throw new FailedToCreateUser(user.getLogin(), registeredUser.getId());
-            }
+            throw new FailedToCreateUser(newUser.getLogin(), registeredUser.getId());
         }
-        this.users.add(user);
+        this.users.add(newUser);
+        JsonHelper.rewriteFile(this.users);
     }
 
     @Override
@@ -107,7 +110,7 @@ public class UsersRepository implements Users
     }
 
     @Override
-    public void updateNameBy(Boolean isId, String idOrLogin, String newName) throws NoUserFound, FailedToUpdateUser
+    public void updateNameBy(Boolean isId, String idOrLogin, String newName) throws NoUserFound
     {
         User user = isId ? this.getById(UUID.fromString(idOrLogin)) : this.getByLogin(idOrLogin);
         this.users.remove(user);
