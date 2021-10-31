@@ -6,6 +6,7 @@ import esgi.al.exceptions.FailedToUpdateUser;
 import esgi.al.exceptions.NoUserFound;
 import esgi.al.models.User;
 import esgi.al.utils.JsonHelper;
+import esgi.al.utils.Validator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -104,7 +105,7 @@ public class UsersRepository implements Users
     {
         User user = isId ? this.getById(UUID.fromString(idOrLogin)) : this.getByLogin(idOrLogin);
 
-        if (!User.verifyPasswordValidity(newPassword))
+        if (!Validator.isPasswordValid(newPassword))
         {
             throw new FailedToUpdateUser(idOrLogin, "invalid password");
         }

@@ -1,11 +1,10 @@
 package esgi.al.models;
 
 import esgi.al.enumerators.PaymentMethod;
+import esgi.al.utils.Validator;
 
 import java.util.Objects;
 import java.util.UUID;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class User
 {
@@ -18,7 +17,7 @@ public class User
 
     private User(UUID id, String login, String password, String name, PaymentMethod paymentMethod, Address address)
     {
-        if (!this.verifyUserValidity(login, password))
+        if (!Validator.isUserValid(login, password))
         {
             throw new IllegalArgumentException();
         }
@@ -82,14 +81,12 @@ public class User
     /**
      * Setters
      */
-    public Boolean setPassword(String password)
+    public void setPassword(String password)
     {
-        if (this.verifyPasswordValidity(password))
+        if (Validator.isPasswordValid(password))
         {
             this.password = password;
-            return true;
         }
-        return false;
     }
 
     public void setName(String name)
@@ -110,22 +107,6 @@ public class User
                 address.getStreetName(),
                 address.getStreetNumber()
         );
-    }
-
-    /**
-     * Properties validation
-     */
-    private Boolean verifyUserValidity(String login, String password)
-    {
-        return !login.equals("") && verifyPasswordValidity(password);
-    }
-
-    public static Boolean verifyPasswordValidity(String password)
-    {
-        String passwordRegex = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%,?;.:/!§]).{4,}$";
-        Pattern pattern = Pattern.compile(passwordRegex);
-        Matcher matcher = pattern.matcher(password);
-        return matcher.matches();
     }
 
     @Override

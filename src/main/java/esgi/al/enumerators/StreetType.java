@@ -7,6 +7,5 @@ public enum StreetType
     avenue,
     boulevard,
     quartier,
-
     unspecified,
 }

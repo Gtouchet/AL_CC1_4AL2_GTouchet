@@ -63,8 +63,7 @@ public class CommandInputHandler
 
     private void processGetAllCommand() throws NoUserFound
     {
-        this.userController.getAll()
-                .forEach(System.out::println);
+        this.userController.getAll().forEach(System.out::println);
     }
 
     private void processGetByIdCommand(String[] params) throws NoUserFound
@@ -75,12 +74,14 @@ public class CommandInputHandler
             return;
         }
 
-        try {
-            UUID uuid = UUID.fromString(params[1]);
-            System.out.println(this.userController.getById(uuid));
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
+        String id = params[1].toLowerCase(Locale.ROOT);
+        if (!Validator.isUuidValid(id))
+        {
+            System.out.println("Invalid ID format");
+            return;
         }
+
+        System.out.println(this.userController.getById(UUID.fromString(id)));
     }
 
     private void processGetByLoginCommand(String[] params) throws NoUserFound
@@ -115,13 +116,12 @@ public class CommandInputHandler
         }
 
         String paymentMethod = params[1].toUpperCase(Locale.ROOT);
-        if (!paymentMethod.equals(PaymentMethod.CARD.toString()) &&
-                !paymentMethod.equals(PaymentMethod.PAYPAL.toString()) &&
-                !paymentMethod.equals(PaymentMethod.UNSPECIFIED.toString()))
+        if (!Validator.isPaymentMethodValid(paymentMethod))
         {
             System.out.println("Unknown payment method [" + paymentMethod + "], it should be 'card', 'paypal' or 'unspecified'");
             return;
         }
+
         this.userController.getByPaymentMethod(PaymentMethod.valueOf(paymentMethod))
                 .forEach(System.out::println);
     }
@@ -141,18 +141,17 @@ public class CommandInputHandler
             return;
         }
 
-        // Just testing if the specified UUID is valid, does not crash the app if not
-        if (getMethod.equals("ID"))
+        if (getMethod.equals("ID") && !Validator.isUuidValid(params[2].toLowerCase(Locale.ROOT)))
         {
-            try {
-                UUID uuid = UUID.fromString(params[2]);
-            } catch (IllegalArgumentException e) {
-                e.printStackTrace();
-                return;
-            }
+            System.out.println("Invalid ID format");
+            return;
         }
 
-        this.userController.updatePasswordBy(getMethod.equals("ID"), params[2], params[3]);
+        this.userController.updatePasswordBy(
+                getMethod.equals("ID"),
+                getMethod.equals("ID") ? params[2].toLowerCase(Locale.ROOT) : params[2],
+                params[3]
+        );
     }
 
     private void processUpdateNameCommand(String[] params)
@@ -173,10 +172,11 @@ public class CommandInputHandler
                 "GETBYID ID -> get the user registered under the specified ID\n" +
                 "GETBYLOGIN login -> same with login\n" +
                 "GETBYNAME name -> get all users registered with the specified name\n" +
-                "GETBYPAYMENTMETHOD paymentMethod('card', 'paypal', 'unspecified') -> same with payment method\n\n" +
-                "UPDATEPASSWORD method('id' 'login'), idOrLogin, newPassword -> update user's password\n" +
-                "UPDATENAME method('id' 'login'), idOrLogin, newName -> update user's name\n\n" +
-                "DELETE method('id' 'login'), idOrLogin -> delete the user registered under the specified id or login\n\n" +
+                "GETBYPAYMENTMETHOD paymentMethod -> same with payment method\n\n" +
+                "CREATE login password name paymentMethod city streetType streetName streetNumber -> create a new user\n\n" +
+                "UPDATEPASSWORD method('id' 'login') idOrLogin newPassword -> update user's password\n" +
+                "UPDATENAME method idOrLogin newName -> update user's name\n\n" +
+                "DELETE method idOrLogin -> delete the user registered under the specified id or login\n\n" +
                 "QUIT -> quit the program\n" +
                 "----- ----- ----- ----- ----- ----- -----"
         );

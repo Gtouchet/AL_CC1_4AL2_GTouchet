@@ -1,19 +1,20 @@
 package esgi.al.models;
 
 import esgi.al.enumerators.StreetType;
+import esgi.al.utils.Validator;
 
 import java.util.Objects;
 
 public class Address
 {
-    private final String city;
-    private final StreetType streetType;
-    private final String streetName;
-    private final int streetNumber;
+    private String city;
+    private StreetType streetType;
+    private String streetName;
+    private int streetNumber;
 
     private Address(String city, StreetType streetType, String streetName, int streetNumber)
     {
-        if (!this.verifyAddressValidity(city, streetName, streetNumber))
+        if (!Validator.isAddressValid(city, streetName, streetNumber))
         {
             throw new IllegalArgumentException();
         }
@@ -55,16 +56,24 @@ public class Address
     /**
      * Setters
      */
-    // Todo: address setters
-
-    /**
-     * Properties validation
-     */
-    private Boolean verifyAddressValidity(String city, String streetName, int streetNumber)
+    public void setCity(String city)
     {
-        return (city == null || !city.equals("")) &&
-                (streetName == null || !streetName.equals("")) &&
-                streetNumber > 0;
+        this.city = city;
+    }
+
+    public void setStreetType(StreetType streetType)
+    {
+        this.streetType = streetType;
+    }
+
+    public void setStreetName(String streetName)
+    {
+        this.streetName = streetName;
+    }
+
+    public void setStreetNumber(int streetNumber)
+    {
+        this.streetNumber = streetNumber;
     }
 
     @Override
