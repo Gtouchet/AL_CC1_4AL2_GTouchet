@@ -3,7 +3,6 @@ package esgi.al.utils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
-import esgi.al.Globals;
 import esgi.al.models.User;
 
 import java.io.*;

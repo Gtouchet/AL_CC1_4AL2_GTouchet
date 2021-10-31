@@ -19,7 +19,7 @@ public class UsersRepository implements Users
     Supplier<Stream<User>> streamSupplier = () -> Stream.of(this.users.toArray(new User[0]));
 
     @Override
-    public void create(User newUser) throws FailedToCreateUser
+    public void create(User newUser, Boolean isJson) throws FailedToCreateUser
     {
         User registeredUser = this.streamSupplier.get()
                 .filter(user -> user.getLogin().equals(newUser.getLogin()))
@@ -31,7 +31,10 @@ public class UsersRepository implements Users
             throw new FailedToCreateUser(newUser.getLogin(), registeredUser.getId());
         }
         this.users.add(newUser);
-        JsonHelper.rewriteFile(this.users);
+        if (!isJson)
+        {
+            JsonHelper.rewriteFile(this.users);
+        }
     }
 
     @Override
@@ -100,11 +103,14 @@ public class UsersRepository implements Users
     public void updatePasswordBy(Boolean isId, String idOrLogin, String newPassword) throws NoUserFound, FailedToUpdateUser
     {
         User user = isId ? this.getById(UUID.fromString(idOrLogin)) : this.getByLogin(idOrLogin);
-        this.users.remove(user);
-        if (!user.setPassword(newPassword))
+
+        if (!User.verifyPasswordValidity(newPassword))
         {
             throw new FailedToUpdateUser(idOrLogin, "invalid password");
         }
+
+        this.users.remove(user);
+        user.setPassword(newPassword);
         this.users.add(user);
         JsonHelper.rewriteFile(this.users);
     }
@@ -120,17 +126,9 @@ public class UsersRepository implements Users
     }
 
     @Override
-    public void deleteById(UUID id) throws NoUserFound
+    public void deleteBy(Boolean isId, String idOrLogin) throws NoUserFound
     {
-        User user = this.getById(id);
-        this.users.remove(user);
-        JsonHelper.rewriteFile(this.users);
-    }
-
-    @Override
-    public void deleteByLogin(String login) throws NoUserFound
-    {
-        User user = this.getByLogin(login);
+        User user = isId ? this.getById(UUID.fromString(idOrLogin)) : this.getByLogin(idOrLogin);
         this.users.remove(user);
         JsonHelper.rewriteFile(this.users);
     }

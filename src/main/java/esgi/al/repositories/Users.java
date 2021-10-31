@@ -11,7 +11,7 @@ import java.util.stream.Stream;
 
 public interface Users
 {
-    void create(User newUser) throws FailedToCreateUser;
+    void create(User newUser, Boolean isJson) throws FailedToCreateUser;
 
     Stream<User> getAll() throws NoUserFound;
     User getById(UUID id) throws NoUserFound;
@@ -22,6 +22,5 @@ public interface Users
     void updatePasswordBy(Boolean isId, String idOrLogin, String newPassword) throws NoUserFound, FailedToUpdateUser;
     void updateNameBy(Boolean isId, String idOrLogin, String newName) throws NoUserFound;
 
-    void deleteById(UUID id) throws NoUserFound;
-    void deleteByLogin(String login) throws NoUserFound;
+    void deleteBy(Boolean isId, String idOrLogin) throws NoUserFound;
 }

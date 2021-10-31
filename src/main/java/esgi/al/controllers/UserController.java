@@ -19,9 +19,14 @@ public class UserController
         this.userRepository = userRepository;
     }
 
+    public void registerUser(User user) throws FailedToCreateUser
+    {
+        this.userRepository.create(user, true);
+    }
+
     public void createUser(User user) throws FailedToCreateUser
     {
-        this.userRepository.create(user);
+        this.userRepository.create(user, false);
     }
 
     public Stream<User> getAll() throws NoUserFound
@@ -59,8 +64,8 @@ public class UserController
     this.userRepository.updateNameBy(isId, idOrLogin, newName);
 }
 
-    public void deleteById(UUID id) throws NoUserFound
+    public void deleteById(Boolean isId, String idOrLogin) throws NoUserFound
     {
-        this.userRepository.deleteById(id);
+        this.userRepository.deleteBy(isId, idOrLogin);
     }
 }

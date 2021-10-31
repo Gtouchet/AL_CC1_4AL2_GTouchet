@@ -16,14 +16,14 @@ public class User
     private PaymentMethod paymentMethod;
     private Address address;
 
-    private User(String login, String password, String name, PaymentMethod paymentMethod, Address address)
+    private User(UUID id, String login, String password, String name, PaymentMethod paymentMethod, Address address)
     {
         if (!this.verifyUserValidity(login, password))
         {
             throw new IllegalArgumentException();
         }
 
-        this.id = java.util.UUID.randomUUID();
+        this.id = Objects.requireNonNullElse(id, java.util.UUID.randomUUID());
         this.login = Objects.requireNonNull(login);
         this.password = Objects.requireNonNull(password);
         this.name = Objects.requireNonNullElse(name, "<Unspecified name>");
@@ -36,14 +36,14 @@ public class User
         );
     }
 
-    public static User of(String login, String password, String name, PaymentMethod paymentMethod, Address address)
+    public static User of(UUID id, String login, String password, String name, PaymentMethod paymentMethod, Address address)
     {
-        return new User(login, password, name, paymentMethod, address);
+        return new User(id, login, password, name, paymentMethod, address);
     }
 
     public static User of(User jsonUser)
     {
-        return new User(jsonUser.login, jsonUser.password, jsonUser.name, jsonUser.paymentMethod, jsonUser.address);
+        return new User(jsonUser.id, jsonUser.login, jsonUser.password, jsonUser.name, jsonUser.paymentMethod, jsonUser.address);
     }
 
     /**
@@ -117,10 +117,10 @@ public class User
      */
     private Boolean verifyUserValidity(String login, String password)
     {
-        return !login.equals("") && this.verifyPasswordValidity(password);
+        return !login.equals("") && verifyPasswordValidity(password);
     }
 
-    private Boolean verifyPasswordValidity(String password)
+    public static Boolean verifyPasswordValidity(String password)
     {
         String passwordRegex = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%,?;.:/!§]).{4,}$";
         Pattern pattern = Pattern.compile(passwordRegex);
