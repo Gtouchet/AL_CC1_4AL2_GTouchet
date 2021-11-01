@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-public class UsersRepository implements Users
+public class UsersRepository implements Repositories
 {
     private final List<User> users = new ArrayList<>();
     Supplier<Stream<User>> streamSupplier = () -> Stream.of(this.users.toArray(new User[0]));
@@ -33,7 +33,7 @@ public class UsersRepository implements Users
 
         if (!Validator.isStreetTypeValid(streetType))
         {
-            System.out.println("Unknown street type [" + paymentMethod + "], it should be 'rue', 'route', 'avenue', 'boulevard', 'quartier' or 'unspecified'");
+            System.out.println("Unknown street type [" + streetType + "], it should be 'rue', 'route', 'avenue', 'boulevard', 'quartier' or 'unspecified'");
             return;
         }
 
@@ -164,6 +164,38 @@ public class UsersRepository implements Users
         User user = isId.equals("ID") ? this.getById(idOrLogin) : this.getByLogin(idOrLogin);
         this.users.remove(user);
         user.setName(newName);
+        this.users.add(user);
+        JsonHelper.rewriteFile(this.users);
+    }
+
+    @Override
+    public void updateAddressBy(String isId, String idOrLogin, String newCity, String newStreetType,
+                                String newStreetName, String newStreetNumber) throws NoUserFound, FailedToUpdateUser
+    {
+        if (!isId.equals("ID") && !isId.equals("LOGIN"))
+        {
+            throw new FailedToUpdateUser(idOrLogin, "invalid get method ('ID' or 'LOGIN')");
+        }
+
+        if (!Validator.isStreetTypeValid(newStreetType))
+        {
+            System.out.println("Unknown street type [" + newStreetType + "], it should be 'rue', 'route', 'avenue', 'boulevard', 'quartier' or 'unspecified'");
+            return;
+        }
+
+        int newStreetNumberInt = Integer.parseInt(newStreetNumber);
+        if(!Validator.isAddressValid(newCity, newStreetName, newStreetNumberInt))
+        {
+            System.out.println("Invalid address properties");
+            return;
+        }
+
+        User user = isId.equals("ID") ? this.getById(idOrLogin) : this.getByLogin(idOrLogin);
+        this.users.remove(user);
+        user.getAddress().setCity(newCity);
+        user.getAddress().setStreetType(StreetType.valueOf(newStreetType));
+        user.getAddress().setStreetName(newStreetName);
+        user.getAddress().setStreetNumber(newStreetNumberInt);
         this.users.add(user);
         JsonHelper.rewriteFile(this.users);
     }

@@ -7,7 +7,7 @@ import esgi.al.models.User;
 
 import java.util.stream.Stream;
 
-public interface Users
+public interface Repositories
 {
     void create(String login, String password, String name, String paymentMethod,
                 String city, String streetType, String streetName, int streetNumber) throws FailedToCreateUser;
@@ -20,6 +20,8 @@ public interface Users
 
     void updatePasswordBy(String isId, String idOrLogin, String newPassword) throws NoUserFound, FailedToUpdateUser;
     void updateNameBy(String isId, String idOrLogin, String newName) throws NoUserFound, FailedToUpdateUser;
+    void updateAddressBy(String isId, String idOrLogin, String newCity, String newStreetType,
+                         String newStreetName, String newStreetNumber) throws NoUserFound, FailedToUpdateUser;
 
     void deleteBy(String isId, String idOrLogin) throws NoUserFound, FailedToUpdateUser;
 

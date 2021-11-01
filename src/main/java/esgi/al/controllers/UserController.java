@@ -62,6 +62,12 @@ public class UserController
         this.userRepository.updateNameBy(isId, idOrLogin, newName);
     }
 
+    public void updateAddressBy(String isId, String idOrLogin, String newCity, String newStreetType,
+                                String newStreetName, String newStreetNumber) throws NoUserFound, FailedToUpdateUser
+    {
+        this.userRepository.updateAddressBy(isId, idOrLogin, newCity, newStreetType, newStreetName, newStreetNumber);
+    }
+
     public void deleteBy(String isId, String idOrLogin) throws NoUserFound, FailedToUpdateUser
     {
         this.userRepository.deleteBy(isId, idOrLogin);

@@ -32,10 +32,10 @@
     "name": "Guy",
     "paymentMethod": "PAYPAL",
     "address": {
-      "city": "parisSud",
-      "streetType": "boulevard",
-      "streetName": "alesia",
-      "streetNumber": 7
+      "city": "paris",
+      "streetType": "avenue",
+      "streetName": "picpus",
+      "streetNumber": 45
     }
   }
 ]

@@ -1,4 +1,4 @@
-package esgi.al.utils;
+package esgi.al;
 
 import esgi.al.controllers.UserController;
 import esgi.al.exceptions.FailedToCreateUser;
@@ -21,7 +21,6 @@ public class CliProcessingEngine
         this.scanner = new Scanner(System.in);
 
         this.initializeCommandExamplesMap();
-        this.displayCommandsExamples();
     }
 
     private void initializeCommandExamplesMap()
@@ -35,13 +34,11 @@ public class CliProcessingEngine
         this.commandsExs.put(6,  "Get all users using this payment  -> GETBYPAYMENT paymentMethod");
         this.commandsExs.put(7,  "Change the user's password        -> UPDATEPASSWORD method idOrLogin newPassword");
         this.commandsExs.put(8,  "Change the user's name            -> UPDATENAME method idOrLogin newName");
-        this.commandsExs.put(9,  "Delete the user with id/login     -> DELETE method idOrLogin");
-        this.commandsExs.put(10, "Quit the program                  -> QUIT");
-        this.commandsExs.put(11, "----- Available commands -----");
-    }
+        this.commandsExs.put(9,  "Change the user's address         -> UPDATEADDRESS method idOrLogin newCity newStreetType newStreetName newStreetNumber");
+        this.commandsExs.put(10, "Delete the user with id/login     -> DELETE method idOrLogin");
+        this.commandsExs.put(11, "Quit the program                  -> QUIT");
+        this.commandsExs.put(12, "----- Available commands -----");
 
-    private void displayCommandsExamples()
-    {
         this.commandsExs.values().forEach(System.out::println);
     }
 
@@ -51,7 +48,7 @@ public class CliProcessingEngine
         while (!command.trim().equalsIgnoreCase("QUIT"))
         {
             System.out.print("Command -> ");
-            command = scanner.nextLine();
+            command = this.scanner.nextLine();
             processCommand(command);
         }
     }
@@ -69,12 +66,13 @@ public class CliProcessingEngine
                 case "GETBYID": this.processGetByIdCommand(params); break;
                 case "GETBYLOGIN": this.processGetByLoginCommand(params); break;
                 case "GETBYNAME": this.processGetByNameCommand(params); break;
-                case "GETBYPAYMENTMETHOD": this.processGetByPaymentCommand(params); break;
+                case "GETBYPAYMENT": this.processGetByPaymentCommand(params); break;
 
-                case "UPDATEPASSWORD" : this.processUpdatePasswordCommand(params); break;
-                case "UPDATENAME" : this.processUpdateNameCommand(params); break;
+                case "UPDATEPASSWORD": this.processUpdatePasswordCommand(params); break;
+                case "UPDATENAME": this.processUpdateNameCommand(params); break;
+                case "UPDATEADDRESS": this.processUpdateAddressCommand(params); break;
 
-                case "DELETE" : this.processDeleteCommand(params); break;
+                case "DELETE": this.processDeleteCommand(params); break;
 
                 case "QUIT": System.out.println("See ya !"); break;
 
@@ -83,7 +81,6 @@ public class CliProcessingEngine
         } catch (NoUserFound | FailedToUpdateUser | FailedToCreateUser e) {
             e.printStackTrace();
         }
-
     }
 
     private void processCreateCommand(String[] params) throws FailedToCreateUser
@@ -171,11 +168,25 @@ public class CliProcessingEngine
         this.userController.updateNameBy(params[1].toUpperCase(), params[2], params[3]);
     }
 
+    private void processUpdateAddressCommand(String[] params) throws NoUserFound, FailedToUpdateUser
+    {
+        if (params.length != 7)
+        {
+            System.out.println(this.commandsExs.get(9));
+            return;
+        }
+
+        this.userController.updateAddressBy(
+                params[1].toUpperCase(), params[2], params[3],
+                params[4].toLowerCase(), params[5], params[6]
+        );
+    }
+
     private void processDeleteCommand(String[] params) throws NoUserFound, FailedToUpdateUser
     {
         if (params.length != 3)
         {
-            System.out.println(this.commandsExs.get(9));
+            System.out.println(this.commandsExs.get(10));
             return;
         }
 

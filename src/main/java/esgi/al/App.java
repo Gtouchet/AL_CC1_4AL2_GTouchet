@@ -3,7 +3,6 @@ package esgi.al;
 import esgi.al.controllers.UserController;
 import esgi.al.models.User;
 import esgi.al.repositories.UsersRepository;
-import esgi.al.utils.CliProcessingEngine;
 import esgi.al.utils.JsonHelper;
 
 import java.util.stream.Stream;
