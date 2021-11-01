@@ -1,14 +1,17 @@
 package esgi.al.controllers;
 
-import esgi.al.exceptions.FailedToCreateUser;
-import esgi.al.exceptions.FailedToUpdateUser;
-import esgi.al.exceptions.NoUserFound;
-import esgi.al.models.User;
+import esgi.al.daos.UserDao;
+import esgi.al.exceptions.modelsExceptions.InvalidAddressParameter;
+import esgi.al.exceptions.modelsExceptions.InvalidUserParameter;
+import esgi.al.exceptions.repositoriesExceptions.ElementNotFound;
+import esgi.al.exceptions.repositoriesExceptions.FailedToCreate;
 import esgi.al.repositories.UsersRepository;
+import esgi.al.validators.AddressValidator;
+import esgi.al.validators.UserValidator;
 
 import java.util.stream.Stream;
 
-public class UserController
+public class UserController implements Controllers<UserDao>
 {
     private final UsersRepository userRepository;
 
@@ -17,64 +20,79 @@ public class UserController
         this.userRepository = userRepository;
     }
 
-    public void create(
-            String login, String password, String name, String paymentMethod,
-            String city, String streetType, String streetName, int streetNumber) throws FailedToCreateUser
+    public void register(UserDao user)
     {
-        this.userRepository.create(
-                login, password, name, paymentMethod,
-                city, streetType, streetName, streetNumber
-        );
+        try {
+            UserValidator.validate(user);
+            AddressValidator.validate(user.address);
+
+            this.userRepository.register(user);
+
+        } catch (InvalidUserParameter | InvalidAddressParameter e) {
+            e.printStackTrace();
+        }
     }
 
-    public Stream<User> getAll() throws NoUserFound
+    @Override
+    public void post(UserDao user)
     {
-        return this.userRepository.getAll();
+        try {
+            UserValidator.validate(user);
+            AddressValidator.validate(user.address);
+
+            this.userRepository.post(user);
+
+        } catch (InvalidUserParameter | InvalidAddressParameter | FailedToCreate e) {
+            System.err.println(e.getMessage());
+        }
     }
 
-    public User getById(String id) throws NoUserFound
+    @Override
+    public Stream<UserDao> get()
     {
-        return this.userRepository.getById(id);
+        try {
+            return this.userRepository.get();
+
+        } catch (ElementNotFound e) {
+            System.err.println(e.getMessage());
+            return Stream.empty();
+        }
     }
 
-    public User getByLogin(String login) throws NoUserFound
+    @Override
+    public UserDao get(String id)
     {
-        return this.userRepository.getByLogin(login);
+        try {
+            return this.userRepository.get(id);
+
+        } catch (ElementNotFound e) {
+            System.err.println(e.getMessage());
+            return null;
+        }
     }
 
-    public Stream<User> getByName(String name) throws NoUserFound
+    @Override
+    public void put(String id, UserDao user)
     {
-        return this.userRepository.getByName(name);
+        try {
+            UserValidator.validate(user);
+            AddressValidator.validate(user.address);
+
+            this.userRepository.put(id, user);
+
+        } catch (InvalidUserParameter | InvalidAddressParameter | ElementNotFound e) {
+            System.err.println(e.getMessage());
+        }
     }
 
-    public Stream<User> getByPaymentMethod(String paymentMethod) throws NoUserFound
+    @Override
+    public void del(String id)
     {
-        return this.userRepository.getByPaymentMethod(paymentMethod);
-    }
+        try {
+            this.userRepository.del(id);
 
-    public void updatePasswordBy(String isId, String idOrLogin, String newPassword) throws NoUserFound, FailedToUpdateUser
-    {
-        this.userRepository.updatePasswordBy(isId, idOrLogin, newPassword);
-    }
-
-    public void updateNameBy(String isId, String idOrLogin, String newName) throws NoUserFound, FailedToUpdateUser
-    {
-        this.userRepository.updateNameBy(isId, idOrLogin, newName);
-    }
-
-    public void updateAddressBy(String isId, String idOrLogin, String newCity, String newStreetType,
-                                String newStreetName, String newStreetNumber) throws NoUserFound, FailedToUpdateUser
-    {
-        this.userRepository.updateAddressBy(isId, idOrLogin, newCity, newStreetType, newStreetName, newStreetNumber);
-    }
-
-    public void deleteBy(String isId, String idOrLogin) throws NoUserFound, FailedToUpdateUser
-    {
-        this.userRepository.deleteBy(isId, idOrLogin);
-    }
-
-    public void register(User user)
-    {
-        this.userRepository.register(user);
+        } catch (ElementNotFound e) {
+            System.err.println(e.getMessage());
+        }
     }
 }

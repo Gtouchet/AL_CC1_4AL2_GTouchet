@@ -1,9 +1,9 @@
 package esgi.al;
 
 import esgi.al.controllers.UserController;
-import esgi.al.exceptions.FailedToCreateUser;
-import esgi.al.exceptions.FailedToUpdateUser;
-import esgi.al.exceptions.NoUserFound;
+import esgi.al.daos.AddressDao;
+import esgi.al.daos.UserDao;
+import esgi.al.exceptions.repositoriesExceptions.FailedToCreate;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,34 +12,34 @@ import java.util.Scanner;
 public class CliProcessingEngine
 {
     private final UserController userController;
+
     private final Scanner scanner;
-    private final Map<Integer, String> commandsExs = new HashMap<>();
+    private final Map<Integer, String> commandsExs;
 
     public CliProcessingEngine(UserController userController)
     {
         this.userController = userController;
-        this.scanner = new Scanner(System.in);
 
-        this.initializeCommandExamplesMap();
+        this.scanner = new Scanner(System.in);
+        this.commandsExs = this.initCommandExs();
     }
 
-    private void initializeCommandExamplesMap()
+    private Map<Integer, String> initCommandExs()
     {
-        this.commandsExs.put(0,  "----- Available commands -----");
-        this.commandsExs.put(1,  "Create a new user with values     -> CREATE login password name paymentMethod city streetType streetName streetNumber");
-        this.commandsExs.put(2,  "Get all users in the repo         -> GETALL");
-        this.commandsExs.put(3,  "Get a user under specified ID     -> GETBYID id");
-        this.commandsExs.put(4,  "Get a user under specified login  -> GETBYLOGIN login");
-        this.commandsExs.put(5,  "Get all users with specified name -> GETBYNAME name");
-        this.commandsExs.put(6,  "Get all users using this payment  -> GETBYPAYMENT paymentMethod");
-        this.commandsExs.put(7,  "Change the user's password        -> UPDATEPASSWORD method idOrLogin newPassword");
-        this.commandsExs.put(8,  "Change the user's name            -> UPDATENAME method idOrLogin newName");
-        this.commandsExs.put(9,  "Change the user's address         -> UPDATEADDRESS method idOrLogin newCity newStreetType newStreetName newStreetNumber");
-        this.commandsExs.put(10, "Delete the user with id/login     -> DELETE method idOrLogin");
-        this.commandsExs.put(11, "Quit the program                  -> QUIT");
-        this.commandsExs.put(12, "----- Available commands -----");
+        Map<Integer, String> commandsExs = new HashMap<>();
 
-        this.commandsExs.values().forEach(System.out::println);
+        commandsExs.put(0, "---Available commands---");
+        commandsExs.put(1, "CREATE login password name paymentMethod number street city");
+        commandsExs.put(2, "GET");
+        commandsExs.put(3, "GET id");
+        commandsExs.put(4, "UPDATE id password name paymentMethod number street city");
+        commandsExs.put(5, "DELETE id");
+        commandsExs.put(6, "QUIT");
+        commandsExs.put(7, "---Command input---");
+
+        commandsExs.values().forEach(System.out::println);
+
+        return commandsExs;
     }
 
     public void launch()
@@ -47,7 +47,7 @@ public class CliProcessingEngine
         String command = "";
         while (!command.trim().equalsIgnoreCase("QUIT"))
         {
-            System.out.print("Command -> ");
+            System.out.print("-> ");
             command = this.scanner.nextLine();
             processCommand(command);
         }
@@ -61,70 +61,77 @@ public class CliProcessingEngine
             switch (params[0].toUpperCase())
             {
                 case "CREATE": this.processCreateCommand(params); break;
-
-                case "GETALL": this.processGetAllCommand(); break;
-                case "GETBYID": this.processGetByIdCommand(params); break;
-                case "GETBYLOGIN": this.processGetByLoginCommand(params); break;
-                case "GETBYNAME": this.processGetByNameCommand(params); break;
-                case "GETBYPAYMENT": this.processGetByPaymentCommand(params); break;
-
-                case "UPDATEPASSWORD": this.processUpdatePasswordCommand(params); break;
-                case "UPDATENAME": this.processUpdateNameCommand(params); break;
-                case "UPDATEADDRESS": this.processUpdateAddressCommand(params); break;
-
+                case "GET":    this.processGetCommand(params); break;
+                case "UPDATE": this.processUpdateCommand(params); break;
                 case "DELETE": this.processDeleteCommand(params); break;
-
-                case "QUIT": System.out.println("See ya !"); break;
+                case "QUIT":   System.out.println("See ya !"); break;
 
                 default: System.out.println("Unrecognized command [" + params[0].toUpperCase() + "]"); break;
             }
-        } catch (NoUserFound | FailedToUpdateUser | FailedToCreateUser e) {
+        } catch (FailedToCreate e) {
             e.printStackTrace();
         }
     }
 
-    private void processCreateCommand(String[] params) throws FailedToCreateUser
+    private void processCreateCommand(String[] params) throws FailedToCreate
     {
-        if (params.length != 9)
+        if (params.length != 8)
         {
             System.out.println(this.commandsExs.get(1));
             return;
         }
 
-        this.userController.create(
-                params[1], params[2], params[3], params[4].toUpperCase(),
-                params[5], params[6].toLowerCase(), params[7], Integer.parseInt(params[8])
+        int streetNumber = 0;
+        try {
+            streetNumber = Integer.parseInt(params[5]);
+        } catch (NumberFormatException ignored) {
+            System.err.println("Impossible to parse [" + params[5] + "] as Integer");
+        }
+
+        this.userController.post(
+                new UserDao(null, params[1], params[2], params[3], params[4].toLowerCase(),
+                new AddressDao(streetNumber, params[6], params[7]))
         );
     }
 
-    private void processGetAllCommand() throws NoUserFound
+    private void processGetCommand(String[] params)
     {
-        this.userController.getAll().forEach(System.out::println);
-    }
-
-    private void processGetByIdCommand(String[] params) throws NoUserFound
-    {
-        if (params.length != 2)
+        if (params.length == 1)
         {
-            System.out.println(this.commandsExs.get(3));
-            return;
+            this.userController.get().forEach(System.out::println);
         }
-
-        System.out.println(this.userController.getById(params[1].toLowerCase()));
+        else if (params.length == 2)
+        {
+            System.out.println(this.userController.get(params[1].toLowerCase()));
+        }
+        else
+        {
+            System.out.println(this.commandsExs.get(2) + "\n" + this.commandsExs.get(3));
+        }
     }
 
-    private void processGetByLoginCommand(String[] params) throws NoUserFound
+    private void processUpdateCommand(String[] params)
     {
-        if (params.length != 2)
+        if (params.length != 8)
         {
             System.out.println(this.commandsExs.get(4));
             return;
         }
 
-        System.out.println(this.userController.getByLogin(params[1]));
+        int streetNumber = 0;
+        try {
+            streetNumber = Integer.parseInt(params[5]);
+        } catch (NumberFormatException ignored) {
+            System.err.println("Impossible to parse [" + params[5] + "] as Integer");
+        }
+
+        this.userController.put(params[1].toLowerCase(),
+                new UserDao(null, "", params[2], params[3], params[4].toLowerCase(),
+                new AddressDao(streetNumber, params[6], params[7]))
+        );
     }
 
-    private void processGetByNameCommand(String[] params) throws NoUserFound
+    private void processDeleteCommand(String[] params)
     {
         if (params.length != 2)
         {
@@ -132,64 +139,6 @@ public class CliProcessingEngine
             return;
         }
 
-        this.userController.getByName(params[1]).forEach(System.out::println);
-    }
-
-    private void processGetByPaymentCommand(String[] params) throws NoUserFound
-    {
-        if (params.length != 2)
-        {
-            System.out.println(this.commandsExs.get(6));
-            return;
-        }
-
-        this.userController.getByPaymentMethod(params[1].toUpperCase()).forEach(System.out::println);
-    }
-
-    private void processUpdatePasswordCommand(String[] params) throws NoUserFound, FailedToUpdateUser
-    {
-        if (params.length != 4)
-        {
-            System.out.println(this.commandsExs.get(7));
-            return;
-        }
-
-        this.userController.updatePasswordBy(params[1].toUpperCase(), params[2], params[3]);
-    }
-
-    private void processUpdateNameCommand(String[] params) throws NoUserFound, FailedToUpdateUser
-    {
-        if (params.length != 4)
-        {
-            System.out.println(this.commandsExs.get(8));
-            return;
-        }
-
-        this.userController.updateNameBy(params[1].toUpperCase(), params[2], params[3]);
-    }
-
-    private void processUpdateAddressCommand(String[] params) throws NoUserFound, FailedToUpdateUser
-    {
-        if (params.length != 7)
-        {
-            System.out.println(this.commandsExs.get(9));
-            return;
-        }
-
-        this.userController.updateAddressBy(
-                params[1].toUpperCase(), params[2], params[3],
-                params[4].toLowerCase(), params[5], params[6]
-        );
-    }
-
-    private void processDeleteCommand(String[] params) throws NoUserFound, FailedToUpdateUser
-    {
-        if (params.length != 3)
-        {
-            System.out.println(this.commandsExs.get(10));
-            return;
-        }
-
-        this.userController.deleteBy(params[1].toUpperCase(), params[2]);
+        this.userController.del(params[1].toLowerCase());
     }
 }

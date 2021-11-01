@@ -1,7 +1,7 @@
 package esgi.al;
 
 import esgi.al.controllers.UserController;
-import esgi.al.models.User;
+import esgi.al.daos.UserDao;
 import esgi.al.repositories.UsersRepository;
 import esgi.al.utils.JsonHelper;
 
@@ -14,9 +14,18 @@ public class App
         final UsersRepository userRepository = new UsersRepository();
         final UserController userController = new UserController(userRepository);
 
-        // Initialize repository by fetching json file's data
-        final Stream<User> jsonUsers = JsonHelper.getUserDataFromFile();
-        jsonUsers.forEach(jsonUser -> userController.register(User.of(jsonUser)));
+        // Initialize repository's data by fetching json file's data
+        final Stream<UserDao> jsonUsers = JsonHelper.getUserDataFromFile();
+        jsonUsers.forEach(jsonUser ->
+            userController.register(new UserDao(
+                    jsonUser.id,
+                    jsonUser.login,
+                    jsonUser.password,
+                    jsonUser.name,
+                    jsonUser.paymentMethod,
+                    jsonUser.address
+            ))
+        );
 
         new CliProcessingEngine(userController).launch();
     }

@@ -1,33 +1,27 @@
 package esgi.al.models;
 
-import esgi.al.enumerators.StreetType;
-import esgi.al.utils.Validator;
+import esgi.al.daos.AddressDao;
+import esgi.al.exceptions.modelsExceptions.InvalidAddressParameter;
+import esgi.al.validators.AddressValidator;
 
-import java.util.Objects;
-
-public class Address
+public class Address extends AddressDao
 {
-    private String city;
-    private StreetType streetType;
-    private String streetName;
-    private int streetNumber;
-
-    private Address(String city, StreetType streetType, String streetName, int streetNumber)
+    private Address(AddressDao addressDao)
     {
-        if (!Validator.isAddressValid(city, streetName, streetNumber))
-        {
-            throw new IllegalArgumentException();
+        try {
+            AddressValidator.validate(addressDao);
+        } catch (InvalidAddressParameter e) {
+            e.printStackTrace();
         }
 
-        this.city = Objects.requireNonNullElse(city, "<Unspecified city>");
-        this.streetType = Objects.requireNonNullElse(streetType, StreetType.unspecified);
-        this.streetName = Objects.requireNonNullElse(streetName, "<Unspecified street name>");
-        this.streetNumber = Objects.requireNonNullElse(streetNumber, -1);
+        this.city = addressDao.city;
+        this.street = addressDao.street;
+        this.number = addressDao.number;
     }
 
-    public static Address of(String city, StreetType streetType, String streetName, int streetNumber)
+    public static Address of(AddressDao addressDao)
     {
-        return new Address(city, streetType, streetName, streetNumber);
+        return new Address(addressDao);
     }
 
     /**
@@ -38,47 +32,40 @@ public class Address
         return this.city;
     }
 
-    public StreetType getStreetType()
+    public String getStreet()
     {
-        return this.streetType;
+        return this.street;
     }
 
-    public String getStreetName()
+    public int getNumber()
     {
-        return this.streetName;
-    }
-
-    public int getStreetNumber()
-    {
-        return this.streetNumber;
+        return this.number;
     }
 
     /**
      * Setters
      */
-    public void setCity(String city)
+    public void setCity(String city) throws InvalidAddressParameter
     {
+        AddressValidator.validateCity(city);
         this.city = city;
     }
 
-    public void setStreetType(StreetType streetType)
+    public void setStreet(String street) throws InvalidAddressParameter
     {
-        this.streetType = streetType;
+        AddressValidator.validateStreet(street);
+        this.street = street;
     }
 
-    public void setStreetName(String streetName)
+    public void setNumber(int number) throws InvalidAddressParameter
     {
-        this.streetName = streetName;
-    }
-
-    public void setStreetNumber(int streetNumber)
-    {
-        this.streetNumber = streetNumber;
+        AddressValidator.validateNumber(number);
+        this.number = number;
     }
 
     @Override
     public String toString()
     {
-        return this.streetNumber + " " + this.streetType + " " + this.streetName + ", " + this.city;
+        return this.number + " " + this.street + ", " + this.city;
     }
 }

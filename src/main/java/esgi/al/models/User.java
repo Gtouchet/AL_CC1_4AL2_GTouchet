@@ -1,47 +1,36 @@
 package esgi.al.models;
 
-import esgi.al.enumerators.PaymentMethod;
-import esgi.al.utils.Validator;
+import esgi.al.daos.AddressDao;
+import esgi.al.daos.UserDao;
+import esgi.al.exceptions.modelsExceptions.InvalidAddressParameter;
+import esgi.al.exceptions.modelsExceptions.InvalidUserParameter;
+import esgi.al.validators.AddressValidator;
+import esgi.al.validators.UserValidator;
 
 import java.util.Objects;
+import java.util.UUID;
 
-public class User
+public class User extends UserDao
 {
-    private final String id;
-    private final String login;
-    private String password;
-    private String name;
-    private PaymentMethod paymentMethod;
-    private Address address;
-
-    private User(String id, String login, String password, String name, PaymentMethod paymentMethod, Address address)
+    private User(UserDao userDao)
     {
-        if (!Validator.isUserValid(login, password))
-        {
-            throw new IllegalArgumentException();
+        try {
+            UserValidator.validate(userDao);
+        } catch (InvalidUserParameter e) {
+            e.printStackTrace();
         }
 
-        this.id = Objects.requireNonNullElse(id, java.util.UUID.randomUUID().toString());
-        this.login = Objects.requireNonNull(login);
-        this.password = Objects.requireNonNull(password);
-        this.name = Objects.requireNonNullElse(name, "<Unspecified name>");
-        this.paymentMethod = Objects.requireNonNullElse(paymentMethod, PaymentMethod.UNSPECIFIED);
-        this.address = Address.of(
-                address.getCity(),
-                address.getStreetType(),
-                address.getStreetName(),
-                address.getStreetNumber()
-        );
+        this.id = Objects.requireNonNullElse(userDao.id, UUID.randomUUID().toString());
+        this.login = userDao.login;
+        this.password =  userDao.password;
+        this.name = userDao.name;
+        this.paymentMethod =  userDao.paymentMethod;
+        this.address = Address.of(userDao.address);
     }
 
-    public static User of(String id, String login, String password, String name, PaymentMethod paymentMethod, Address address)
+    public static User of(UserDao userDao)
     {
-        return new User(id, login, password, name, paymentMethod, address);
-    }
-
-    public static User of(User jsonUser)
-    {
-        return new User(jsonUser.id, jsonUser.login, jsonUser.password, jsonUser.name, jsonUser.paymentMethod, jsonUser.address);
+        return new User(userDao);
     }
 
     /**
@@ -49,7 +38,7 @@ public class User
      */
     public String getId()
     {
-        return this.id.toString();
+        return this.id;
     }
 
     public String getLogin()
@@ -67,12 +56,12 @@ public class User
         return this.name;
     }
 
-    public PaymentMethod getPaymentMethod()
+    public String getPaymentMethod()
     {
         return this.paymentMethod;
     }
 
-    public Address getAddress()
+    public AddressDao getAddress()
     {
         return this.address;
     }
@@ -80,12 +69,10 @@ public class User
     /**
      * Setters
      */
-    public void setPassword(String password)
+    public void setPassword(String password) throws InvalidUserParameter
     {
-        if (Validator.isPasswordValid(password))
-        {
-            this.password = password;
-        }
+        UserValidator.validatePassword(password);
+        this.password = password;
     }
 
     public void setName(String name)
@@ -93,19 +80,16 @@ public class User
         this.name = name;
     }
 
-    public void setPaymentMethod(PaymentMethod paymentMethod)
+    public void setPaymentMethod(String paymentMethod) throws InvalidUserParameter
     {
+        UserValidator.validatePaymentMethod(paymentMethod);
         this.paymentMethod = paymentMethod;
     }
 
-    public void setAddress(Address address)
+    public void setAddress(Address address) throws InvalidAddressParameter
     {
-        this.address = Address.of(
-                address.getCity(),
-                address.getStreetType(),
-                address.getStreetName(),
-                address.getStreetNumber()
-        );
+        AddressValidator.validate(address);
+        this.address = address;
     }
 
     @Override
@@ -115,7 +99,7 @@ public class User
                 "\nLogin: " + this.login +
                 "\nPassword: " + this.password +
                 "\nName: " + this.name +
-                "\nAddress: " + this.address +
-                "\nPayment method: " + this.paymentMethod;
+                "\nPayment method: " + this.paymentMethod +
+                "\nAddress: " + this.address.toString();
     }
 }

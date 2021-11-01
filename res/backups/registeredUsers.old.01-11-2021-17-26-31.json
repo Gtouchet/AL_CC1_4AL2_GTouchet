@@ -10,17 +10,5 @@
       "street": "PierreBrossolette",
       "number": 132
     }
-  },
-  {
-    "id": "f4adb6b4-0df5-46ba-ba02-f040e32b78ef",
-    "login": "GTouchet2",
-    "password": "12AZaz,;,;",
-    "name": "Guy",
-    "paymentMethod": "card",
-    "address": {
-      "city": "Paris",
-      "street": "faubourgStAntoine",
-      "number": 242
-    }
   }
 ]

@@ -1,11 +1,11 @@
-package esgi.al.repositories;
+package esgi.al.controllers;
 
 import esgi.al.exceptions.repositoriesExceptions.ElementNotFound;
 import esgi.al.exceptions.repositoriesExceptions.FailedToCreate;
 
 import java.util.stream.Stream;
 
-public interface Repositories<T>
+public interface Controllers<T>
 {
     void post(T element) throws FailedToCreate;
     Stream<T> get() throws ElementNotFound;

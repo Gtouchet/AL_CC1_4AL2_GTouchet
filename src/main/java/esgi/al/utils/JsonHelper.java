@@ -3,7 +3,7 @@ package esgi.al.utils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
-import esgi.al.models.User;
+import esgi.al.daos.UserDao;
 
 import java.io.*;
 import java.util.Arrays;
@@ -12,19 +12,19 @@ import java.util.stream.Stream;
 
 public class JsonHelper
 {
-    public static Stream<User> getUserDataFromFile()
+    public static Stream<UserDao> getUserDataFromFile()
     {
         try {
             JsonReader reader = new JsonReader(new FileReader(Globals.JSON_USER_FILE_PATH));
-            User[] data = new Gson().fromJson(reader, User[].class);
-            return Arrays.stream(data);
+            UserDao[] data = new Gson().fromJson(reader, UserDao[].class);
+            return data != null ? Arrays.stream(data) : Stream.empty();
         } catch (IOException e) {
             e.printStackTrace();
         }
         return Stream.empty();
     }
 
-    public static void rewriteFile(List<User> users)
+    public static void rewriteFile(List<UserDao> users)
     {
         createBackupFile();
 
