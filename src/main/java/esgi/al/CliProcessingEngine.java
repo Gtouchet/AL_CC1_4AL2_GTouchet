@@ -89,7 +89,7 @@ public class CliProcessingEngine
         }
 
         this.userController.post(
-                new UserDao(null, params[1], params[2], params[3], params[4].toLowerCase(),
+                new UserDao(null, params[1], params[2], params[3], params[4].trim().toLowerCase(),
                 new AddressDao(streetNumber, params[6], params[7]))
         );
     }
@@ -126,7 +126,7 @@ public class CliProcessingEngine
         }
 
         this.userController.put(params[1].toLowerCase(),
-                new UserDao(null, params[2], params[3], params[4], params[5].toLowerCase(),
+                new UserDao(null, params[2], params[3], params[4], params[5].trim().toLowerCase(),
                 new AddressDao(streetNumber, params[7], params[8]))
         );
     }
