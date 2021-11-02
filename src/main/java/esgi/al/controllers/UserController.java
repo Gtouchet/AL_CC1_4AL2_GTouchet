@@ -5,13 +5,14 @@ import esgi.al.exceptions.modelsExceptions.InvalidAddressParameter;
 import esgi.al.exceptions.modelsExceptions.InvalidUserParameter;
 import esgi.al.exceptions.repositoriesExceptions.ElementNotFound;
 import esgi.al.exceptions.repositoriesExceptions.FailedToCreate;
+import esgi.al.models.User;
 import esgi.al.repositories.UsersRepository;
 import esgi.al.validators.AddressValidator;
 import esgi.al.validators.UserValidator;
 
 import java.util.stream.Stream;
 
-public class UserController implements Controllers<UserDao>
+public class UserController implements Controllers<User, UserDao>
 {
     private final UsersRepository userRepository;
 
@@ -48,7 +49,7 @@ public class UserController implements Controllers<UserDao>
     }
 
     @Override
-    public Stream<UserDao> get()
+    public Stream<User> get()
     {
         try {
             return this.userRepository.get();
@@ -60,7 +61,7 @@ public class UserController implements Controllers<UserDao>
     }
 
     @Override
-    public UserDao get(String id)
+    public User get(String id)
     {
         try {
             return this.userRepository.get(id);

@@ -14,13 +14,13 @@
   {
     "id": "ece77eb8-e2db-4886-8aa4-2ac34fc759bd",
     "login": "GTouchet",
-    "password": "12azAZ,;,;",
-    "name": "Guillaume",
-    "paymentMethod": "paypal",
+    "password": "1245AZer,;",
+    "name": "Guy",
+    "paymentMethod": "card",
     "address": {
-      "city": "D",
-      "street": "PB",
-      "number": 132
+      "city": "Dra",
+      "street": "PierreB",
+      "number": 10
     }
   }
 ]

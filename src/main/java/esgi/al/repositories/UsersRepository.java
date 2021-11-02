@@ -11,10 +11,10 @@ import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-public class UsersRepository implements Repositories<UserDao>
+public class UsersRepository implements Repositories<User, UserDao>
 {
-    private final List<UserDao> users = new ArrayList<>();
-    Supplier<Stream<UserDao>> usersStreamSupplier = () -> Stream.of(this.users.toArray(new UserDao[0]));
+    private final List<User> users = new ArrayList<>();
+    Supplier<Stream<User>> usersStreamSupplier = () -> Stream.of(this.users.toArray(new User[0]));
 
     public void register(UserDao user)
     {
@@ -36,7 +36,7 @@ public class UsersRepository implements Repositories<UserDao>
     }
 
     @Override
-    public Stream<UserDao> get() throws ElementNotFound
+    public Stream<User> get() throws ElementNotFound
     {
         if (this.usersStreamSupplier.get().count() == 0)
         {
@@ -47,7 +47,7 @@ public class UsersRepository implements Repositories<UserDao>
     }
 
     @Override
-    public UserDao get(String id) throws ElementNotFound
+    public User get(String id) throws ElementNotFound
     {
         return this.findUserWithId(id);
     }
@@ -80,9 +80,9 @@ public class UsersRepository implements Repositories<UserDao>
         JsonHelper.rewriteFile(this.users);
     }
 
-    private UserDao findUserWithId(String id) throws ElementNotFound
+    private User findUserWithId(String id) throws ElementNotFound
     {
-        UserDao user = this.users.stream()
+        User user = this.users.stream()
                 .filter(streamUserDao -> streamUserDao.id.equals(id))
                 .findFirst()
                 .orElse(null);
@@ -95,7 +95,7 @@ public class UsersRepository implements Repositories<UserDao>
         return user;
     }
 
-    private UserDao findUserWithLogin(String login)
+    private User findUserWithLogin(String login)
     {
         return this.users.stream()
                 .filter(streamUserDao -> streamUserDao.login.equals(login))

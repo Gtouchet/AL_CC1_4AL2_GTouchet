@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
 import esgi.al.daos.UserDao;
+import esgi.al.models.User;
 
 import java.io.*;
 import java.util.Arrays;
@@ -24,7 +25,7 @@ public class JsonHelper
         return Stream.empty();
     }
 
-    public static void rewriteFile(List<UserDao> users)
+    public static void rewriteFile(List<User> users)
     {
         createBackupFile();
 

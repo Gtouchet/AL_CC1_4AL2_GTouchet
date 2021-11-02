@@ -1,26 +1,14 @@
 [
   {
-    "id": "f4adb6b4-0df5-46ba-ba02-f040e32b78ef",
-    "login": "GTouchet2",
-    "password": "12AZaz,;,;",
-    "name": "Guillaume",
+    "id": "ece77eb8-e2db-4886-8aa4-2ac34fc759bd",
+    "login": "GTouchet",
+    "password": "1245AZer,;",
+    "name": "Guy",
     "paymentMethod": "card",
     "address": {
-      "city": "cityName",
-      "street": "streetName",
-      "number": 242
-    }
-  },
-  {
-    "id": "ece77eb8-e2db-4886-8aa4-2ac34fc759bd",
-    "login": "GTouchet3",
-    "password": "12azAZ,;,;",
-    "name": "Guillaume",
-    "paymentMethod": "paypal",
-    "address": {
-      "city": "D",
-      "street": "PB",
-      "number": 132
+      "city": "Dra",
+      "street": "PierreB",
+      "number": 10
     }
   }
 ]
