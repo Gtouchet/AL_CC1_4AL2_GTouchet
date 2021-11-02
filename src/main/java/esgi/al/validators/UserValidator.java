@@ -28,7 +28,7 @@ public class UserValidator
     public static void validatePassword(String password) throws InvalidUserParameter
     {
         Objects.requireNonNullElse(password, "");
-        String passwordRegex = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%,?;.:/!§]).{4,}$";
+        String passwordRegex = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%,?;.:/!§]).{8,}$";
         Pattern pattern = Pattern.compile(passwordRegex);
         Matcher matcher = pattern.matcher(password);
         if (password.trim().equals("") || !matcher.matches())
