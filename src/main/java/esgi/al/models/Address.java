@@ -8,12 +8,6 @@ public class Address extends AddressDao
 {
     private Address(AddressDao addressDao)
     {
-        try {
-            AddressValidator.validate(addressDao);
-        } catch (InvalidAddressParameter e) {
-            e.printStackTrace();
-        }
-
         this.city = addressDao.city;
         this.street = addressDao.street;
         this.number = addressDao.number;

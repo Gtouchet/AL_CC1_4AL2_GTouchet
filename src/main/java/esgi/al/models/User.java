@@ -14,12 +14,6 @@ public class User extends UserDao
 {
     private User(UserDao userDao)
     {
-        try {
-            UserValidator.validate(userDao);
-        } catch (InvalidUserParameter e) {
-            e.printStackTrace();
-        }
-
         this.id = Objects.requireNonNullElse(userDao.id, UUID.randomUUID().toString());
         this.login = userDao.login;
         this.password =  userDao.password;

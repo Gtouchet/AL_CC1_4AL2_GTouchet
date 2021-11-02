@@ -10,6 +10,6 @@ public interface Repositories<T>
     void post(T element) throws FailedToCreate;
     Stream<T> get() throws ElementNotFound;
     T get(String id) throws ElementNotFound;
-    void put(String id, T element) throws ElementNotFound;
+    void put(String id, T element) throws ElementNotFound, FailedToCreate;
     void del(String id) throws ElementNotFound;
 }

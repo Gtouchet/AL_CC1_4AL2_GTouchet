@@ -53,13 +53,18 @@ public class UsersRepository implements Repositories<UserDao>
     }
 
     @Override
-    public void put(String id, UserDao user) throws ElementNotFound
+    public void put(String id, UserDao user) throws ElementNotFound, FailedToCreate
     {
-        UserDao registeredUser = this.findUserWithId(id);
+        UserDao registeredUserId = this.findUserWithId(id);
 
-        this.users.remove(registeredUser);
-        user.id = registeredUser.id;
-        user.login = registeredUser.login;
+        UserDao registeredUserLogin = this.findUserWithLogin(user.login);
+        if (registeredUserLogin != null && registeredUserLogin.login.equals(user.login))
+        {
+            throw new FailedToCreate(user.login, registeredUserLogin.id);
+        }
+
+        this.users.remove(registeredUserId);
+        user.id = registeredUserId.id;
         this.users.add(User.of(user));
 
         JsonHelper.rewriteFile(this.users);

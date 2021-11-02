@@ -32,7 +32,7 @@ public class CliProcessingEngine
         commandsExs.put(1, "CREATE login password name paymentMethod number street city");
         commandsExs.put(2, "GET");
         commandsExs.put(3, "GET id");
-        commandsExs.put(4, "UPDATE id password name paymentMethod number street city");
+        commandsExs.put(4, "UPDATE id login password name paymentMethod number street city");
         commandsExs.put(5, "DELETE id");
         commandsExs.put(6, "QUIT");
         commandsExs.put(7, "---Command input---");
@@ -112,7 +112,7 @@ public class CliProcessingEngine
 
     private void processUpdateCommand(String[] params)
     {
-        if (params.length != 8)
+        if (params.length != 9)
         {
             System.out.println(this.commandsExs.get(4));
             return;
@@ -120,14 +120,14 @@ public class CliProcessingEngine
 
         int streetNumber = 0;
         try {
-            streetNumber = Integer.parseInt(params[5]);
+            streetNumber = Integer.parseInt(params[6]);
         } catch (NumberFormatException ignored) {
             System.err.println("Impossible to parse [" + params[5] + "] as Integer");
         }
 
         this.userController.put(params[1].toLowerCase(),
-                new UserDao(null, "", params[2], params[3], params[4].toLowerCase(),
-                new AddressDao(streetNumber, params[6], params[7]))
+                new UserDao(null, params[2], params[3], params[4], params[5].toLowerCase(),
+                new AddressDao(streetNumber, params[7], params[8]))
         );
     }
 

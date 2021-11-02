@@ -80,7 +80,7 @@ public class UserController implements Controllers<UserDao>
 
             this.userRepository.put(id, user);
 
-        } catch (InvalidUserParameter | InvalidAddressParameter | ElementNotFound e) {
+        } catch (InvalidUserParameter | InvalidAddressParameter | ElementNotFound | FailedToCreate e) {
             System.err.println(e.getMessage());
         }
     }
