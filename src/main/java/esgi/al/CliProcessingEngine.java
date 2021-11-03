@@ -3,7 +3,6 @@ package esgi.al;
 import esgi.al.controllers.UserController;
 import esgi.al.daos.AddressDao;
 import esgi.al.daos.UserDao;
-import esgi.al.exceptions.repositoriesExceptions.FailedToCreate;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -55,25 +54,20 @@ public class CliProcessingEngine
 
     private void processCommand(String command)
     {
-        try {
-            String[] params = command.split(" ");
+        String[] params = command.split(" ");
 
-            switch (params[0].toUpperCase())
-            {
-                case "CREATE": this.processCreateCommand(params); break;
-                case "GET":    this.processGetCommand(params); break;
-                case "UPDATE": this.processUpdateCommand(params); break;
-                case "DELETE": this.processDeleteCommand(params); break;
-                case "QUIT":   System.out.println("See ya !"); break;
-
-                default: System.out.println("Unrecognized command [" + params[0].toUpperCase() + "]"); break;
-            }
-        } catch (FailedToCreate e) {
-            e.printStackTrace();
+        switch (params[0].toUpperCase())
+        {
+            case "CREATE": this.processCreateCommand(params); break;
+            case "GET": this.processGetCommand(params); break;
+            case "UPDATE": this.processUpdateCommand(params); break;
+            case "DELETE": this.processDeleteCommand(params); break;
+            case "QUIT": System.out.println("See ya !"); break;
+            default: System.out.println("Unrecognized command [" + params[0].toUpperCase() + "]"); break;
         }
     }
 
-    private void processCreateCommand(String[] params) throws FailedToCreate
+    private void processCreateCommand(String[] params)
     {
         if (params.length != 8)
         {
@@ -85,7 +79,7 @@ public class CliProcessingEngine
         try {
             streetNumber = Integer.parseInt(params[5]);
         } catch (NumberFormatException ignored) {
-            System.err.println("Impossible to parse [" + params[5] + "] as Integer");
+            System.err.println("Impossible to apply [" + params[5] + "] as a street number");
         }
 
         this.userController.post(
@@ -122,7 +116,7 @@ public class CliProcessingEngine
         try {
             streetNumber = Integer.parseInt(params[6]);
         } catch (NumberFormatException ignored) {
-            System.err.println("Impossible to parse [" + params[5] + "] as Integer");
+            System.err.println("Impossible to apply [" + params[5] + "] as a street number");
         }
 
         this.userController.put(params[1].toLowerCase(),
