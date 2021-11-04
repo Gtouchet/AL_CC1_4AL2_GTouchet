@@ -60,7 +60,7 @@ public class UsersRepository implements Repository<User>
         User registeredUserId = this.findUserWithId(user.getId());
 
         User registeredUserLogin = this.findUserWithLogin(user.getLogin());
-        if (registeredUserLogin != null && registeredUserLogin.getLogin().equals(user.getLogin()))
+        if (registeredUserLogin != null && !registeredUserLogin.getLogin().equals(user.getLogin()))
         {
             throw new FailedToCreate(user.getLogin(), registeredUserLogin.getId());
         }
