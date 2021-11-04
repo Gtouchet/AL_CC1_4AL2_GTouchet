@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
 
 import java.io.*;
+import java.lang.reflect.Array;
 import java.util.List;
 
 public class JsonHelper<T>
@@ -24,7 +25,8 @@ public class JsonHelper<T>
     {
         try {
             JsonReader reader = new JsonReader(new FileReader(this.filePath));
-            return new Gson().fromJson(reader, this.dataType.arrayType());
+            T[] data = new Gson().fromJson(reader, this.dataType.arrayType());
+            return data != null && data.length > 0 ? data : (T[]) Array.newInstance(this.dataType, 0);
 
         } catch (FileNotFoundException e1) {
             try {
