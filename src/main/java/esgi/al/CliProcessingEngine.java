@@ -1,8 +1,12 @@
 package esgi.al;
 
-import esgi.al.controllers.UserController;
-import esgi.al.daos.AddressDao;
-import esgi.al.daos.UserDao;
+import esgi.al.controllers.Controller;
+import esgi.al.exceptions.modelsExceptions.InvalidAddressParameter;
+import esgi.al.exceptions.modelsExceptions.InvalidUserParameter;
+import esgi.al.exceptions.repositoriesExceptions.ElementNotFound;
+import esgi.al.exceptions.repositoriesExceptions.FailedToCreate;
+import esgi.al.models.Address;
+import esgi.al.models.User;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,12 +14,12 @@ import java.util.Scanner;
 
 public class CliProcessingEngine
 {
-    private final UserController userController;
+    private final Controller<User> userController;
 
     private final Scanner scanner;
     private final Map<Integer, String> commandsExs;
 
-    public CliProcessingEngine(UserController userController)
+    public CliProcessingEngine(Controller<User> userController)
     {
         this.userController = userController;
 
@@ -75,17 +79,19 @@ public class CliProcessingEngine
             return;
         }
 
-        int streetNumber = 0;
         try {
-            streetNumber = Integer.parseInt(params[5]);
-        } catch (NumberFormatException ignored) {
+            int streetNumber = Integer.parseInt(params[5]);
+            try {
+                this.userController.post(
+                        User.of(params[1], params[2], params[3], params[4].trim().toLowerCase(),
+                        Address.of(streetNumber, params[6], params[7]))
+                );
+            } catch (InvalidUserParameter | InvalidAddressParameter | FailedToCreate e2) {
+                System.err.println(e2.getMessage());
+            }
+        } catch (NumberFormatException e1) {
             System.err.println("Impossible to apply [" + params[5] + "] as a street number");
         }
-
-        this.userController.post(
-                new UserDao(null, params[1], params[2], params[3], params[4].trim().toLowerCase(),
-                new AddressDao(streetNumber, params[6], params[7]))
-        );
     }
 
     private void processGetCommand(String[] params)
@@ -96,7 +102,12 @@ public class CliProcessingEngine
         }
         else if (params.length == 2)
         {
-            System.out.println(this.userController.get(params[1].toLowerCase()));
+            try {
+                System.out.println(this.userController.get(params[1].toLowerCase()));
+
+            } catch (ElementNotFound e) {
+                System.err.println(e.getMessage());
+            }
         }
         else
         {
@@ -112,17 +123,19 @@ public class CliProcessingEngine
             return;
         }
 
-        int streetNumber = 0;
         try {
-            streetNumber = Integer.parseInt(params[6]);
-        } catch (NumberFormatException ignored) {
-            System.err.println("Impossible to apply [" + params[5] + "] as a street number");
+            int streetNumber = Integer.parseInt(params[6]);
+            try {
+                this.userController.put(
+                        User.of(params[1].toLowerCase(), params[2], params[3], params[4], params[5].trim().toLowerCase(),
+                        Address.of(streetNumber, params[7], params[8]))
+                );
+            } catch (InvalidUserParameter | InvalidAddressParameter | ElementNotFound | FailedToCreate e2) {
+                System.err.println(e2.getMessage());
+            }
+        } catch (NumberFormatException e1) {
+            System.err.println("Impossible to apply [" + params[6] + "] as a street number");
         }
-
-        this.userController.put(params[1].toLowerCase(),
-                new UserDao(null, params[2], params[3], params[4], params[5].trim().toLowerCase(),
-                new AddressDao(streetNumber, params[7], params[8]))
-        );
     }
 
     private void processDeleteCommand(String[] params)
@@ -133,6 +146,11 @@ public class CliProcessingEngine
             return;
         }
 
-        this.userController.del(params[1].toLowerCase());
+        try {
+            this.userController.del(params[1].toLowerCase());
+
+        } catch (ElementNotFound e) {
+            System.err.println(e.getMessage());
+        }
     }
 }

@@ -1,49 +1,51 @@
 package esgi.al.repositories;
 
-import esgi.al.daos.UserDao;
 import esgi.al.exceptions.repositoriesExceptions.ElementNotFound;
 import esgi.al.exceptions.repositoriesExceptions.FailedToCreate;
 import esgi.al.models.User;
-import esgi.al.utils.JsonHelper;
+import esgi.al.utilitaries.JsonHelper;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-public class UsersRepository implements Repositories<User, UserDao>
+public class UsersRepository implements Repository<User>
 {
-    private final List<User> users = new ArrayList<>();
-    Supplier<Stream<User>> usersStreamSupplier = () -> Stream.of(this.users.toArray(new User[0]));
+    private final List<User> users;
 
-    public void register(UserDao user)
+    private final JsonHelper<User> jsonHelper;
+
+    public UsersRepository(String jsonFilePath)
     {
-        this.users.add(User.of(user));
+        this.jsonHelper = new JsonHelper<>(User.class, jsonFilePath);
+
+        this.users = this.getDataFromJsonFile();
+    }
+
+    private List<User> getDataFromJsonFile()
+    {
+        return new ArrayList<>(Arrays.asList(this.jsonHelper.getDataFromFile()));
     }
 
     @Override
-    public void post(UserDao user) throws FailedToCreate
+    public void post(User user) throws FailedToCreate
     {
-        UserDao registeredUser = this.findUserWithLogin(user.login);
+        User registeredUser = this.findUserWithLogin(user.getLogin());
         if (registeredUser != null)
         {
-            throw new FailedToCreate(user.login, registeredUser.id);
+            throw new FailedToCreate(user.getLogin(), registeredUser.getId());
         }
 
         this.users.add(User.of(user));
 
-        JsonHelper.rewriteFile(this.users);
+        this.jsonHelper.writeInFile(this.users);
     }
 
     @Override
-    public Stream<User> get() throws ElementNotFound
+    public Stream<User> get()
     {
-        if (this.usersStreamSupplier.get().count() == 0)
-        {
-            throw new ElementNotFound();
-        }
-
-        return this.usersStreamSupplier.get();
+        return this.users.stream();
     }
 
     @Override
@@ -53,37 +55,36 @@ public class UsersRepository implements Repositories<User, UserDao>
     }
 
     @Override
-    public void put(String id, UserDao user) throws ElementNotFound, FailedToCreate
+    public void put(User user) throws ElementNotFound, FailedToCreate
     {
-        UserDao registeredUserId = this.findUserWithId(id);
+        User registeredUserId = this.findUserWithId(user.getId());
 
-        UserDao registeredUserLogin = this.findUserWithLogin(user.login);
-        if (registeredUserLogin != null && registeredUserLogin.login.equals(user.login))
+        User registeredUserLogin = this.findUserWithLogin(user.getLogin());
+        if (registeredUserLogin != null && registeredUserLogin.getLogin().equals(user.getLogin()))
         {
-            throw new FailedToCreate(user.login, registeredUserLogin.id);
+            throw new FailedToCreate(user.getLogin(), registeredUserLogin.getId());
         }
 
         this.users.remove(registeredUserId);
-        user.id = registeredUserId.id;
         this.users.add(User.of(user));
 
-        JsonHelper.rewriteFile(this.users);
+        this.jsonHelper.writeInFile(this.users);
     }
 
     @Override
     public void del(String id) throws ElementNotFound
     {
-        UserDao registeredUser = this.findUserWithId(id);
+        User registeredUser = this.findUserWithId(id);
 
         this.users.remove(registeredUser);
 
-        JsonHelper.rewriteFile(this.users);
+        this.jsonHelper.writeInFile(this.users);
     }
 
     private User findUserWithId(String id) throws ElementNotFound
     {
         User user = this.users.stream()
-                .filter(streamUserDao -> streamUserDao.id.equals(id))
+                .filter(streamUserDao -> streamUserDao.getId().equals(id))
                 .findFirst()
                 .orElse(null);
 
@@ -98,7 +99,7 @@ public class UsersRepository implements Repositories<User, UserDao>
     private User findUserWithLogin(String login)
     {
         return this.users.stream()
-                .filter(streamUserDao -> streamUserDao.login.equals(login))
+                .filter(streamUserDao -> streamUserDao.getLogin().equals(login))
                 .findFirst()
                 .orElse(null);
     }

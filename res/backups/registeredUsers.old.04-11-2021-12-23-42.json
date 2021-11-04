@@ -6,21 +6,21 @@
     "name": "Guy",
     "paymentMethod": "card",
     "address": {
-      "number": 10,
+      "city": "Dra",
       "street": "PierreB",
-      "city": "Dra"
+      "number": 10
     }
   },
   {
     "id": "5b14fbcc-8047-4ef8-96a8-7e9012449b73",
-    "login": "GTouchet8787",
-    "password": "az54AZ,zzz",
-    "name": "guillaume",
+    "login": "GTouchet2",
+    "password": "12456Azdf,;",
+    "name": "Guy",
     "paymentMethod": "card",
     "address": {
-      "number": 78,
-      "street": "ruemonku",
-      "city": "citydemerde"
+      "city": "D",
+      "street": "PB",
+      "number": 132
     }
   }
 ]

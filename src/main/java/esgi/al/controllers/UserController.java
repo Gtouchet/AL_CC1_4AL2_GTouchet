@@ -1,99 +1,58 @@
 package esgi.al.controllers;
 
-import esgi.al.daos.UserDao;
 import esgi.al.exceptions.modelsExceptions.InvalidAddressParameter;
 import esgi.al.exceptions.modelsExceptions.InvalidUserParameter;
 import esgi.al.exceptions.repositoriesExceptions.ElementNotFound;
 import esgi.al.exceptions.repositoriesExceptions.FailedToCreate;
 import esgi.al.models.User;
-import esgi.al.repositories.UsersRepository;
+import esgi.al.repositories.Repository;
 import esgi.al.validators.AddressValidator;
 import esgi.al.validators.UserValidator;
 
 import java.util.stream.Stream;
 
-public class UserController implements Controllers<User, UserDao>
+public class UserController implements Controller<User>
 {
-    private final UsersRepository userRepository;
+    private final Repository<User> userRepository;
 
-    public UserController(UsersRepository userRepository)
+    public UserController(Repository<User> userRepository)
     {
         this.userRepository = userRepository;
     }
 
-    public void register(UserDao user)
-    {
-        try {
-            UserValidator.validate(user);
-            AddressValidator.validate(user.address);
-
-            this.userRepository.register(user);
-
-        } catch (InvalidUserParameter | InvalidAddressParameter e) {
-            e.printStackTrace();
-        }
-    }
-
     @Override
-    public void post(UserDao user)
+    public void post(User user) throws InvalidUserParameter, InvalidAddressParameter, FailedToCreate
     {
-        try {
-            UserValidator.validate(user);
-            AddressValidator.validate(user.address);
+        UserValidator.validate(user);
+        AddressValidator.validate(user.getAddress());
 
-            this.userRepository.post(user);
-
-        } catch (InvalidUserParameter | InvalidAddressParameter | FailedToCreate e) {
-            System.err.println(e.getMessage());
-        }
+        this.userRepository.post(user);
     }
 
     @Override
     public Stream<User> get()
     {
-        try {
-            return this.userRepository.get();
-
-        } catch (ElementNotFound e) {
-            System.err.println(e.getMessage());
-            return Stream.empty();
-        }
+        return this.userRepository.get();
     }
 
     @Override
-    public User get(String id)
+    public User get(String id) throws ElementNotFound
     {
-        try {
-            return this.userRepository.get(id);
-
-        } catch (ElementNotFound e) {
-            System.err.println(e.getMessage());
-            return null;
-        }
+        return this.userRepository.get(id);
     }
 
     @Override
-    public void put(String id, UserDao user)
+    public void put(User user) throws InvalidUserParameter, InvalidAddressParameter, FailedToCreate, ElementNotFound
     {
-        try {
-            UserValidator.validate(user);
-            AddressValidator.validate(user.address);
+        UserValidator.validate(user);
+        AddressValidator.validate(user.getAddress());
 
-            this.userRepository.put(id, user);
-
-        } catch (InvalidUserParameter | InvalidAddressParameter | ElementNotFound | FailedToCreate e) {
-            System.err.println(e.getMessage());
-        }
+        this.userRepository.put(user);
     }
 
     @Override
-    public void del(String id)
+    public void del(String id) throws ElementNotFound
     {
-        try {
-            this.userRepository.del(id);
-
-        } catch (ElementNotFound e) {
-            System.err.println(e.getMessage());
-        }
+        this.userRepository.del(id);
     }
 }

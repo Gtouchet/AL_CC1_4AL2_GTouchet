@@ -1,35 +1,79 @@
 package esgi.al.models;
 
-import esgi.al.daos.AddressDao;
-import esgi.al.daos.UserDao;
-import esgi.al.exceptions.modelsExceptions.InvalidAddressParameter;
-import esgi.al.exceptions.modelsExceptions.InvalidUserParameter;
-import esgi.al.validators.AddressValidator;
-import esgi.al.validators.UserValidator;
-
-import java.util.Objects;
 import java.util.UUID;
 
-public class User extends UserDao
+public class User
 {
-    private User(UserDao userDao)
-    {
-        this.id = Objects.requireNonNullElse(userDao.id, UUID.randomUUID().toString());
-        this.login = userDao.login;
-        this.password =  userDao.password;
-        this.name = userDao.name;
-        this.paymentMethod =  userDao.paymentMethod;
-        this.address = Address.of(userDao.address);
+    private final String id;
+    private final String login;
+    private final String password;
+    private final String name;
+    private final String paymentMethod;
+    private final Address address;
+
+    private User(
+            String id,
+            String login,
+            String password,
+            String name,
+            String paymentMethod,
+            Address address
+    ) {
+        this.id = id;
+        this.login = login;
+        this.password =  password;
+        this.name = name;
+        this.paymentMethod = paymentMethod;
+        this.address = Address.of(address);
     }
 
-    public static User of(UserDao userDao)
-    {
-        return new User(userDao);
+    public static User of(
+            String id,
+            String login,
+            String password,
+            String name,
+            String paymentMethod,
+            Address address
+    ) {
+        return new User(
+                id,
+                login,
+                password,
+                name,
+                paymentMethod,
+                address
+        );
     }
 
-    /**
-     * Getters
-     */
+    public static User of(
+            String login,
+            String password,
+            String name,
+            String paymentMethod,
+            Address address
+    ) {
+        return new User(
+                UUID.randomUUID().toString(),
+                login,
+                password,
+                name,
+                paymentMethod,
+                address
+        );
+    }
+
+    public static User of(User user)
+    {
+        return new User(
+                user.id,
+                user.login,
+                user.password,
+                user.name,
+                user.paymentMethod,
+                user.address
+        );
+    }
+
     public String getId()
     {
         return this.id;
@@ -55,35 +99,9 @@ public class User extends UserDao
         return this.paymentMethod;
     }
 
-    public AddressDao getAddress()
+    public Address getAddress()
     {
         return this.address;
-    }
-
-    /**
-     * Setters
-     */
-    public void setPassword(String password) throws InvalidUserParameter
-    {
-        UserValidator.validatePassword(password);
-        this.password = password;
-    }
-
-    public void setName(String name)
-    {
-        this.name = name;
-    }
-
-    public void setPaymentMethod(String paymentMethod) throws InvalidUserParameter
-    {
-        UserValidator.validatePaymentMethod(paymentMethod);
-        this.paymentMethod = paymentMethod;
-    }
-
-    public void setAddress(Address address) throws InvalidAddressParameter
-    {
-        AddressValidator.validate(address);
-        this.address = address;
     }
 
     @Override

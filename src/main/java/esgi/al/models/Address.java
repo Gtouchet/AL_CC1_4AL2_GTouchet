@@ -1,26 +1,42 @@
 package esgi.al.models;
 
-import esgi.al.daos.AddressDao;
-import esgi.al.exceptions.modelsExceptions.InvalidAddressParameter;
-import esgi.al.validators.AddressValidator;
-
-public class Address extends AddressDao
+public class Address
 {
-    private Address(AddressDao addressDao)
-    {
-        this.city = addressDao.city;
-        this.street = addressDao.street;
-        this.number = addressDao.number;
+    private final int number;
+    private final String street;
+    private final String city;
+
+    private Address(
+            int number,
+            String street,
+            String city
+    ) {
+        this.number = number;
+        this.street = street;
+        this.city = city;
     }
 
-    public static Address of(AddressDao addressDao)
+    public static Address of(Address address)
     {
-        return new Address(addressDao);
+        return new Address(
+                address.getNumber(),
+                address.getStreet(),
+                address.getCity()
+        );
     }
 
-    /**
-     * Getters
-     */
+    public static Address of(
+            int number,
+            String street,
+            String city
+    ) {
+        return new Address(
+                number,
+                street,
+                city
+        );
+    }
+
     public String getCity()
     {
         return this.city;
@@ -34,27 +50,6 @@ public class Address extends AddressDao
     public int getNumber()
     {
         return this.number;
-    }
-
-    /**
-     * Setters
-     */
-    public void setCity(String city) throws InvalidAddressParameter
-    {
-        AddressValidator.validateCity(city);
-        this.city = city;
-    }
-
-    public void setStreet(String street) throws InvalidAddressParameter
-    {
-        AddressValidator.validateStreet(street);
-        this.street = street;
-    }
-
-    public void setNumber(int number) throws InvalidAddressParameter
-    {
-        AddressValidator.validateNumber(number);
-        this.number = number;
     }
 
     @Override
