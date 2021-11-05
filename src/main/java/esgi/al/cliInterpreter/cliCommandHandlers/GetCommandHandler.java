@@ -18,7 +18,7 @@ public class GetCommandHandler
         this.userController = userController;
         this.paymentController = paymentController;
 
-        this.commandExample = "Invalid syntax, GET user/payment\nGET id user/payment";
+        this.commandExample = "Invalid syntax, GET USER/PAYMENT\nGET USER/PAYMENT id";
 
         this.handle(params);
     }
@@ -48,7 +48,23 @@ public class GetCommandHandler
 
         else
         {
+            if (params.length == 2)
+            {
+                this.paymentController.get().forEach(System.out::println);
+            }
+            else if (params.length == 3)
+            {
+                try {
+                    System.out.println(this.paymentController.get(params[2].toLowerCase()));
 
+                } catch (ElementNotFound e) {
+                    System.err.println(e.getMessage());
+                }
+            }
+            else
+            {
+                System.out.println(this.commandExample);
+            }
         }
     }
 }

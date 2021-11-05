@@ -4,6 +4,6 @@ public class ElementNotFound extends Throwable
 {
     public ElementNotFound(String id)
     {
-        super("No user registered with ID [" + id + "]");
+        super("No element registered with ID [" + id + "]");
     }
 }

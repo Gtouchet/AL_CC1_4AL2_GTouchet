@@ -73,7 +73,8 @@ public class JsonHelper<T>
     {
         try {
             InputStream in = new FileInputStream(this.filePath);
-            OutputStream out = new FileOutputStream(Globals.getUsersFileBackupPath());
+            OutputStream out = new FileOutputStream(this.dataType.getName().equals("User") ?
+                    Globals.getUsersFileBackupPath() : Globals.getPaymentsFileBackupPath());
 
             byte[] buffer = new byte[1024];
             int length;

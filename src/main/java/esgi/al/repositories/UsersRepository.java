@@ -31,13 +31,13 @@ public class UsersRepository implements Repository<User>
     @Override
     public void post(User user) throws FailedToCreate
     {
-        User registeredUser = this.findUserWithLogin(user.getLogin());
+        User registeredUser = this.findUserByLogin(user.getLogin());
         if (registeredUser != null)
         {
             throw new FailedToCreate(user.getLogin(), registeredUser.getId());
         }
 
-        this.users.add(User.of(user));
+        this.users.add(user);
 
         this.jsonHelper.writeInFile(this.users);
     }
@@ -51,22 +51,22 @@ public class UsersRepository implements Repository<User>
     @Override
     public User get(String id) throws ElementNotFound
     {
-        return this.findUserWithId(id);
+        return this.findUserById(id);
     }
 
     @Override
     public void put(User user) throws ElementNotFound, FailedToCreate
     {
-        User registeredUserId = this.findUserWithId(user.getId());
+        User registeredUserId = this.findUserById(user.getId());
 
-        User registeredUserLogin = this.findUserWithLogin(user.getLogin());
+        User registeredUserLogin = this.findUserByLogin(user.getLogin());
         if (registeredUserLogin != null && !registeredUserLogin.getLogin().equals(user.getLogin()))
         {
             throw new FailedToCreate(user.getLogin(), registeredUserLogin.getId());
         }
 
         this.users.remove(registeredUserId);
-        this.users.add(User.of(user));
+        this.users.add(user);
 
         this.jsonHelper.writeInFile(this.users);
     }
@@ -74,17 +74,17 @@ public class UsersRepository implements Repository<User>
     @Override
     public void del(String id) throws ElementNotFound
     {
-        User registeredUser = this.findUserWithId(id);
+        User user = this.findUserById(id);
 
-        this.users.remove(registeredUser);
+        this.users.remove(user);
 
         this.jsonHelper.writeInFile(this.users);
     }
 
-    private User findUserWithId(String id) throws ElementNotFound
+    private User findUserById(String id) throws ElementNotFound
     {
         User user = this.users.stream()
-                .filter(streamUserDao -> streamUserDao.getId().equals(id))
+                .filter(streamUser -> streamUser.getId().equals(id))
                 .findFirst()
                 .orElse(null);
 
@@ -96,10 +96,10 @@ public class UsersRepository implements Repository<User>
         return user;
     }
 
-    private User findUserWithLogin(String login)
+    private User findUserByLogin(String login)
     {
         return this.users.stream()
-                .filter(streamUserDao -> streamUserDao.getLogin().equals(login))
+                .filter(streamUser -> streamUser.getLogin().equals(login))
                 .findFirst()
                 .orElse(null);
     }

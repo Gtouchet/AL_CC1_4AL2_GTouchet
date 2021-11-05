@@ -37,10 +37,11 @@ public class CliInterpreterEngine
     {
         System.out.println(
                 "---Available commands---\n" +
-                "CREATE user/payment login password name paymentMethod number street city\n" +
+                "CREATE user login password name paymentMethod number street city\n" +
+                "CREATE payment userLogin amount reason\n" +
                 "GET user/payment\n" +
                 "GET id user/payment\n" +
-                "UPDATE user/payment id login password name paymentMethod number street city\n" +
+                "UPDATE user id login password name paymentMethod number street city\n" +
                 "DELETE user/payment id\n" +
                 "QUIT\n" +
                 "---Command input---"
@@ -83,8 +84,8 @@ public class CliInterpreterEngine
                     switch (params[0].toUpperCase())
                     {
                         case "CREATE": new CreateCommandHandler(this.userController, this.paymentController, params); break;
-                        case "GET":    new GetCommandHandler(this.userController, this.paymentController, params);    break;
-                        case "UPDATE": new UpdateCommandHandler(this.userController, this.paymentController, params); break;
+                        case "GET": new GetCommandHandler(this.userController, this.paymentController, params); break;
+                        case "UPDATE": new UpdateCommandHandler(this.userController, params); break;
                         case "DELETE": new DeleteCommandHandler(this.userController, this.paymentController, params); break;
                     }
                 }

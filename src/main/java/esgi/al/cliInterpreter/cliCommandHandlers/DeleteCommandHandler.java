@@ -18,7 +18,7 @@ public class DeleteCommandHandler
         this.userController = userController;
         this.paymentController = paymentController;
 
-        this.commandExample = "Invalid syntax, DELETE user/payment id";
+        this.commandExample = "Invalid syntax, DELETE USER/PAYMENT id";
 
         this.handle(params);
     }
@@ -43,7 +43,18 @@ public class DeleteCommandHandler
 
         else
         {
+            if (params.length != 3)
+            {
+                System.out.println(this.commandExample);
+                return;
+            }
 
+            try {
+                this.paymentController.del(params[2].toLowerCase());
+
+            } catch (ElementNotFound e) {
+                System.err.println(e.getMessage());
+            }
         }
     }
 }

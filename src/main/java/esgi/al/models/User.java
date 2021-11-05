@@ -62,18 +62,6 @@ public class User
         );
     }
 
-    public static User of(User user)
-    {
-        return new User(
-                user.id,
-                user.login,
-                user.password,
-                user.name,
-                user.paymentMethod,
-                user.address
-        );
-    }
-
     public String getId()
     {
         return this.id;

@@ -1,6 +1,6 @@
 package esgi.al.userValidatorTests;
 
-import esgi.al.exceptions.modelsExceptions.InvalidUserParameter;
+import esgi.al.exceptions.modelsExceptions.InvalidModelParameter;
 import esgi.al.validators.UserValidator;
 import org.junit.Rule;
 import org.junit.Test;
@@ -15,7 +15,7 @@ public class LoginValidatorTest
     public final ExpectedException exception = ExpectedException.none();
 
     @Test
-    public void loginValidator_loginNull() throws InvalidUserParameter
+    public void loginValidator_loginNull() throws InvalidModelParameter
     {
         exception.expect(NullPointerException.class);
 
@@ -23,9 +23,9 @@ public class LoginValidatorTest
     }
 
     @Test
-    public void loginValidator_loginEmpty() throws InvalidUserParameter
+    public void loginValidator_loginEmpty() throws InvalidModelParameter
     {
-        exception.expect(InvalidUserParameter.class);
+        exception.expect(InvalidModelParameter.class);
 
         String login = "";
         exception.expectMessage("Invalid user parameter for login [" + login + "]");
@@ -33,9 +33,9 @@ public class LoginValidatorTest
     }
 
     @Test
-    public void loginValidator_loginOnlySpaces() throws InvalidUserParameter
+    public void loginValidator_loginOnlySpaces() throws InvalidModelParameter
     {
-        exception.expect(InvalidUserParameter.class);
+        exception.expect(InvalidModelParameter.class);
 
         String login = "     ";
         exception.expectMessage("Invalid user parameter for login [" + login + "]");
@@ -48,7 +48,7 @@ public class LoginValidatorTest
         try {
             UserValidator.validateLogin("GTouchet123");
             assertTrue(true);
-        } catch (InvalidUserParameter ignored) {
+        } catch (InvalidModelParameter ignored) {
             fail();
         }
     }
@@ -59,7 +59,7 @@ public class LoginValidatorTest
         try {
             UserValidator.validateLogin("     GTouchet123     ");
             assertTrue(true);
-        } catch (InvalidUserParameter ignored) {
+        } catch (InvalidModelParameter ignored) {
             fail();
         }
     }

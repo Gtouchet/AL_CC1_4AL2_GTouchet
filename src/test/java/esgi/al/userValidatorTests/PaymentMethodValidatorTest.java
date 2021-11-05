@@ -1,6 +1,6 @@
 package esgi.al.userValidatorTests;
 
-import esgi.al.exceptions.modelsExceptions.InvalidUserParameter;
+import esgi.al.exceptions.modelsExceptions.InvalidModelParameter;
 import esgi.al.validators.UserValidator;
 import org.junit.Rule;
 import org.junit.Test;
@@ -15,7 +15,7 @@ public class PaymentMethodValidatorTest
     public final ExpectedException exception = ExpectedException.none();
 
     @Test
-    public void paymentMethodValidator_paymentMethodNull() throws InvalidUserParameter
+    public void paymentMethodValidator_paymentMethodNull() throws InvalidModelParameter
     {
         exception.expect(NullPointerException.class);
 
@@ -23,9 +23,9 @@ public class PaymentMethodValidatorTest
     }
 
     @Test
-    public void paymentMethodValidator_paymentMethodUnknown() throws InvalidUserParameter
+    public void paymentMethodValidator_paymentMethodUnknown() throws InvalidModelParameter
     {
-        exception.expect(InvalidUserParameter.class);
+        exception.expect(InvalidModelParameter.class);
 
         String paymentMethod = "bitcoin";
         exception.expectMessage("Invalid user parameter for payment method [" + paymentMethod + "]");
@@ -38,7 +38,7 @@ public class PaymentMethodValidatorTest
         try {
             UserValidator.validatePaymentMethod("card");
             assertTrue(true);
-        } catch (InvalidUserParameter ignored) {
+        } catch (InvalidModelParameter ignored) {
             fail();
         }
     }
@@ -49,7 +49,7 @@ public class PaymentMethodValidatorTest
         try {
             UserValidator.validatePaymentMethod("paypal");
             assertTrue(true);
-        } catch (InvalidUserParameter ignored) {
+        } catch (InvalidModelParameter ignored) {
             fail();
         }
     }

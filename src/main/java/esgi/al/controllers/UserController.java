@@ -1,7 +1,6 @@
 package esgi.al.controllers;
 
-import esgi.al.exceptions.modelsExceptions.InvalidAddressParameter;
-import esgi.al.exceptions.modelsExceptions.InvalidUserParameter;
+import esgi.al.exceptions.modelsExceptions.InvalidModelParameter;
 import esgi.al.exceptions.repositoriesExceptions.ElementNotFound;
 import esgi.al.exceptions.repositoriesExceptions.FailedToCreate;
 import esgi.al.models.User;
@@ -21,7 +20,7 @@ public class UserController implements Controller<User>
     }
 
     @Override
-    public void post(User user) throws InvalidUserParameter, InvalidAddressParameter, FailedToCreate
+    public void post(User user) throws InvalidModelParameter, FailedToCreate
     {
         UserValidator.validate(user);
         AddressValidator.validate(user.getAddress());
@@ -42,7 +41,7 @@ public class UserController implements Controller<User>
     }
 
     @Override
-    public void put(User user) throws InvalidUserParameter, InvalidAddressParameter, FailedToCreate, ElementNotFound
+    public void put(User user) throws InvalidModelParameter, ElementNotFound, FailedToCreate
     {
         UserValidator.validate(user);
         AddressValidator.validate(user.getAddress());

@@ -14,4 +14,9 @@ public class Globals
     {
         return "./res/backups/users/registeredUsers.old." + dateFormatter.format(new Date()) + ".json";
     }
+
+    public static String getPaymentsFileBackupPath()
+    {
+        return "./res/backups/payments/registeredPayments.old." + dateFormatter.format(new Date()) + ".json";
+    }
 }

@@ -1,6 +1,6 @@
 package esgi.al.validators;
 
-import esgi.al.exceptions.modelsExceptions.InvalidUserParameter;
+import esgi.al.exceptions.modelsExceptions.InvalidModelParameter;
 import esgi.al.models.User;
 
 import java.util.Objects;
@@ -9,24 +9,24 @@ import java.util.regex.Pattern;
 
 public class UserValidator
 {
-    public static void validate(User user) throws InvalidUserParameter
+    public static void validate(User user) throws InvalidModelParameter
     {
         validateLogin(user.getLogin());
         validatePassword(user.getPassword());
         validatePaymentMethod(user.getPaymentMethod());
     }
 
-    public static void validateLogin(String login) throws InvalidUserParameter
+    public static void validateLogin(String login) throws InvalidModelParameter
     {
         Objects.requireNonNullElse(login, "");
 
         if (login.trim().equals(""))
         {
-            throw new InvalidUserParameter("login", login);
+            throw new InvalidModelParameter("login", login);
         }
     }
 
-    public static void validatePassword(String password) throws InvalidUserParameter
+    public static void validatePassword(String password) throws InvalidModelParameter
     {
         Objects.requireNonNullElse(password, "");
         String passwordRegex = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%,?;.:/!§]).{8,}$";
@@ -35,17 +35,17 @@ public class UserValidator
 
         if (password.trim().equals("") || !matcher.matches())
         {
-            throw new InvalidUserParameter("password", password);
+            throw new InvalidModelParameter("password", password);
         }
     }
 
-    public static void validatePaymentMethod(String paymentMethodStr) throws InvalidUserParameter
+    public static void validatePaymentMethod(String paymentMethodStr) throws InvalidModelParameter
     {
         Objects.requireNonNullElse(paymentMethodStr, "");
 
         if (!paymentMethodStr.equals("card") && !paymentMethodStr.equals("paypal"))
         {
-            throw new InvalidUserParameter("payment method", paymentMethodStr);
+            throw new InvalidModelParameter("payment method", paymentMethodStr);
         }
     }
 }

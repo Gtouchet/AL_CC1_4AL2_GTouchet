@@ -1,6 +1,6 @@
 package esgi.al.userValidatorTests;
 
-import esgi.al.exceptions.modelsExceptions.InvalidUserParameter;
+import esgi.al.exceptions.modelsExceptions.InvalidModelParameter;
 import esgi.al.validators.UserValidator;
 import org.junit.Rule;
 import org.junit.Test;
@@ -15,7 +15,7 @@ public class PasswordValidatorTest
     public final ExpectedException exception = ExpectedException.none();
 
     @Test
-    public void passwordValidator_passwordNull() throws InvalidUserParameter
+    public void passwordValidator_passwordNull() throws InvalidModelParameter
     {
         exception.expect(NullPointerException.class);
 
@@ -23,9 +23,9 @@ public class PasswordValidatorTest
     }
 
     @Test
-    public void passwordValidator_lengthTooShort() throws InvalidUserParameter
+    public void passwordValidator_lengthTooShort() throws InvalidModelParameter
     {
-        exception.expect(InvalidUserParameter.class);
+        exception.expect(InvalidModelParameter.class);
 
         String password = "12Az,;";
         exception.expectMessage("Invalid user parameter for password [" + password + "]");
@@ -33,9 +33,9 @@ public class PasswordValidatorTest
     }
 
     @Test
-    public void passwordValidator_noUpperCase() throws InvalidUserParameter
+    public void passwordValidator_noUpperCase() throws InvalidModelParameter
     {
-        exception.expect(InvalidUserParameter.class);
+        exception.expect(InvalidModelParameter.class);
 
         String password = "12azer,;";
         exception.expectMessage("Invalid user parameter for password [" + password + "]");
@@ -43,9 +43,9 @@ public class PasswordValidatorTest
     }
 
     @Test
-    public void passwordValidator_noLowerCase() throws InvalidUserParameter
+    public void passwordValidator_noLowerCase() throws InvalidModelParameter
     {
-        exception.expect(InvalidUserParameter.class);
+        exception.expect(InvalidModelParameter.class);
 
         String password = "12AZER,;";
         exception.expectMessage("Invalid user parameter for password [" + password + "]");
@@ -53,9 +53,9 @@ public class PasswordValidatorTest
     }
 
     @Test
-    public void passwordValidator_noSpecialCharacter() throws InvalidUserParameter
+    public void passwordValidator_noSpecialCharacter() throws InvalidModelParameter
     {
-        exception.expect(InvalidUserParameter.class);
+        exception.expect(InvalidModelParameter.class);
 
         String password = "1234AZer";
         exception.expectMessage("Invalid user parameter for password [" + password + "]");
@@ -68,7 +68,7 @@ public class PasswordValidatorTest
         try {
             UserValidator.validatePassword("12AZer,;");
             assertTrue(true);
-        } catch (InvalidUserParameter ignored) {
+        } catch (InvalidModelParameter ignored) {
             fail();
         }
     }
