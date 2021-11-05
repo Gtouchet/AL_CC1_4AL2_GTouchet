@@ -7,10 +7,11 @@ public class Globals
 {
     private static final SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy-HH-mm-ss");
 
-    public static final String JSON_USER_FILE_PATH = "./res/registeredUsers.json";
+    public static final String JSON_USERS_FILE_PATH = "./res/registeredUsers.json";
+    public static final String JSON_PAYMENTS_FILE_PATH = "./res/registeredPayments.json";
 
-    public static String getJsonUserFileBackupPath()
+    public static String getUsersFileBackupPath()
     {
-        return "./res/backups/registeredUsers.old." + dateFormatter.format(new Date()) + ".json";
+        return "./res/backups/users/registeredUsers.old." + dateFormatter.format(new Date()) + ".json";
     }
 }

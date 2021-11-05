@@ -73,7 +73,7 @@ public class JsonHelper<T>
     {
         try {
             InputStream in = new FileInputStream(this.filePath);
-            OutputStream out = new FileOutputStream(Globals.getJsonUserFileBackupPath());
+            OutputStream out = new FileOutputStream(Globals.getUsersFileBackupPath());
 
             byte[] buffer = new byte[1024];
             int length;
