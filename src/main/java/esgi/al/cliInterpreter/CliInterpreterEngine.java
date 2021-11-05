@@ -4,9 +4,7 @@ import esgi.al.cliInterpreter.cliCommandHandlers.CreateCommandHandler;
 import esgi.al.cliInterpreter.cliCommandHandlers.DeleteCommandHandler;
 import esgi.al.cliInterpreter.cliCommandHandlers.GetCommandHandler;
 import esgi.al.cliInterpreter.cliCommandHandlers.UpdateCommandHandler;
-import esgi.al.controllers.Controller;
-import esgi.al.models.Payment;
-import esgi.al.models.User;
+import esgi.al.factories.ControllersFactory;
 
 import java.util.Arrays;
 import java.util.List;
@@ -14,17 +12,15 @@ import java.util.Scanner;
 
 public class CliInterpreterEngine
 {
-    private final Controller<User> userController;
-    private final Controller<Payment> paymentController;
+    private final ControllersFactory controllersFactory;
 
     private final Scanner scanner;
     private final List<Command> commands;
     private final List<Table> tables;
 
-    public CliInterpreterEngine(Controller<User> userController, Controller<Payment> paymentController)
+    public CliInterpreterEngine(ControllersFactory controllersFactory)
     {
-        this.userController = userController;
-        this.paymentController = paymentController;
+        this.controllersFactory = controllersFactory;
 
         this.scanner = new Scanner(System.in);
         this.commands = Arrays.asList(Command.values());
@@ -83,10 +79,32 @@ public class CliInterpreterEngine
                 {
                     switch (params[0].toUpperCase())
                     {
-                        case "CREATE": new CreateCommandHandler(this.userController, this.paymentController, params); break;
-                        case "GET": new GetCommandHandler(this.userController, this.paymentController, params); break;
-                        case "UPDATE": new UpdateCommandHandler(this.userController, params); break;
-                        case "DELETE": new DeleteCommandHandler(this.userController, this.paymentController, params); break;
+                        case "CREATE":
+                            new CreateCommandHandler(
+                                    this.controllersFactory.createUserController(),
+                                    this.controllersFactory.createPaymentController(),
+                                    params);
+                            break;
+
+                        case "GET":
+                            new GetCommandHandler(
+                                    this.controllersFactory.createUserController(),
+                                    this.controllersFactory.createPaymentController(),
+                                    params);
+                        break;
+
+                        case "UPDATE":
+                            new UpdateCommandHandler(
+                                    this.controllersFactory.createUserController(),
+                                    params);
+                        break;
+
+                        case "DELETE":
+                            new DeleteCommandHandler(
+                                    this.controllersFactory.createUserController(),
+                                    this.controllersFactory.createPaymentController(),
+                                    params);
+                        break;
                     }
                 }
             }

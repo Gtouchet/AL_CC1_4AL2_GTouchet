@@ -39,11 +39,10 @@ public class PaymentController implements Controller<Payment>
     }
 
     @Override
-    public void put(Payment payment) throws ElementNotFound, FailedToCreate, InvalidModelParameter
+    public void put(Payment payment)
     {
-        PaymentValidator.validate(payment);
-
-        this.paymentRepository.put(payment);
+        // Do nothing, we do not update a payment after it's been registered
+        // This code is unreachable
     }
 
     @Override

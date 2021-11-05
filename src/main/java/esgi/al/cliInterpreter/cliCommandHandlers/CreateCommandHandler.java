@@ -43,7 +43,7 @@ public class CreateCommandHandler
                 try {
                     this.userController.post(
                             User.of(params[2], params[3], params[4], params[5].trim().toLowerCase(),
-                                    Address.of(streetNumber, params[7], params[8]))
+                            Address.of(streetNumber, params[7], params[8]))
                     );
                 } catch (InvalidModelParameter | FailedToCreate e2) {
                     System.err.println(e2.getMessage());
