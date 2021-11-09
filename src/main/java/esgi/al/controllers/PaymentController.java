@@ -19,35 +19,35 @@ public class PaymentController implements Controller<Payment>
     }
 
     @Override
-    public void post(Payment payment) throws InvalidModelParameter, FailedToCreate
+    public void create(Payment payment) throws InvalidModelParameter, FailedToCreate
     {
         PaymentValidator.validate(payment);
 
-        this.paymentRepository.post(payment);
+        this.paymentRepository.create(payment);
     }
 
     @Override
-    public Stream<Payment> get()
+    public Stream<Payment> read()
     {
-        return this.paymentRepository.get();
+        return this.paymentRepository.read();
     }
 
     @Override
-    public Payment get(String id) throws ElementNotFound
+    public Payment read(String id) throws ElementNotFound
     {
-        return this.paymentRepository.get(id);
+        return this.paymentRepository.read(id);
     }
 
     @Override
-    public void put(Payment payment)
+    public void update(Payment payment)
     {
         // Do nothing, we do not update a payment after it's been registered
         // This code is unreachable
     }
 
     @Override
-    public void del(String id) throws ElementNotFound
+    public void remove(String id) throws ElementNotFound
     {
-        this.paymentRepository.del(id);
+        this.paymentRepository.remove(id);
     }
 }

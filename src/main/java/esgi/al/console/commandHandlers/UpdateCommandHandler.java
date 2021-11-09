@@ -1,5 +1,6 @@
-package esgi.al.cliInterpreter.cliCommandHandlers;
+package esgi.al.console.commandHandlers;
 
+import esgi.al.console.enumerators.CommandKeyword;
 import esgi.al.controllers.Controller;
 import esgi.al.exceptions.modelsExceptions.InvalidModelParameter;
 import esgi.al.exceptions.repositoriesExceptions.ElementNotFound;
@@ -11,37 +12,31 @@ public class UpdateCommandHandler
 {
     private final Controller<User> userController;
 
-    private final String commandExample;
-
-    public UpdateCommandHandler(Controller<User> userController, String[] params)
+    public UpdateCommandHandler(Controller<User> userController)
     {
         this.userController = userController;
-
-        this.commandExample = "Invalid syntax, UPDATE USER id login password name paymentMethod number street city";
-
-        this.handle(params);
     }
 
-    private void handle(String[] params)
+    public void handle(String[] params)
     {
         if (params.length != 10)
         {
-            System.out.println(this.commandExample);
+            System.out.println(CommandKeyword.UPDATE.usageExample);
             return;
         }
 
         try {
             int streetNumber = Integer.parseInt(params[7]);
             try {
-                this.userController.put(
+                this.userController.update(
                         User.of(params[2].toLowerCase(), params[3], params[4], params[5], params[6].trim().toLowerCase(),
                         Address.of(streetNumber, params[8], params[9]))
                 );
             } catch ( InvalidModelParameter | ElementNotFound | FailedToCreate e2) {
-                System.err.println(e2.getMessage());
+                System.out.println(e2.getMessage());
             }
         } catch (NumberFormatException e1) {
-            System.err.println("Impossible to apply [" + params[7] + "] as a street number");
+            System.out.println("Impossible to apply [" + params[7] + "] as a street number");
         }
     }
 }

@@ -7,7 +7,8 @@ import esgi.al.repositories.Repository;
 import esgi.al.repositories.UsersRepository;
 import esgi.al.utilitaries.Globals;
 
-public class RepositoriesFactory {
+public class RepositoriesFactory
+{
     public Repository<User> createUserRepository()
     {
         return new UsersRepository(Globals.JSON_USERS_FILE_PATH);

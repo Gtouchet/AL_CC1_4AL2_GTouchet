@@ -1,6 +1,7 @@
-package esgi.al.cliInterpreter.cliCommandHandlers;
+package esgi.al.console.commandHandlers;
 
-import esgi.al.cliInterpreter.Table;
+import esgi.al.console.enumerators.CommandKeyword;
+import esgi.al.console.enumerators.TableName;
 import esgi.al.controllers.Controller;
 import esgi.al.exceptions.repositoriesExceptions.ElementNotFound;
 import esgi.al.models.Payment;
@@ -11,33 +12,27 @@ public class DeleteCommandHandler
     private final Controller<User> userController;
     private final Controller<Payment> paymentController;
 
-    private final String commandExample;
-
-    public DeleteCommandHandler(Controller<User> userController, Controller<Payment> paymentController, String[] params)
+    public DeleteCommandHandler(Controller<User> userController, Controller<Payment> paymentController)
     {
         this.userController = userController;
         this.paymentController = paymentController;
-
-        this.commandExample = "Invalid syntax, DELETE USER/PAYMENT id";
-
-        this.handle(params);
     }
 
-    private void handle(String[] params)
+    public void handle(String[] params)
     {
-        if (params[1].equalsIgnoreCase(String.valueOf(Table.USER)))
+        if (params[1].equalsIgnoreCase(String.valueOf(TableName.USER)))
         {
             if (params.length != 3)
             {
-                System.out.println(this.commandExample);
+                System.out.println(CommandKeyword.DELETE.usageExample);
                 return;
             }
 
             try {
-                this.userController.del(params[2].toLowerCase());
+                this.userController.remove(params[2].toLowerCase());
 
             } catch (ElementNotFound e) {
-                System.err.println(e.getMessage());
+                System.out.println(e.getMessage());
             }
         }
 
@@ -45,15 +40,15 @@ public class DeleteCommandHandler
         {
             if (params.length != 3)
             {
-                System.out.println(this.commandExample);
+                System.out.println(CommandKeyword.DELETE.usageExample);
                 return;
             }
 
             try {
-                this.paymentController.del(params[2].toLowerCase());
+                this.paymentController.remove(params[2].toLowerCase());
 
             } catch (ElementNotFound e) {
-                System.err.println(e.getMessage());
+                System.out.println(e.getMessage());
             }
         }
     }

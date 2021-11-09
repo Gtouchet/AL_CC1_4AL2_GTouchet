@@ -28,7 +28,7 @@ public class PaymentRepository implements Repository<Payment>
     }
 
     @Override
-    public void post(Payment element)
+    public void create(Payment element)
     {
         this.payments.add(element);
 
@@ -36,26 +36,26 @@ public class PaymentRepository implements Repository<Payment>
     }
 
     @Override
-    public Stream<Payment> get()
+    public Stream<Payment> read()
     {
         return this.payments.stream();
     }
 
     @Override
-    public Payment get(String id) throws ElementNotFound
+    public Payment read(String id) throws ElementNotFound
     {
         return this.findPaymentById(id);
     }
 
     @Override
-    public void put(Payment payment)
+    public void update(Payment payment)
     {
         // Do nothing, we do not update a payment after it's been registered
         // This code is unreachable
     }
 
     @Override
-    public void del(String id) throws ElementNotFound
+    public void remove(String id) throws ElementNotFound
     {
         Payment payment = this.findPaymentById(id);
 

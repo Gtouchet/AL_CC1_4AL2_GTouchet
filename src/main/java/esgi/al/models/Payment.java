@@ -27,22 +27,6 @@ public class Payment
     }
 
     public static Payment of(
-            String id,
-            String userId,
-            float amount,
-            String reason,
-            String date
-    ) {
-        return new Payment(
-                id,
-                userId,
-                amount,
-                reason,
-                date
-        );
-    }
-
-    public static Payment of(
             String userId,
             float amount,
             String reason

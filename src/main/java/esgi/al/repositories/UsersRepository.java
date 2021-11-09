@@ -29,7 +29,7 @@ public class UsersRepository implements Repository<User>
     }
 
     @Override
-    public void post(User user) throws FailedToCreate
+    public void create(User user) throws FailedToCreate
     {
         User registeredUser = this.findUserByLogin(user.getLogin());
         if (registeredUser != null)
@@ -43,19 +43,19 @@ public class UsersRepository implements Repository<User>
     }
 
     @Override
-    public Stream<User> get()
+    public Stream<User> read()
     {
         return this.users.stream();
     }
 
     @Override
-    public User get(String id) throws ElementNotFound
+    public User read(String id) throws ElementNotFound
     {
         return this.findUserById(id);
     }
 
     @Override
-    public void put(User user) throws ElementNotFound, FailedToCreate
+    public void update(User user) throws ElementNotFound, FailedToCreate
     {
         User registeredUserId = this.findUserById(user.getId());
 
@@ -72,7 +72,7 @@ public class UsersRepository implements Repository<User>
     }
 
     @Override
-    public void del(String id) throws ElementNotFound
+    public void remove(String id) throws ElementNotFound
     {
         User user = this.findUserById(id);
 

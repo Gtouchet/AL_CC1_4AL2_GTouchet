@@ -5,12 +5,5 @@
     "amount": 10.5,
     "reason": "testVirgule",
     "date": "05-11-2021-17-39-59"
-  },
-  {
-    "id": "f9146163-c8e9-4313-ba92-e34c70177398",
-    "userId": "5dcd9b75-8df1-4daf-83c7-3d89f5909f6c",
-    "amount": 5.48,
-    "reason": "pourTester",
-    "date": "05-11-2021-18-50-33"
   }
 ]

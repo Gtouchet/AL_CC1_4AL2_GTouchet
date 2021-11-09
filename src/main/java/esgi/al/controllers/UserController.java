@@ -20,38 +20,38 @@ public class UserController implements Controller<User>
     }
 
     @Override
-    public void post(User user) throws InvalidModelParameter, FailedToCreate
+    public void create(User user) throws InvalidModelParameter, FailedToCreate
     {
         UserValidator.validate(user);
         AddressValidator.validate(user.getAddress());
 
-        this.userRepository.post(user);
+        this.userRepository.create(user);
     }
 
     @Override
-    public Stream<User> get()
+    public Stream<User> read()
     {
-        return this.userRepository.get();
+        return this.userRepository.read();
     }
 
     @Override
-    public User get(String id) throws ElementNotFound
+    public User read(String id) throws ElementNotFound
     {
-        return this.userRepository.get(id);
+        return this.userRepository.read(id);
     }
 
     @Override
-    public void put(User user) throws InvalidModelParameter, ElementNotFound, FailedToCreate
+    public void update(User user) throws InvalidModelParameter, ElementNotFound, FailedToCreate
     {
         UserValidator.validate(user);
         AddressValidator.validate(user.getAddress());
 
-        this.userRepository.put(user);
+        this.userRepository.update(user);
     }
 
     @Override
-    public void del(String id) throws ElementNotFound
+    public void remove(String id) throws ElementNotFound
     {
-        this.userRepository.del(id);
+        this.userRepository.remove(id);
     }
 }
