@@ -1,7 +1,7 @@
-package esgi.al.userValidatorTests;
+package esgi.al.cc1.userValidatorTests;
 
-import esgi.al.exceptions.modelsExceptions.InvalidModelParameter;
-import esgi.al.validators.UserValidator;
+import esgi.al.cc1.exceptions.modelsExceptions.InvalidModelParameter;
+import esgi.al.cc1.validators.UserValidator;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;

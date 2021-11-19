@@ -1,4 +1,4 @@
-package esgi.al.models;
+package esgi.al.cc1.models;
 
 public class Address
 {

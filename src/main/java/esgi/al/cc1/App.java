@@ -1,7 +1,7 @@
-package esgi.al;
+package esgi.al.cc1;
 
-import esgi.al.console.InterpreterEngine;
-import esgi.al.factories.ControllersFactory;
+import esgi.al.cc1.console.InterpreterEngine;
+import esgi.al.cc1.factories.ControllersFactory;
 
 public class App
 {

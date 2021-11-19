@@ -1,11 +1,11 @@
-package esgi.al.factories;
+package esgi.al.cc1.factories;
 
-import esgi.al.models.Payment;
-import esgi.al.models.User;
-import esgi.al.repositories.PaymentRepository;
-import esgi.al.repositories.Repository;
-import esgi.al.repositories.UsersRepository;
-import esgi.al.utilitaries.Globals;
+import esgi.al.cc1.repositories.PaymentRepository;
+import esgi.al.cc1.repositories.Repository;
+import esgi.al.cc1.repositories.UsersRepository;
+import esgi.al.cc1.utilitaries.Globals;
+import esgi.al.cc1.models.Payment;
+import esgi.al.cc1.models.User;
 
 public class RepositoriesFactory
 {

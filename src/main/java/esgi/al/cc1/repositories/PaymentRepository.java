@@ -1,8 +1,8 @@
-package esgi.al.repositories;
+package esgi.al.cc1.repositories;
 
-import esgi.al.exceptions.repositoriesExceptions.ElementNotFound;
-import esgi.al.models.Payment;
-import esgi.al.utilitaries.JsonHelper;
+import esgi.al.cc1.exceptions.repositoriesExceptions.ElementNotFound;
+import esgi.al.cc1.models.Payment;
+import esgi.al.cc1.utilitaries.JsonHelper;
 
 import java.util.ArrayList;
 import java.util.Arrays;

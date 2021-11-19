@@ -1,10 +1,10 @@
-package esgi.al.factories;
+package esgi.al.cc1.factories;
 
-import esgi.al.controllers.Controller;
-import esgi.al.controllers.PaymentController;
-import esgi.al.controllers.UserController;
-import esgi.al.models.Payment;
-import esgi.al.models.User;
+import esgi.al.cc1.controllers.Controller;
+import esgi.al.cc1.controllers.PaymentController;
+import esgi.al.cc1.controllers.UserController;
+import esgi.al.cc1.models.Payment;
+import esgi.al.cc1.models.User;
 
 public class ControllersFactory
 {

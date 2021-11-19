@@ -1,7 +1,7 @@
-package esgi.al.validators;
+package esgi.al.cc1.validators;
 
-import esgi.al.exceptions.modelsExceptions.InvalidModelParameter;
-import esgi.al.models.User;
+import esgi.al.cc1.exceptions.modelsExceptions.InvalidModelParameter;
+import esgi.al.cc1.models.User;
 
 import java.util.Objects;
 import java.util.regex.Matcher;

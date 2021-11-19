@@ -1,4 +1,4 @@
-package esgi.al.exceptions.modelsExceptions;
+package esgi.al.cc1.exceptions.modelsExceptions;
 
 public class InvalidModelParameter extends Throwable
 {

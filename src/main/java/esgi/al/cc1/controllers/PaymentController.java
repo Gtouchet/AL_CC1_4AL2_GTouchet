@@ -1,11 +1,11 @@
-package esgi.al.controllers;
+package esgi.al.cc1.controllers;
 
-import esgi.al.exceptions.modelsExceptions.InvalidModelParameter;
-import esgi.al.exceptions.repositoriesExceptions.ElementNotFound;
-import esgi.al.exceptions.repositoriesExceptions.FailedToCreate;
-import esgi.al.models.Payment;
-import esgi.al.repositories.Repository;
-import esgi.al.validators.PaymentValidator;
+import esgi.al.cc1.exceptions.modelsExceptions.InvalidModelParameter;
+import esgi.al.cc1.exceptions.repositoriesExceptions.ElementNotFound;
+import esgi.al.cc1.exceptions.repositoriesExceptions.FailedToCreate;
+import esgi.al.cc1.models.Payment;
+import esgi.al.cc1.repositories.Repository;
+import esgi.al.cc1.validators.PaymentValidator;
 
 import java.util.stream.Stream;
 

@@ -1,7 +1,7 @@
-package esgi.al.validators;
+package esgi.al.cc1.validators;
 
-import esgi.al.exceptions.modelsExceptions.InvalidModelParameter;
-import esgi.al.models.Payment;
+import esgi.al.cc1.exceptions.modelsExceptions.InvalidModelParameter;
+import esgi.al.cc1.models.Payment;
 
 public class PaymentValidator
 {

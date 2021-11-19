@@ -1,8 +1,8 @@
-package esgi.al.controllers;
+package esgi.al.cc1.controllers;
 
-import esgi.al.exceptions.modelsExceptions.InvalidModelParameter;
-import esgi.al.exceptions.repositoriesExceptions.ElementNotFound;
-import esgi.al.exceptions.repositoriesExceptions.FailedToCreate;
+import esgi.al.cc1.exceptions.modelsExceptions.InvalidModelParameter;
+import esgi.al.cc1.exceptions.repositoriesExceptions.ElementNotFound;
+import esgi.al.cc1.exceptions.repositoriesExceptions.FailedToCreate;
 
 import java.util.stream.Stream;
 

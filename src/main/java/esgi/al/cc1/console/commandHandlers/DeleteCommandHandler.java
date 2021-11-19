@@ -1,11 +1,11 @@
-package esgi.al.console.commandHandlers;
+package esgi.al.cc1.console.commandHandlers;
 
-import esgi.al.console.enumerators.CommandKeyword;
-import esgi.al.console.enumerators.TableName;
-import esgi.al.controllers.Controller;
-import esgi.al.exceptions.repositoriesExceptions.ElementNotFound;
-import esgi.al.models.Payment;
-import esgi.al.models.User;
+import esgi.al.cc1.console.enumerators.CommandKeyword;
+import esgi.al.cc1.console.enumerators.TableName;
+import esgi.al.cc1.controllers.Controller;
+import esgi.al.cc1.exceptions.repositoriesExceptions.ElementNotFound;
+import esgi.al.cc1.models.Payment;
+import esgi.al.cc1.models.User;
 
 public class DeleteCommandHandler
 {

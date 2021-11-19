@@ -1,4 +1,4 @@
-package esgi.al.utilitaries;
+package esgi.al.cc1.utilitaries;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

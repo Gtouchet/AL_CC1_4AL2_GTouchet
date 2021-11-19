@@ -1,4 +1,4 @@
-package esgi.al.utilitaries;
+package esgi.al.cc1.utilitaries;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

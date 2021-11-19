@@ -1,12 +1,12 @@
-package esgi.al.console;
+package esgi.al.cc1.console;
 
-import esgi.al.console.commandHandlers.CreateCommandHandler;
-import esgi.al.console.commandHandlers.DeleteCommandHandler;
-import esgi.al.console.commandHandlers.GetCommandHandler;
-import esgi.al.console.commandHandlers.UpdateCommandHandler;
-import esgi.al.console.enumerators.CommandKeyword;
-import esgi.al.console.enumerators.TableName;
-import esgi.al.factories.ControllersFactory;
+import esgi.al.cc1.console.commandHandlers.CreateCommandHandler;
+import esgi.al.cc1.console.commandHandlers.DeleteCommandHandler;
+import esgi.al.cc1.console.commandHandlers.GetCommandHandler;
+import esgi.al.cc1.console.commandHandlers.UpdateCommandHandler;
+import esgi.al.cc1.console.enumerators.CommandKeyword;
+import esgi.al.cc1.console.enumerators.TableName;
+import esgi.al.cc1.factories.ControllersFactory;
 
 import java.util.List;
 import java.util.Objects;

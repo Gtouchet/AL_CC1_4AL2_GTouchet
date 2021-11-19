@@ -1,7 +1,7 @@
-package esgi.al.console;
+package esgi.al.cc1.console;
 
-import esgi.al.console.enumerators.CommandKeyword;
-import esgi.al.factories.ControllersFactory;
+import esgi.al.cc1.console.enumerators.CommandKeyword;
+import esgi.al.cc1.factories.ControllersFactory;
 
 import java.util.Scanner;
 
