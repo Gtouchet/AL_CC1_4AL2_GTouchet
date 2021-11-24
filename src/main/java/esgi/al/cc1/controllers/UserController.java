@@ -5,8 +5,8 @@ import esgi.al.cc1.exceptions.repositoriesExceptions.ElementNotFound;
 import esgi.al.cc1.exceptions.repositoriesExceptions.FailedToCreate;
 import esgi.al.cc1.models.User;
 import esgi.al.cc1.repositories.Repository;
-import esgi.al.cc1.validators.AddressValidator;
-import esgi.al.cc1.validators.UserValidator;
+import esgi.al.cc1.services.validatorServices.AddressValidator;
+import esgi.al.cc1.services.validatorServices.UserValidator;
 
 import java.util.stream.Stream;
 

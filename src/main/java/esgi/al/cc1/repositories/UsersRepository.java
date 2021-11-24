@@ -2,7 +2,7 @@ package esgi.al.cc1.repositories;
 
 import esgi.al.cc1.exceptions.repositoriesExceptions.ElementNotFound;
 import esgi.al.cc1.exceptions.repositoriesExceptions.FailedToCreate;
-import esgi.al.cc1.utilitaries.JsonHelper;
+import esgi.al.cc1.services.jsonServices.JsonAccessor;
 import esgi.al.cc1.models.User;
 
 import java.util.ArrayList;
@@ -14,18 +14,18 @@ public class UsersRepository implements Repository<User>
 {
     private final List<User> users;
 
-    private final JsonHelper<User> jsonHelper;
+    private final JsonAccessor<User> jsonAccessor;
 
-    public UsersRepository(String jsonFilePath)
+    public UsersRepository(JsonAccessor<User> jsonAccessor)
     {
-        this.jsonHelper = new JsonHelper<>(User.class, jsonFilePath);
+        this.jsonAccessor = jsonAccessor;
 
         this.users = this.getDataFromJsonFile();
     }
 
     private List<User> getDataFromJsonFile()
     {
-        return new ArrayList<>(Arrays.asList(this.jsonHelper.getDataFromFile()));
+        return new ArrayList<>(Arrays.asList(this.jsonAccessor.getDataFromFile()));
     }
 
     @Override
@@ -39,7 +39,7 @@ public class UsersRepository implements Repository<User>
 
         this.users.add(user);
 
-        this.jsonHelper.writeInFile(this.users);
+        this.jsonAccessor.writeInFile(this.users);
     }
 
     @Override
@@ -68,7 +68,7 @@ public class UsersRepository implements Repository<User>
         this.users.remove(registeredUserId);
         this.users.add(user);
 
-        this.jsonHelper.writeInFile(this.users);
+        this.jsonAccessor.writeInFile(this.users);
     }
 
     @Override
@@ -78,7 +78,7 @@ public class UsersRepository implements Repository<User>
 
         this.users.remove(user);
 
-        this.jsonHelper.writeInFile(this.users);
+        this.jsonAccessor.writeInFile(this.users);
     }
 
     private User findUserById(String id) throws ElementNotFound

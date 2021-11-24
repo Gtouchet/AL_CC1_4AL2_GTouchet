@@ -1,7 +1,7 @@
 package esgi.al.cc1.addressValidatorTests;
 
 import esgi.al.cc1.exceptions.modelsExceptions.InvalidModelParameter;
-import esgi.al.cc1.validators.AddressValidator;
+import esgi.al.cc1.services.validatorServices.AddressValidator;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;

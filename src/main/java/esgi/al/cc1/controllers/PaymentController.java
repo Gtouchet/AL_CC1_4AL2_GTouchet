@@ -5,7 +5,7 @@ import esgi.al.cc1.exceptions.repositoriesExceptions.ElementNotFound;
 import esgi.al.cc1.exceptions.repositoriesExceptions.FailedToCreate;
 import esgi.al.cc1.models.Payment;
 import esgi.al.cc1.repositories.Repository;
-import esgi.al.cc1.validators.PaymentValidator;
+import esgi.al.cc1.services.validatorServices.PaymentValidator;
 
 import java.util.stream.Stream;
 

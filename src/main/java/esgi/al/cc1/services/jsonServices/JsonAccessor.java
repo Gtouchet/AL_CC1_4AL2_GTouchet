@@ -1,4 +1,4 @@
-package esgi.al.cc1.utilitaries;
+package esgi.al.cc1.services.jsonServices;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -8,31 +8,31 @@ import java.io.*;
 import java.lang.reflect.Array;
 import java.util.List;
 
-public class JsonHelper<T>
+public class JsonAccessor<T>
 {
     private final Class<T> dataType;
 
-    private final String filePath;
+    private final JsonPathCreator jsonPathCreator;
 
-    public JsonHelper(Class<T> dataType, String filePath)
+    public JsonAccessor(Class<T> dataType, JsonPathCreator jsonPathCreator)
     {
         this.dataType = dataType;
 
-        this.filePath = filePath;
+        this.jsonPathCreator = jsonPathCreator;
     }
 
     public T[] getDataFromFile()
     {
         try {
-            JsonReader reader = new JsonReader(new FileReader(this.filePath));
+            JsonReader reader = new JsonReader(new FileReader(this.jsonPathCreator.filePath));
             T[] data = new Gson().fromJson(reader, this.dataType.arrayType());
             return data != null && data.length > 0 ? data : (T[]) Array.newInstance(this.dataType, 0);
 
         } catch (FileNotFoundException e1) {
             try {
-                System.err.println("Error: file [" + this.filePath + "] not found, could not read data.");
+                System.err.println("Error: file [" + this.jsonPathCreator.filePath + "] not found, could not read data.");
 
-                new File(this.filePath).createNewFile();
+                new File(this.jsonPathCreator.filePath).createNewFile();
                 System.err.println("Empty file created to write data in.");
 
                 return this.getDataFromFile();
@@ -50,15 +50,15 @@ public class JsonHelper<T>
 
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         try {
-            FileWriter writer = new FileWriter(this.filePath);
+            FileWriter writer = new FileWriter(this.jsonPathCreator.filePath);
             gson.toJson(data, writer);
             writer.close();
 
         } catch (IOException e1) {
             try {
-                System.err.println("Error: file [" + this.filePath + "] not found, could not write data.");
+                System.err.println("Error: file [" + this.jsonPathCreator.filePath + "] not found, could not write data.");
 
-                new File(this.filePath).createNewFile();
+                new File(this.jsonPathCreator.filePath).createNewFile();
                 System.err.println("Empty file created to write data in.");
 
                 this.writeInFile(data);
@@ -72,9 +72,8 @@ public class JsonHelper<T>
     private void createBackupFile()
     {
         try {
-            InputStream in = new FileInputStream(this.filePath);
-            OutputStream out = new FileOutputStream(this.dataType.getName().equals("User") ?
-                    Globals.getUsersFileBackupPath() : Globals.getPaymentsFileBackupPath());
+            InputStream in = new FileInputStream(this.jsonPathCreator.filePath);
+            OutputStream out = new FileOutputStream(this.jsonPathCreator.getBackupFilePath());
 
             byte[] buffer = new byte[1024];
             int length;
@@ -87,7 +86,7 @@ public class JsonHelper<T>
             out.close();
 
         } catch (IOException e) {
-            System.err.println("Error: could not create backup file.\n" + e.getMessage());
+            System.err.println("Warning: could not create backup file.\n" + e.getMessage());
         }
     }
 }

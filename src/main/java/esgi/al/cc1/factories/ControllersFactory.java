@@ -15,6 +15,6 @@ public class ControllersFactory
 
     public Controller<Payment> createPaymentController()
     {
-        return new PaymentController(new RepositoriesFactory().createPaymentController());
+        return new PaymentController(new RepositoriesFactory().createPaymentRepository());
     }
 }

@@ -10,5 +10,17 @@
       "street": "PB",
       "city": "D"
     }
+  },
+  {
+    "id": "725ad4b5-b9c1-49df-8c48-dab008d36d23",
+    "login": "touchet92",
+    "password": "1548Abjf::,;",
+    "name": "Guillaume",
+    "paymentMethod": "card",
+    "address": {
+      "number": 58,
+      "street": "rueBoustifaille",
+      "city": "paris"
+    }
   }
 ]

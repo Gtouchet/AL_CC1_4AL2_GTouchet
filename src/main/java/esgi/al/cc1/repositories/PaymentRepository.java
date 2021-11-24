@@ -2,7 +2,7 @@ package esgi.al.cc1.repositories;
 
 import esgi.al.cc1.exceptions.repositoriesExceptions.ElementNotFound;
 import esgi.al.cc1.models.Payment;
-import esgi.al.cc1.utilitaries.JsonHelper;
+import esgi.al.cc1.services.jsonServices.JsonAccessor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,18 +13,18 @@ public class PaymentRepository implements Repository<Payment>
 {
     private final List<Payment> payments;
 
-    private final JsonHelper<Payment> jsonHelper;
+    private final JsonAccessor<Payment> jsonAccessor;
 
-    public PaymentRepository(String jsonFilePath)
+    public PaymentRepository(JsonAccessor<Payment> jsonAccessor)
     {
-        this.jsonHelper = new JsonHelper<>(Payment.class, jsonFilePath);
+        this.jsonAccessor = jsonAccessor;
 
         this.payments = this.getDataFromJsonFile();
     }
 
     private List<Payment> getDataFromJsonFile()
     {
-        return new ArrayList<>(Arrays.asList(this.jsonHelper.getDataFromFile()));
+        return new ArrayList<>(Arrays.asList(this.jsonAccessor.getDataFromFile()));
     }
 
     @Override
@@ -32,7 +32,7 @@ public class PaymentRepository implements Repository<Payment>
     {
         this.payments.add(element);
 
-        this.jsonHelper.writeInFile(this.payments);
+        this.jsonAccessor.writeInFile(this.payments);
     }
 
     @Override
@@ -61,7 +61,7 @@ public class PaymentRepository implements Repository<Payment>
 
         this.payments.remove(payment);
 
-        this.jsonHelper.writeInFile(this.payments);
+        this.jsonAccessor.writeInFile(this.payments);
     }
 
     private Payment findPaymentById(String id) throws ElementNotFound
