@@ -1,6 +1,6 @@
 package esgi.al.cc1.exceptions.repositoriesExceptions;
 
-public class FailedToCreate extends Throwable
+public class FailedToCreate extends Exception
 {
     public FailedToCreate(String userLogin, String registeredUserId)
     {

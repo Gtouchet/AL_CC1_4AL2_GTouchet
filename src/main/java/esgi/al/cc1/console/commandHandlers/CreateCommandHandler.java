@@ -6,16 +6,15 @@ import esgi.al.cc1.exceptions.repositoriesExceptions.FailedToCreate;
 import esgi.al.cc1.controllers.Controller;
 import esgi.al.cc1.exceptions.modelsExceptions.InvalidModelParameter;
 import esgi.al.cc1.exceptions.repositoriesExceptions.ElementNotFound;
-import esgi.al.cc1.models.Address;
 import esgi.al.cc1.models.Payment;
-import esgi.al.cc1.models.User;
+import esgi.al.cc1.models.Tradesman;
 
 public class CreateCommandHandler
 {
-    private final Controller<User> userController;
+    private final Controller<Tradesman> userController;
     private final Controller<Payment> paymentController;
 
-    public CreateCommandHandler(Controller<User> userController, Controller<Payment> paymentController)
+    public CreateCommandHandler(Controller<Tradesman> userController, Controller<Payment> paymentController)
     {
         this.userController = userController;
         this.paymentController = paymentController;
@@ -35,7 +34,7 @@ public class CreateCommandHandler
                 int streetNumber = Integer.parseInt(params[6]);
                 try {
                     this.userController.create(
-                            User.of(params[2], params[3], params[4], params[5].trim().toLowerCase(),
+                            Tradesman.of(params[2], params[3], params[4], params[5].trim().toLowerCase(),
                             Address.of(streetNumber, params[7], params[8]))
                     );
                 } catch (InvalidModelParameter | FailedToCreate e2) {

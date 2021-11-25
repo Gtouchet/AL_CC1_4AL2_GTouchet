@@ -1,6 +1,6 @@
 package esgi.al.cc1.exceptions.repositoriesExceptions;
 
-public class ElementNotFound extends Throwable
+public class ElementNotFound extends Exception
 {
     public ElementNotFound(String id)
     {

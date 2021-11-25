@@ -1,16 +1,16 @@
 package esgi.al.cc1.factories;
 
 import esgi.al.cc1.models.Payment;
-import esgi.al.cc1.models.User;
+import esgi.al.cc1.models.Tradesman;
 import esgi.al.cc1.services.jsonServices.JsonAccessor;
 import esgi.al.cc1.services.jsonServices.JsonPathCreator;
 
 public class JsonAccessorsFactory
 {
-    public JsonAccessor<User> createUserJsonAccessor()
+    public JsonAccessor<Tradesman> createUserJsonAccessor()
     {
-        return new JsonAccessor<>(User.class, new JsonPathCreator(
-                "./res/registeredUsers.json",
+        return new JsonAccessor<>(Tradesman.class, new JsonPathCreator(
+                "./res/tradesmen.json",
                 "./res/backups/user/"
         ));
     }
@@ -18,7 +18,7 @@ public class JsonAccessorsFactory
     public JsonAccessor<Payment> createPaymentJsonAccessor()
     {
         return new JsonAccessor<>(Payment.class, new JsonPathCreator(
-                "./res/registeredPayments.json",
+                "./res/payments.json",
                 "./res/backups/payment/"
         ));
     }

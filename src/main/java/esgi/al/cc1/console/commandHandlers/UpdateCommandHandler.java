@@ -5,14 +5,13 @@ import esgi.al.cc1.exceptions.repositoriesExceptions.FailedToCreate;
 import esgi.al.cc1.controllers.Controller;
 import esgi.al.cc1.exceptions.modelsExceptions.InvalidModelParameter;
 import esgi.al.cc1.exceptions.repositoriesExceptions.ElementNotFound;
-import esgi.al.cc1.models.Address;
-import esgi.al.cc1.models.User;
+import esgi.al.cc1.models.Tradesman;
 
 public class UpdateCommandHandler
 {
-    private final Controller<User> userController;
+    private final Controller<Tradesman> userController;
 
-    public UpdateCommandHandler(Controller<User> userController)
+    public UpdateCommandHandler(Controller<Tradesman> userController)
     {
         this.userController = userController;
     }
@@ -29,7 +28,7 @@ public class UpdateCommandHandler
             int streetNumber = Integer.parseInt(params[7]);
             try {
                 this.userController.update(
-                        User.of(params[2].toLowerCase(), params[3], params[4], params[5], params[6].trim().toLowerCase(),
+                        Tradesman.of(params[2].toLowerCase(), params[3], params[4], params[5], params[6].trim().toLowerCase(),
                         Address.of(streetNumber, params[8], params[9]))
                 );
             } catch ( InvalidModelParameter | ElementNotFound | FailedToCreate e2) {

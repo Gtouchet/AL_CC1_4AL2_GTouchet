@@ -2,7 +2,7 @@ package esgi.al.cc1.models;
 
 import java.util.UUID;
 
-public class User
+public class Tradesman
 {
     private final String id;
     private final String login;
@@ -11,7 +11,7 @@ public class User
     private final String paymentMethod;
     private final Address address;
 
-    private User(
+    private Tradesman(
             String id,
             String login,
             String password,
@@ -27,7 +27,7 @@ public class User
         this.address = Address.of(address);
     }
 
-    public static User of(
+    public static Tradesman of(
             String id,
             String login,
             String password,
@@ -35,7 +35,7 @@ public class User
             String paymentMethod,
             Address address
     ) {
-        return new User(
+        return new Tradesman(
                 id,
                 login,
                 password,
@@ -45,14 +45,14 @@ public class User
         );
     }
 
-    public static User of(
+    public static Tradesman of(
             String login,
             String password,
             String name,
             String paymentMethod,
             Address address
     ) {
-        return new User(
+        return new Tradesman(
                 UUID.randomUUID().toString(),
                 login,
                 password,

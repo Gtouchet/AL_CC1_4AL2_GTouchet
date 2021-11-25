@@ -5,14 +5,14 @@ import esgi.al.cc1.console.enumerators.TableName;
 import esgi.al.cc1.controllers.Controller;
 import esgi.al.cc1.exceptions.repositoriesExceptions.ElementNotFound;
 import esgi.al.cc1.models.Payment;
-import esgi.al.cc1.models.User;
+import esgi.al.cc1.models.Tradesman;
 
 public class DeleteCommandHandler
 {
-    private final Controller<User> userController;
+    private final Controller<Tradesman> userController;
     private final Controller<Payment> paymentController;
 
-    public DeleteCommandHandler(Controller<User> userController, Controller<Payment> paymentController)
+    public DeleteCommandHandler(Controller<Tradesman> userController, Controller<Payment> paymentController)
     {
         this.userController = userController;
         this.paymentController = paymentController;

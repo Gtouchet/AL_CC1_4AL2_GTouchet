@@ -3,50 +3,50 @@ package esgi.al.cc1.controllers;
 import esgi.al.cc1.exceptions.modelsExceptions.InvalidModelParameter;
 import esgi.al.cc1.exceptions.repositoriesExceptions.ElementNotFound;
 import esgi.al.cc1.exceptions.repositoriesExceptions.FailedToCreate;
-import esgi.al.cc1.models.User;
+import esgi.al.cc1.models.Tradesman;
 import esgi.al.cc1.repositories.Repository;
 import esgi.al.cc1.services.validatorServices.AddressValidator;
 import esgi.al.cc1.services.validatorServices.UserValidator;
 
 import java.util.stream.Stream;
 
-public class UserController implements Controller<User>
+public class UserController implements Controller<Tradesman>
 {
-    private final Repository<User> userRepository;
+    private final Repository<Tradesman> userRepository;
 
-    public UserController(Repository<User> userRepository)
+    public UserController(Repository<Tradesman> userRepository)
     {
         this.userRepository = userRepository;
     }
 
     @Override
-    public void create(User user) throws InvalidModelParameter, FailedToCreate
+    public void create(Tradesman tradesman) throws InvalidModelParameter, FailedToCreate
     {
-        UserValidator.validate(user);
-        AddressValidator.validate(user.getAddress());
+        UserValidator.validate(tradesman);
+        AddressValidator.validate(tradesman.getAddress());
 
-        this.userRepository.create(user);
+        this.userRepository.create(tradesman);
     }
 
     @Override
-    public Stream<User> read()
+    public Stream<Tradesman> read()
     {
         return this.userRepository.read();
     }
 
     @Override
-    public User read(String id) throws ElementNotFound
+    public Tradesman read(String id) throws ElementNotFound
     {
         return this.userRepository.read(id);
     }
 
     @Override
-    public void update(User user) throws InvalidModelParameter, ElementNotFound, FailedToCreate
+    public void update(Tradesman tradesman) throws InvalidModelParameter, ElementNotFound, FailedToCreate
     {
-        UserValidator.validate(user);
-        AddressValidator.validate(user.getAddress());
+        UserValidator.validate(tradesman);
+        AddressValidator.validate(tradesman.getAddress());
 
-        this.userRepository.update(user);
+        this.userRepository.update(tradesman);
     }
 
     @Override

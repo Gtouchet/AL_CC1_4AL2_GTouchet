@@ -2,15 +2,15 @@ package esgi.al.cc1.factories;
 
 import esgi.al.cc1.repositories.PaymentRepository;
 import esgi.al.cc1.repositories.Repository;
-import esgi.al.cc1.repositories.UsersRepository;
+import esgi.al.cc1.repositories.UserRepository;
 import esgi.al.cc1.models.Payment;
-import esgi.al.cc1.models.User;
+import esgi.al.cc1.models.Tradesman;
 
 public class RepositoriesFactory
 {
-    public Repository<User> createUserRepository()
+    public Repository<Tradesman> createUserRepository()
     {
-        return new UsersRepository(new JsonAccessorsFactory().createUserJsonAccessor());
+        return new UserRepository(new JsonAccessorsFactory().createUserJsonAccessor());
     }
 
     public Repository<Payment> createPaymentRepository()

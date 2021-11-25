@@ -1,7 +1,7 @@
 package esgi.al.cc1.services.validatorServices;
 
 import esgi.al.cc1.exceptions.modelsExceptions.InvalidModelParameter;
-import esgi.al.cc1.models.User;
+import esgi.al.cc1.models.Tradesman;
 
 import java.util.Objects;
 import java.util.regex.Matcher;
@@ -9,11 +9,11 @@ import java.util.regex.Pattern;
 
 public class UserValidator
 {
-    public static void validate(User user) throws InvalidModelParameter
+    public static void validate(Tradesman tradesman) throws InvalidModelParameter
     {
-        validateLogin(user.getLogin());
-        validatePassword(user.getPassword());
-        validatePaymentMethod(user.getPaymentMethod());
+        validateLogin(tradesman.getLogin());
+        validatePassword(tradesman.getPassword());
+        validatePaymentMethod(tradesman.getPaymentMethod());
     }
 
     public static void validateLogin(String login) throws InvalidModelParameter
