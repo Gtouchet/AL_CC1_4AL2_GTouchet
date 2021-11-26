@@ -1,53 +1,44 @@
 package esgi.al.cc1.domain.models;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.UUID;
+import esgi.al.cc1.domain.dtos.Date;
+import esgi.al.cc1.domain.dtos.Id;
 
 public class Payment
 {
-    private final String id;
-    private final String userId;
+    private final Id id;
+    private final Id contractorId;
+    private final Id workerId;
     private final float amount;
-    private final String reason;
-    private final String date;
 
-    private Payment(
-            String id,
-            String userId,
-            float amount,
-            String reason,
-            String date
-    ) {
-        this.id = id;
-        this.userId = userId;
+    private final Date creationDate;
+
+    private Payment(Id contractorId, Id workerId, float amount)
+    {
+        this.id = Id.generate();
+        this.contractorId = contractorId;
+        this.workerId = workerId;
         this.amount = amount;
-        this.reason = reason;
-        this.date = date;
+        this.creationDate = Date.now();
     }
 
-    public static Payment of(
-            String userId,
-            float amount,
-            String reason
-    ) {
-        return new Payment(
-                UUID.randomUUID().toString(),
-                userId,
-                amount,
-                reason,
-                new SimpleDateFormat("dd-MM-yyyy-HH-mm-ss").format(new Date())
-        );
+    public static Payment register(Id contractorId, Id workerId, float amount)
+    {
+        return new Payment(contractorId, workerId, amount);
     }
 
-    public String getId()
+    public Id getId()
     {
         return this.id;
     }
 
-    public String getUserId()
+    public Id getContractorId()
     {
-        return this.userId;
+        return this.contractorId;
+    }
+
+    public Id getWorkerId()
+    {
+        return this.workerId;
     }
 
     public float getAmount()
@@ -55,23 +46,15 @@ public class Payment
         return this.amount;
     }
 
-    public String getReason()
+    public Date getCreationDate()
     {
-        return this.reason;
-    }
-
-    public String getDate()
-    {
-        return this.date;
+        return this.creationDate;
     }
 
     @Override
     public String toString()
     {
         return "ID: " + this.id +
-                "\nUser ID: " + this.userId +
-                "\nAmount: " + this.amount +
-                "\nReason: " + this.reason +
-                "\nDate: " + this.date;
+                "";
     }
 }

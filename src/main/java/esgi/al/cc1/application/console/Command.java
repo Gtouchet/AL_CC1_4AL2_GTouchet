@@ -6,6 +6,11 @@ import java.util.List;
 
 public enum Command
 {
+    // Contractor commands
+    createTradesman("CREATETRADESMAN", 0, 0, "usage cr tr"),
+    readTradesman("SELECTTRADESMAN", 0, 0, "usage re tr"),
+    deleteTradesman("DELETETRADESMAN", 0, 0, "usage de tr"),
+
     // Payment commands
     createPayment("CREATEPAYMENT", 0, 0, "usage cr pa"),
     readPayment("SELECTPAYMENT", 1, 2, "usage re pa"),
@@ -16,11 +21,6 @@ public enum Command
     readProject("SELECTPROJECT", 0, 0, "usage re pr"),
     deleteProject("DELETEPROJECT", 0, 0, "usage de pr"),
 
-    // Tradesman commands
-    createTradesman("CREATETRADESMAN", 0, 0, "usage cr tr"),
-    readTradesman("SELECTTRADESMAN", 0, 0, "usage re tr"),
-    deleteTradesman("DELETETRADESMAN", 0, 0, "usage de tr"),
-
     // Worker commands
     createWorker("CREATEWORKER", 0, 0, "usage cr wo"),
     readWorker("SELECTWORKER", 0, 0, "usage re wo"),
@@ -29,7 +29,7 @@ public enum Command
     // Quit command
     quit("QUIT", 0, 0, null),
 
-    // None command
+    // None command (prevents a crash in case of unknown command)
     none(null, 0, 0, null);
 
     public final String keyword;

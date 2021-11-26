@@ -4,10 +4,11 @@ import esgi.al.cc1.application.commandHandlers.CommandHandler;
 import esgi.al.cc1.application.console.Command;
 import esgi.al.cc1.controllers.Controller;
 import esgi.al.cc1.domain.models.Payment;
-import esgi.al.cc1.exceptions.WrongNumberOfArgument;
+import esgi.al.cc1.application.exceptions.WrongNumberOfArgument;
 import esgi.al.cc1.exceptions.repositoriesExceptions.ElementNotFound;
 
-import java.util.stream.Stream;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class ReadPaymentHandler implements CommandHandler
 {
@@ -23,8 +24,8 @@ public class ReadPaymentHandler implements CommandHandler
     {
         if (params.length == Command.readPayment.parametersCount)
         {
-            Stream<Payment> payments = this.paymentController.read();
-            if (payments.count() == 0) {
+            List<Payment> payments = this.paymentController.read().collect(Collectors.toList());
+            if (payments.size() == 0) {
                 System.out.println("No payment registered yet.");
             }
             else {

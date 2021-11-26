@@ -3,7 +3,7 @@ package esgi.al.cc1.application.console;
 import esgi.al.cc1.application.commandHandlers.paymentCommandHandlers.CreatePaymentHandler;
 import esgi.al.cc1.application.commandHandlers.paymentCommandHandlers.DeletePaymentHandler;
 import esgi.al.cc1.application.commandHandlers.paymentCommandHandlers.ReadPaymentHandler;
-import esgi.al.cc1.exceptions.WrongNumberOfArgument;
+import esgi.al.cc1.application.exceptions.WrongNumberOfArgument;
 import esgi.al.cc1.factories.ControllersFactory;
 
 public class CommandProcessor

@@ -1,6 +1,6 @@
 package esgi.al.cc1.application.commandHandlers;
 
-import esgi.al.cc1.exceptions.WrongNumberOfArgument;
+import esgi.al.cc1.application.exceptions.WrongNumberOfArgument;
 
 public interface CommandHandler
 {

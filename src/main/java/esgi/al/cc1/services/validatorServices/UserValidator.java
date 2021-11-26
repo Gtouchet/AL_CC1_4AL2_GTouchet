@@ -11,9 +11,9 @@ public class UserValidator
 {
     public static void validate(Contractor contractor) throws InvalidModelParameter
     {
-        validateLogin(contractor.getLogin());
-        validatePassword(contractor.getPassword());
-        validatePaymentMethod(contractor.getPaymentMethod());
+        validateLogin("contractor.getLogin()");
+        validatePassword("contractor.getPassword()");
+        validatePaymentMethod("contractor.getPaymentMethod()");
     }
 
     public static void validateLogin(String login) throws InvalidModelParameter

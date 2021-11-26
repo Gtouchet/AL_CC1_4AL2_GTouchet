@@ -1,92 +1,52 @@
 package esgi.al.cc1.domain.models;
 
-import java.util.UUID;
+import esgi.al.cc1.domain.dtos.Password;
+import esgi.al.cc1.domain.enumerators.Role;
+import esgi.al.cc1.domain.enumerators.PaymentMethod;
 
-public class Contractor
+public class Contractor extends User
 {
-    private final String id;
-    private final String login;
-    private final String password;
-    private final String name;
-    private final String paymentMethod;
+    private PaymentMethod paymentMethod;
+    private boolean isPaymentValidated;
 
-    private Contractor(
-            String id,
-            String login,
-            String password,
-            String name,
-            String paymentMethod
-    ) {
-        this.id = id;
-        this.login = login;
-        this.password =  password;
-        this.name = name;
+    private Contractor(String login, Password password, String name, Role role, PaymentMethod paymentMethod)
+    {
+        super(login, password, name, role);
+
+        this.paymentMethod = paymentMethod;
+        this.isPaymentValidated = false;
+    }
+
+    public static Contractor of(String login, Password password, String name, Role role, PaymentMethod paymentMethod)
+    {
+        return new Contractor(login, password, name, role, paymentMethod);
+    }
+
+    public PaymentMethod getPaymentMethod()
+    {
+        return this.paymentMethod;
+    }
+
+    public boolean isPaymentValidated()
+    {
+        return this.isPaymentValidated;
+    }
+
+    public void setPaymentMethod(PaymentMethod paymentMethod)
+    {
         this.paymentMethod = paymentMethod;
     }
 
-    public static Contractor of(
-            String id,
-            String login,
-            String password,
-            String name,
-            String paymentMethod
-    ) {
-        return new Contractor(
-                id,
-                login,
-                password,
-                name,
-                paymentMethod
-        );
-    }
-
-    public static Contractor of(
-            String login,
-            String password,
-            String name,
-            String paymentMethod
-    ) {
-        return new Contractor(
-                UUID.randomUUID().toString(),
-                login,
-                password,
-                name,
-                paymentMethod
-        );
-    }
-
-    public String getId()
+    public void setPaymentValidated(boolean isPaymentValidated)
     {
-        return this.id;
-    }
-
-    public String getLogin()
-    {
-        return this.login;
-    }
-
-    public String getPassword()
-    {
-        return this.password;
-    }
-
-    public String getName()
-    {
-        return this.name;
-    }
-
-    public String getPaymentMethod()
-    {
-        return this.paymentMethod;
+        this.isPaymentValidated = isPaymentValidated;
     }
 
     @Override
     public String toString()
     {
-        return "ID: " + this.id +
-                "\nLogin: " + this.login +
-                "\nPassword: " + this.password +
-                "\nName: " + this.name +
-                "\nPayment method: " + this.paymentMethod;
+        return super.toString() +
+                "\nPayment method: " + this.paymentMethod +
+                "\nIs payment validated: " + this.isPaymentValidated;
     }
 }

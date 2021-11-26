@@ -1,4 +1,4 @@
-package esgi.al.cc1.exceptions;
+package esgi.al.cc1.application.exceptions;
 
 import esgi.al.cc1.application.console.Command;
 

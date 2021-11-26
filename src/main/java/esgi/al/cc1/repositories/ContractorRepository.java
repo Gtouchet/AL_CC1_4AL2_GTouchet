@@ -31,10 +31,10 @@ public class ContractorRepository implements Repository<Contractor>
     @Override
     public void create(Contractor contractor) throws FailedToCreate
     {
-        Contractor registeredContractor = this.findUserByLogin(contractor.getLogin());
+        Contractor registeredContractor = this.findContractorByLogin("contractor.getLogin()");
         if (registeredContractor != null)
         {
-            throw new FailedToCreate(contractor.getLogin(), registeredContractor.getId());
+            throw new FailedToCreate("contractor.getLogin()", "registeredContractor.getId()");
         }
 
         this.tradesmen.add(contractor);
@@ -57,12 +57,12 @@ public class ContractorRepository implements Repository<Contractor>
     @Override
     public void update(Contractor contractor) throws ElementNotFound, FailedToCreate
     {
-        Contractor registeredContractorId = this.findUserById(contractor.getId());
+        Contractor registeredContractorId = this.findUserById("contractor.getId()");
 
-        Contractor registeredContractorLogin = this.findUserByLogin(contractor.getLogin());
-        if (registeredContractorLogin != null && !registeredContractorLogin.getLogin().equals(contractor.getLogin()))
+        Contractor registeredContractorLogin = this.findContractorByLogin("contractor.getLogin()");
+        if (registeredContractorLogin != null && !"registeredContractorLogin.getLogin()".equals("contractor.getLogin()"))
         {
-            throw new FailedToCreate(contractor.getLogin(), registeredContractorLogin.getId());
+            throw new FailedToCreate("contractor.getLogin()", "registeredContractorLogin.getId()");
         }
 
         this.tradesmen.remove(registeredContractorId);
@@ -84,7 +84,7 @@ public class ContractorRepository implements Repository<Contractor>
     private Contractor findUserById(String id) throws ElementNotFound
     {
         Contractor contractor = this.tradesmen.stream()
-                .filter(streamUser -> streamUser.getId().equals(id))
+                .filter(streamUser -> "streamUser.getId()".equals(id))
                 .findFirst()
                 .orElse(null);
 
@@ -96,10 +96,10 @@ public class ContractorRepository implements Repository<Contractor>
         return contractor;
     }
 
-    private Contractor findUserByLogin(String login)
+    private Contractor findContractorByLogin(String login)
     {
         return this.tradesmen.stream()
-                .filter(streamUser -> streamUser.getLogin().equals(login))
+                .filter(streamUser -> "streamUser.getLogin()".equals(login))
                 .findFirst()
                 .orElse(null);
     }
