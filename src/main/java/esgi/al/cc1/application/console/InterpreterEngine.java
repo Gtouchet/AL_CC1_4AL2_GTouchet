@@ -1,6 +1,5 @@
-package esgi.al.cc1.console;
+package esgi.al.cc1.application.console;
 
-import esgi.al.cc1.console.enumerators.CommandKeyword;
 import esgi.al.cc1.factories.ControllersFactory;
 
 import java.util.Scanner;
@@ -23,17 +22,19 @@ public class InterpreterEngine extends Thread
     private void displayCommandsList()
     {
         System.out.println("---Available commands---");
-        CommandKeyword.getCommandKeywords().forEach(command -> System.out.println(command.usageExample));
+        Command.getCommands().forEach(command -> {
+            if (command.usage != null) System.out.println(command.usage);
+        });
         System.out.println("---Command input---");
     }
 
     public void run()
     {
         String command = "";
-        while (!command.split(" ")[0].equalsIgnoreCase(CommandKeyword.QUIT.toString()))
+        while (!command.trim().split(" ")[0].equalsIgnoreCase(Command.quit.keyword))
         {
             System.out.print("> ");
-            command = this.scanner.nextLine().trim();
+            command = this.scanner.nextLine();
             new CommandProcessor(this.controllersFactory).process(command);
         }
     }

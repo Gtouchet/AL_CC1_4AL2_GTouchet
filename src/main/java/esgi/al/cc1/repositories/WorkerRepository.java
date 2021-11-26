@@ -2,7 +2,7 @@ package esgi.al.cc1.repositories;
 
 import esgi.al.cc1.exceptions.repositoriesExceptions.ElementNotFound;
 import esgi.al.cc1.exceptions.repositoriesExceptions.FailedToCreate;
-import esgi.al.cc1.models.Worker;
+import esgi.al.cc1.domain.models.Worker;
 
 import java.util.stream.Stream;
 

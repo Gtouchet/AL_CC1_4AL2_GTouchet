@@ -3,7 +3,7 @@ package esgi.al.cc1.controllers;
 import esgi.al.cc1.exceptions.modelsExceptions.InvalidModelParameter;
 import esgi.al.cc1.exceptions.repositoriesExceptions.ElementNotFound;
 import esgi.al.cc1.exceptions.repositoriesExceptions.FailedToCreate;
-import esgi.al.cc1.models.Payment;
+import esgi.al.cc1.domain.models.Payment;
 import esgi.al.cc1.repositories.Repository;
 import esgi.al.cc1.services.validatorServices.PaymentValidator;
 
@@ -41,7 +41,7 @@ public class PaymentController implements Controller<Payment>
     @Override
     public void update(Payment payment)
     {
-        // Do nothing, we do not update a payment after it's been registered
+        // Do nothing
         // This code is unreachable
     }
 

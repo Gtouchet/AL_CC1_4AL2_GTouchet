@@ -1,4 +1,4 @@
-package esgi.al.cc1.models;
+package esgi.al.cc1.domain.models;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

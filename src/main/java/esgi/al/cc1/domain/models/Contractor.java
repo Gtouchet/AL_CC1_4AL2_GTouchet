@@ -1,8 +1,8 @@
-package esgi.al.cc1.models;
+package esgi.al.cc1.domain.models;
 
 import java.util.UUID;
 
-public class Tradesman
+public class Contractor
 {
     private final String id;
     private final String login;
@@ -10,7 +10,7 @@ public class Tradesman
     private final String name;
     private final String paymentMethod;
 
-    private Tradesman(
+    private Contractor(
             String id,
             String login,
             String password,
@@ -24,14 +24,14 @@ public class Tradesman
         this.paymentMethod = paymentMethod;
     }
 
-    public static Tradesman of(
+    public static Contractor of(
             String id,
             String login,
             String password,
             String name,
             String paymentMethod
     ) {
-        return new Tradesman(
+        return new Contractor(
                 id,
                 login,
                 password,
@@ -40,13 +40,13 @@ public class Tradesman
         );
     }
 
-    public static Tradesman of(
+    public static Contractor of(
             String login,
             String password,
             String name,
             String paymentMethod
     ) {
-        return new Tradesman(
+        return new Contractor(
                 UUID.randomUUID().toString(),
                 login,
                 password,

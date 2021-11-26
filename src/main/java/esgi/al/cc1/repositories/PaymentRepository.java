@@ -1,7 +1,7 @@
 package esgi.al.cc1.repositories;
 
 import esgi.al.cc1.exceptions.repositoriesExceptions.ElementNotFound;
-import esgi.al.cc1.models.Payment;
+import esgi.al.cc1.domain.models.Payment;
 import esgi.al.cc1.services.jsonServices.JsonAccessor;
 
 import java.util.ArrayList;
