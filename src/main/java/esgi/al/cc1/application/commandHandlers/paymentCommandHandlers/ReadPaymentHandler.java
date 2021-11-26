@@ -1,11 +1,11 @@
 package esgi.al.cc1.application.commandHandlers.paymentCommandHandlers;
 
+import esgi.al.cc1.application.enumerators.Command;
 import esgi.al.cc1.application.commandHandlers.CommandHandler;
-import esgi.al.cc1.application.console.Command;
-import esgi.al.cc1.controllers.Controller;
+import esgi.al.cc1.infrastructure.controllers.Controller;
 import esgi.al.cc1.domain.models.Payment;
 import esgi.al.cc1.application.exceptions.WrongNumberOfArgument;
-import esgi.al.cc1.exceptions.repositoriesExceptions.ElementNotFound;
+import esgi.al.cc1.infrastructure.exceptions.repositoriesExceptions.ElementNotFound;
 
 import java.util.List;
 import java.util.stream.Collectors;

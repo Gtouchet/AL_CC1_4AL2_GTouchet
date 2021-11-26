@@ -1,7 +1,7 @@
 package esgi.al.cc1.application.commandHandlers.paymentCommandHandlers;
 
 import esgi.al.cc1.application.commandHandlers.CommandHandler;
-import esgi.al.cc1.controllers.Controller;
+import esgi.al.cc1.infrastructure.controllers.Controller;
 import esgi.al.cc1.domain.models.Payment;
 
 public class DeletePaymentHandler implements CommandHandler

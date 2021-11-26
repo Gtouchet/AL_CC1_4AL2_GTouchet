@@ -1,6 +1,6 @@
 package esgi.al.cc1.application.exceptions;
 
-import esgi.al.cc1.application.console.Command;
+import esgi.al.cc1.application.enumerators.Command;
 
 public class WrongNumberOfArgument extends Exception
 {

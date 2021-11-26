@@ -1,6 +1,8 @@
 package esgi.al.cc1.domain.models;
 
-import esgi.al.cc1.domain.dtos.*;
+import esgi.al.cc1.domain.dtos.Date;
+import esgi.al.cc1.domain.dtos.Id;
+import esgi.al.cc1.domain.dtos.Password;
 import esgi.al.cc1.domain.enumerators.Role;
 
 public abstract class User
