@@ -2,29 +2,29 @@ package esgi.al.cc1.repositories;
 
 import esgi.al.cc1.exceptions.repositoriesExceptions.ElementNotFound;
 import esgi.al.cc1.exceptions.repositoriesExceptions.FailedToCreate;
-import esgi.al.cc1.models.ServiceProvider;
+import esgi.al.cc1.models.Worker;
 
 import java.util.stream.Stream;
 
-public class ServiceProviderRepository implements Repository<ServiceProvider>
+public class WorkerRepository implements Repository<Worker>
 {
     @Override
-    public void create(ServiceProvider element) throws FailedToCreate {
+    public void create(Worker element) throws FailedToCreate {
 
     }
 
     @Override
-    public Stream<ServiceProvider> read() {
+    public Stream<Worker> read() {
         return null;
     }
 
     @Override
-    public ServiceProvider read(String id) throws ElementNotFound {
+    public Worker read(String id) throws ElementNotFound {
         return null;
     }
 
     @Override
-    public void update(ServiceProvider element) throws ElementNotFound, FailedToCreate {
+    public void update(Worker element) throws ElementNotFound, FailedToCreate {
 
     }
 

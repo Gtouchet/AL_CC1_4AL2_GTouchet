@@ -11,7 +11,7 @@ public class JsonAccessorsFactory
     {
         return new JsonAccessor<>(Tradesman.class, new JsonPathCreator(
                 "./res/tradesmen.json",
-                "./res/backups/user/"
+                "./res/backups/tradesmen/"
         ));
     }
 
@@ -19,7 +19,7 @@ public class JsonAccessorsFactory
     {
         return new JsonAccessor<>(Payment.class, new JsonPathCreator(
                 "./res/payments.json",
-                "./res/backups/payment/"
+                "./res/backups/payments/"
         ));
     }
 }

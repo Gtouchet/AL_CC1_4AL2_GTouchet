@@ -5,7 +5,7 @@ import esgi.al.cc1.factories.ControllersFactory;
 
 import java.util.Scanner;
 
-public class InterpreterEngine
+public class InterpreterEngine extends Thread
 {
     private final ControllersFactory controllersFactory;
 

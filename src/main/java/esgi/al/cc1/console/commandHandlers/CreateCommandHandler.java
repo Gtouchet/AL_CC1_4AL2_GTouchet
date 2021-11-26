@@ -34,8 +34,7 @@ public class CreateCommandHandler
                 int streetNumber = Integer.parseInt(params[6]);
                 try {
                     this.userController.create(
-                            Tradesman.of(params[2], params[3], params[4], params[5].trim().toLowerCase(),
-                            Address.of(streetNumber, params[7], params[8]))
+                            Tradesman.of(params[2], params[3], params[4], params[5].trim().toLowerCase())
                     );
                 } catch (InvalidModelParameter | FailedToCreate e2) {
                     System.out.println(e2.getMessage());

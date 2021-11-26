@@ -9,22 +9,19 @@ public class Tradesman
     private final String password;
     private final String name;
     private final String paymentMethod;
-    private final Address address;
 
     private Tradesman(
             String id,
             String login,
             String password,
             String name,
-            String paymentMethod,
-            Address address
+            String paymentMethod
     ) {
         this.id = id;
         this.login = login;
         this.password =  password;
         this.name = name;
         this.paymentMethod = paymentMethod;
-        this.address = Address.of(address);
     }
 
     public static Tradesman of(
@@ -32,16 +29,14 @@ public class Tradesman
             String login,
             String password,
             String name,
-            String paymentMethod,
-            Address address
+            String paymentMethod
     ) {
         return new Tradesman(
                 id,
                 login,
                 password,
                 name,
-                paymentMethod,
-                address
+                paymentMethod
         );
     }
 
@@ -49,16 +44,14 @@ public class Tradesman
             String login,
             String password,
             String name,
-            String paymentMethod,
-            Address address
+            String paymentMethod
     ) {
         return new Tradesman(
                 UUID.randomUUID().toString(),
                 login,
                 password,
                 name,
-                paymentMethod,
-                address
+                paymentMethod
         );
     }
 
@@ -87,11 +80,6 @@ public class Tradesman
         return this.paymentMethod;
     }
 
-    public Address getAddress()
-    {
-        return this.address;
-    }
-
     @Override
     public String toString()
     {
@@ -99,7 +87,6 @@ public class Tradesman
                 "\nLogin: " + this.login +
                 "\nPassword: " + this.password +
                 "\nName: " + this.name +
-                "\nPayment method: " + this.paymentMethod +
-                "\nAddress: " + this.address.toString();
+                "\nPayment method: " + this.paymentMethod;
     }
 }

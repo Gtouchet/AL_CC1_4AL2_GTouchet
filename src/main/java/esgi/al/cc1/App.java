@@ -7,6 +7,10 @@ public class App
 {
     public static void main(String[] args)
     {
-        new InterpreterEngine(new ControllersFactory()).run();
+        // Starts the console application thread
+        new InterpreterEngine(new ControllersFactory()).start();
+
+        // Starts the API thread
+        // Todo: implements
     }
 }

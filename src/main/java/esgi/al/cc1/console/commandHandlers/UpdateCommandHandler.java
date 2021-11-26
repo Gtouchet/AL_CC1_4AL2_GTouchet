@@ -28,8 +28,7 @@ public class UpdateCommandHandler
             int streetNumber = Integer.parseInt(params[7]);
             try {
                 this.userController.update(
-                        Tradesman.of(params[2].toLowerCase(), params[3], params[4], params[5], params[6].trim().toLowerCase(),
-                        Address.of(streetNumber, params[8], params[9]))
+                        Tradesman.of(params[2].toLowerCase(), params[3], params[4], params[5], params[6].trim().toLowerCase())
                 );
             } catch ( InvalidModelParameter | ElementNotFound | FailedToCreate e2) {
                 System.out.println(e2.getMessage());

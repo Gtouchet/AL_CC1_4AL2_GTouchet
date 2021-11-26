@@ -5,7 +5,6 @@ import esgi.al.cc1.exceptions.repositoriesExceptions.ElementNotFound;
 import esgi.al.cc1.exceptions.repositoriesExceptions.FailedToCreate;
 import esgi.al.cc1.models.Tradesman;
 import esgi.al.cc1.repositories.Repository;
-import esgi.al.cc1.services.validatorServices.AddressValidator;
 import esgi.al.cc1.services.validatorServices.UserValidator;
 
 import java.util.stream.Stream;
@@ -23,7 +22,6 @@ public class UserController implements Controller<Tradesman>
     public void create(Tradesman tradesman) throws InvalidModelParameter, FailedToCreate
     {
         UserValidator.validate(tradesman);
-        AddressValidator.validate(tradesman.getAddress());
 
         this.userRepository.create(tradesman);
     }
@@ -44,7 +42,6 @@ public class UserController implements Controller<Tradesman>
     public void update(Tradesman tradesman) throws InvalidModelParameter, ElementNotFound, FailedToCreate
     {
         UserValidator.validate(tradesman);
-        AddressValidator.validate(tradesman.getAddress());
 
         this.userRepository.update(tradesman);
     }

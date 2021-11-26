@@ -10,13 +10,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
-public class UserRepository implements Repository<Tradesman>
+public class TradesmanRepository implements Repository<Tradesman>
 {
     private final List<Tradesman> tradesmen;
 
     private final JsonAccessor<Tradesman> jsonAccessor;
 
-    public UserRepository(JsonAccessor<Tradesman> jsonAccessor)
+    public TradesmanRepository(JsonAccessor<Tradesman> jsonAccessor)
     {
         this.jsonAccessor = jsonAccessor;
 

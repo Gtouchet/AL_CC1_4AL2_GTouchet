@@ -1,6 +1,6 @@
 package esgi.al.cc1.models;
 
-public class ServiceProvider
+public class Worker
 {
 
 }
