@@ -9,28 +9,33 @@ public enum Command
     // Contractor commands
     createContractor("CREATECONTRACTOR", 0, 0, "usage cr co"),
     readContractor("SELECTCONTRACTOR", 0, 0, "usage re co"),
-    deleteContractor("DELETECONTRACTOR", 0, 0, "usage de co"),
+    deleteContractor("DELETECONTRACTOR", 0, 0, "usage de co\n"),
 
     // Payment commands
     createPayment("CREATEPAYMENT", 0, 0, "usage cr pa"),
-    readPayment("SELECTPAYMENT", 1, 2, "usage re pa"),
-    deletePayment("DELETEPAYMENT", 0, 0, "usage de pa"),
+    readPayment("SELECTPAYMENT", 1, 2, "SELECTPAYMENT -> all payments\nSELECTPAYMENT id -> specific payment"),
+    deletePayment("DELETEPAYMENT", 0, 0, "usage de pa\n"),
 
     // Project commands
     createProject("CREATEPROJECT", 0, 0, "usage cr pr"),
     readProject("SELECTPROJECT", 0, 0, "usage re pr"),
-    deleteProject("DELETEPROJECT", 0, 0, "usage de pr"),
+    deleteProject("DELETEPROJECT", 0, 0, "usage de pr\n"),
 
     // Worker commands
     createWorker("CREATEWORKER", 6, 0, "CREATEWORKER login password name service departement"),
-    readWorker("SELECTWORKER", 1, 2, "usage re wo"),
-    deleteWorker("DELETEWORKER", 2, 0, "usage de wo"),
+    readWorker("SELECTWORKER", 1, 2, "SELECTWORKER -> all workers\nSELECTWORKER id -> specific worker"),
+    updateWorker("UPDATEWORKER", 6, 0, "UPDATEWORKER id password name service departement"),
+    deleteWorker("DELETEWORKER", 2, 0, "DELETEWORKER id\n"),
+
+    // User commands
+    updatePassword("UPDATEPASSWORD", 3, 0, "usage us uppass"),
+    updateName("UPDATENAME", 3, 0, "usage us upname\n"),
 
     // Help command
-    help("HELP", 2, 0, "HELP commandKeyword"),
+    help("HELP", 2, 0, "HELP commandKeyword -> get command's usage"),
 
     // Quit command
-    quit("QUIT", 0, 0, "QUIT"),
+    quit("QUIT", 0, 0, "QUIT -> quit the application"),
 
     // None command (prevents a crash in case of unknown command)
     none(null, 0, 0, null);

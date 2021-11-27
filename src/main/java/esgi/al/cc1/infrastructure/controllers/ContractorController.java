@@ -36,7 +36,7 @@ public class ContractorController implements Controller<Contractor>
     }
 
     @Override
-    public void update(Contractor element) throws ElementNotFound, FailedToUpdate
+    public void update(String[] values) throws ElementNotFound, FailedToUpdate
     {
 
     }

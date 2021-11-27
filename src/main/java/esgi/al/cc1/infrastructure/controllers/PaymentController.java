@@ -36,7 +36,7 @@ public class PaymentController implements Controller<Payment>
     }
 
     @Override
-    public void update(Payment element) throws ElementNotFound, FailedToUpdate
+    public void update(String[] values) throws ElementNotFound, FailedToUpdate
     {
 
     }

@@ -21,6 +21,7 @@ public class Payment
         this.workerId = workerId;
         this.paidBy = paidBy;
         this.amount = amount;
+
         this.creationDate = Date.now();
     }
 
@@ -63,6 +64,10 @@ public class Payment
     public String toString()
     {
         return "ID: " + this.id +
-                "";
+                "Contractor ID: " + this.contractorId +
+                "Worker ID: " + this.workerId +
+                "Paid by: " + this.paidBy +
+                "Amount: " + this.amount +
+                "Payment date: " + this.creationDate;
     }
 }

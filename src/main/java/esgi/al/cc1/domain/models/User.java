@@ -14,14 +14,14 @@ public abstract class User
     private final Date creationDate;
     private Date updateDate;
 
-    protected User(String login, Password password, String name)
+    protected User(Id id, String login, Password password, String name, Date creationDate)
     {
-        this.id = Id.generate();
+        this.id = id == null ? Id.generate() : Id.set(id.toString());
         this.login = login;
         this.password = password;
         this.name = name;
 
-        this.creationDate = Date.now();
+        this.creationDate = creationDate == null ? Date.now() : creationDate;
         this.updateDate = Date.now();
     }
 
@@ -67,7 +67,7 @@ public abstract class User
         this.setUpdateDate();
     }
 
-    private void setUpdateDate()
+    protected void setUpdateDate()
     {
         this.updateDate = Date.now();
     }

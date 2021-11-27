@@ -46,7 +46,7 @@ public class PaymentRepository implements Repository<Payment>
     }
 
     @Override
-    public void update(Payment element) throws ElementNotFound, FailedToUpdate
+    public void update(String id, Payment element) throws ElementNotFound, FailedToUpdate
     {
 
     }

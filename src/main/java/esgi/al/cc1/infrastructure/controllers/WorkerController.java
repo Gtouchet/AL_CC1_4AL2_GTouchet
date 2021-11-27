@@ -19,20 +19,28 @@ public class WorkerController implements Controller<Worker>
         this.workerRepository = workerRepository;
     }
 
-    // Todo: implements validators
+    // Todo: implements validators in all controller implementations
     @Override
     public void create(String[] values) throws FailedToCreate
     {
         try {
-            int department = Integer.parseInt(values[5]);
+            Service service = Service.valueOf(values[4]);
             try {
-                Service service = Service.valueOf(values[4]);
-                this.workerRepository.create(Worker.of(values[1], Password.of(values[2]), values[3], service, department));
-            } catch (IllegalArgumentException e) {
-                System.out.println("Error: unknown service type [" + values[4] + "]");
+                int department = Integer.parseInt(values[5]);
+                this.workerRepository.create(Worker.of(
+                        null,
+                        values[1],
+                        Password.of(values[2]),
+                        values[3],
+                        service,
+                        department,
+                        null
+                ));
+            } catch (NumberFormatException e) {
+                System.out.println("Error: impossible to parse [" + values[5] + "] as a department number");
             }
-        } catch (NumberFormatException e) {
-            System.out.println("Error: impossible to parse [" + values[5] + "] as a department number");
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error: unknown service type [" + values[4] + "]");
         }
     }
 
@@ -49,9 +57,27 @@ public class WorkerController implements Controller<Worker>
     }
 
     @Override
-    public void update(Worker element) throws ElementNotFound, FailedToUpdate
+    public void update(String[] values) throws ElementNotFound, FailedToUpdate
     {
-
+        try {
+            Service service = Service.valueOf(values[4]);
+            try {
+                int department = Integer.parseInt(values[5]);
+                this.workerRepository.update(values[1], Worker.of(
+                        null,
+                        null,
+                        Password.of(values[2]),
+                        values[3],
+                        service,
+                        department,
+                        null
+                ));
+            } catch (NumberFormatException e) {
+                System.out.println("Error: impossible to parse [" + values[5] + "] as a department number");
+            }
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error: unknown service type [" + values[4] + "]");
+        }
     }
 
     @Override

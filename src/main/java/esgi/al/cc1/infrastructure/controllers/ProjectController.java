@@ -36,7 +36,7 @@ public class ProjectController implements Controller<Project>
     }
 
     @Override
-    public void update(Project element) throws ElementNotFound, FailedToUpdate
+    public void update(String[] values) throws ElementNotFound, FailedToUpdate
     {
 
     }

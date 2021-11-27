@@ -42,7 +42,7 @@ public class WorkerRepository implements Repository<Worker>
 
         if (registeredWorker != null)
         {
-            throw new FailedToCreate(Worker.class);
+            throw new FailedToCreate(Worker.class, registeredWorker.getId().toString());
         }
 
         this.workers.add(worker);
@@ -72,9 +72,29 @@ public class WorkerRepository implements Repository<Worker>
     }
 
     @Override
-    public void update(Worker worker) throws ElementNotFound, FailedToUpdate
+    public void update(String id, Worker worker) throws ElementNotFound, FailedToUpdate
     {
+        Worker registeredWorker = this.workers.stream()
+                .filter(w -> w.getId().toString().equals(id))
+                .findFirst()
+                .orElse(null);
 
+        if (registeredWorker == null)
+        {
+            throw new ElementNotFound(Worker.class, id);
+        }
+
+        this.workers.remove(registeredWorker);
+        this.workers.add(Worker.of(
+                registeredWorker.getId(),
+                registeredWorker.getLogin(),
+                worker.getPassword(),
+                worker.getName(),
+                worker.getService(),
+                worker.getDepartment(),
+                registeredWorker.getCreationDate()
+        ));
+        this.writeJsonFile();
     }
 
     @Override

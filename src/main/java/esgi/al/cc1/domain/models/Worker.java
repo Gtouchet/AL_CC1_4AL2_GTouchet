@@ -1,5 +1,7 @@
 package esgi.al.cc1.domain.models;
 
+import esgi.al.cc1.domain.dtos.Date;
+import esgi.al.cc1.domain.dtos.Id;
 import esgi.al.cc1.domain.dtos.Password;
 import esgi.al.cc1.domain.enumerators.Service;
 
@@ -8,17 +10,17 @@ public class Worker extends User
     private Service service;
     private int department;
 
-    private Worker(String login, Password password, String name, Service service, int department)
+    private Worker(Id id, String login, Password password, String name, Service service, int department, Date creationDate)
     {
-        super(login, password, name);
+        super(id, login, password, name, creationDate);
 
         this.service = service;
         this.department = department;
     }
 
-    public static Worker of(String login, Password password, String name, Service service, int department)
+    public static Worker of(Id id, String login, Password password, String name, Service service, int department, Date creationDate)
     {
-        return new Worker(login, password, name, service, department);
+        return new Worker(id, login, password, name, service, department, creationDate);
     }
 
     public Service getService()
@@ -34,11 +36,13 @@ public class Worker extends User
     public void setService(Service service)
     {
         this.service = service;
+        this.setUpdateDate();
     }
 
     public void setDepartment(int department)
     {
         this.department = department;
+        this.setUpdateDate();
     }
 
     @Override

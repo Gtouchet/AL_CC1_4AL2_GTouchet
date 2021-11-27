@@ -1,5 +1,7 @@
 package esgi.al.cc1.domain.models;
 
+import esgi.al.cc1.domain.dtos.Date;
+import esgi.al.cc1.domain.dtos.Id;
 import esgi.al.cc1.domain.dtos.Password;
 import esgi.al.cc1.domain.enumerators.PaymentMethod;
 
@@ -8,17 +10,17 @@ public class Contractor extends User
     private PaymentMethod paymentMethod;
     private boolean isPaymentValidated;
 
-    private Contractor(String login, Password password, String name, PaymentMethod paymentMethod)
+    private Contractor(Id id, String login, Password password, String name, PaymentMethod paymentMethod, Date creationDate)
     {
-        super(login, password, name);
+        super(id, login, password, name, creationDate);
 
         this.paymentMethod = paymentMethod;
         this.isPaymentValidated = false;
     }
 
-    public static Contractor of(String login, Password password, String name, PaymentMethod paymentMethod)
+    public static Contractor of(Id id, String login, Password password, String name, PaymentMethod paymentMethod, Date creationDate)
     {
-        return new Contractor(login, password, name, paymentMethod);
+        return new Contractor(id, login, password, name, paymentMethod, creationDate);
     }
 
     public PaymentMethod getPaymentMethod()
@@ -34,11 +36,13 @@ public class Contractor extends User
     public void setPaymentMethod(PaymentMethod paymentMethod)
     {
         this.paymentMethod = paymentMethod;
+        this.setUpdateDate();
     }
 
     public void setPaymentValidated(boolean isPaymentValidated)
     {
         this.isPaymentValidated = isPaymentValidated;
+        this.setUpdateDate();
     }
 
     @Override

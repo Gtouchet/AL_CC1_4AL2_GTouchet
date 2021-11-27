@@ -38,5 +38,6 @@ public class InterpreterEngine extends Thread
             command = this.scanner.nextLine();
             new CommandProcessor(this.controllersFactory).process(command);
         }
+        System.out.println("See ya !");
     }
 }

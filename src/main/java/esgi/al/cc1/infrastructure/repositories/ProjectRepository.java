@@ -46,7 +46,7 @@ public class ProjectRepository implements Repository<Project>
     }
 
     @Override
-    public void update(Project element) throws ElementNotFound, FailedToUpdate
+    public void update(String id, Project element) throws ElementNotFound, FailedToUpdate
     {
 
     }

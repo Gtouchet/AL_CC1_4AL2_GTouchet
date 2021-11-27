@@ -16,6 +16,11 @@ public class Id
         return new Id(UUID.randomUUID().toString());
     }
 
+    public static Id set(String value)
+    {
+        return new Id(value);
+    }
+
     @Override
     public String toString()
     {

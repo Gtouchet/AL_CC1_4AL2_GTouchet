@@ -1,0 +1,17 @@
+[
+  {
+    "service": "plumber",
+    "department": 45,
+    "id": {
+      "value": "d0297391-079f-4df2-8d06-c97df483e080"
+    },
+    "login": "GTouchet",
+    "password": {
+      "value": "1234pass"
+    },
+    "name": "Guillaume",
+    "updateDate": {
+      "value": "27-11-2021-13-20-13"
+    }
+  }
+]

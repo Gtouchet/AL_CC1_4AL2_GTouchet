@@ -46,7 +46,7 @@ public class ContractorRepository implements Repository<Contractor>
     }
 
     @Override
-    public void update(Contractor element) throws ElementNotFound, FailedToUpdate
+    public void update(String id, Contractor element) throws ElementNotFound, FailedToUpdate
     {
 
     }
