@@ -4,7 +4,7 @@ import esgi.al.cc1.domain.models.Project;
 import esgi.al.cc1.infrastructure.exceptions.repositoriesExceptions.ElementNotFound;
 import esgi.al.cc1.infrastructure.exceptions.repositoriesExceptions.FailedToCreate;
 import esgi.al.cc1.infrastructure.exceptions.repositoriesExceptions.FailedToUpdate;
-import esgi.al.cc1.infrastructure.services.jsonServices.JsonAccessor;
+import esgi.al.cc1.infrastructure.services.jsonServices.JsonDataAccessor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,17 +14,17 @@ import java.util.stream.Stream;
 public class ProjectRepository implements Repository<Project>
 {
     private final List<Project> projects;
-    private final JsonAccessor<Project> jsonAccessor;
+    private final JsonDataAccessor<Project> jsonDataAccessor;
 
-    public ProjectRepository(JsonAccessor<Project> jsonAccessor)
+    public ProjectRepository(JsonDataAccessor<Project> jsonDataAccessor)
     {
-        this.jsonAccessor = jsonAccessor;
+        this.jsonDataAccessor = jsonDataAccessor;
         this.projects = this.getDataFromJsonFile();
     }
 
     private List<Project> getDataFromJsonFile()
     {
-        return new ArrayList<>(Arrays.asList(this.jsonAccessor.getDataFromFile()));
+        return new ArrayList<>(Arrays.asList(this.jsonDataAccessor.getDataFromFile()));
     }
 
     @Override

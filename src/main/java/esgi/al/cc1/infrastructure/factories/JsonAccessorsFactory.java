@@ -1,25 +1,25 @@
 package esgi.al.cc1.infrastructure.factories;
 
 import esgi.al.cc1.domain.models.Payment;
-import esgi.al.cc1.domain.models.Contractor;
-import esgi.al.cc1.infrastructure.services.jsonServices.JsonAccessor;
+import esgi.al.cc1.domain.models.Worker;
+import esgi.al.cc1.infrastructure.services.jsonServices.JsonDataAccessor;
 import esgi.al.cc1.infrastructure.services.jsonServices.JsonPathCreator;
 
 public class JsonAccessorsFactory
 {
-    public JsonAccessor<Contractor> createUserJsonAccessor()
+    public JsonDataAccessor<Payment> createPaymentJsonAccessor()
     {
-        return new JsonAccessor<>(Contractor.class, new JsonPathCreator(
-                "./res/contractors.json",
-                "./res/backups/contractors/"
+        return new JsonDataAccessor<>(Payment.class, new JsonPathCreator(
+                "./res/payments.json",
+                "./res/backups/payments/"
         ));
     }
 
-    public JsonAccessor<Payment> createPaymentJsonAccessor()
+    public JsonDataAccessor<Worker> createWorkerJsonAccessor()
     {
-        return new JsonAccessor<>(Payment.class, new JsonPathCreator(
-                "./res/payments.json",
-                "./res/backups/payments/"
+        return new JsonDataAccessor<>(Worker.class, new JsonPathCreator(
+                "./res/workers.json",
+                "./res/backups/workers/"
         ));
     }
 }

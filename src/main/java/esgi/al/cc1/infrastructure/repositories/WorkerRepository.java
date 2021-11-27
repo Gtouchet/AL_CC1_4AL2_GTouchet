@@ -4,7 +4,7 @@ import esgi.al.cc1.domain.models.Worker;
 import esgi.al.cc1.infrastructure.exceptions.repositoriesExceptions.ElementNotFound;
 import esgi.al.cc1.infrastructure.exceptions.repositoriesExceptions.FailedToCreate;
 import esgi.al.cc1.infrastructure.exceptions.repositoriesExceptions.FailedToUpdate;
-import esgi.al.cc1.infrastructure.services.jsonServices.JsonAccessor;
+import esgi.al.cc1.infrastructure.services.jsonServices.JsonDataAccessor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,39 +14,65 @@ import java.util.stream.Stream;
 public class WorkerRepository implements Repository<Worker>
 {
     private final List<Worker> workers;
-    private final JsonAccessor<Worker> jsonAccessor;
+    private final JsonDataAccessor<Worker> jsonDataAccessor;
 
-    public WorkerRepository(JsonAccessor<Worker> jsonAccessor)
+    public WorkerRepository(JsonDataAccessor<Worker> jsonDataAccessor)
     {
-        this.jsonAccessor = jsonAccessor;
+        this.jsonDataAccessor = jsonDataAccessor;
         this.workers = this.getDataFromJsonFile();
     }
 
     private List<Worker> getDataFromJsonFile()
     {
-        return new ArrayList<>(Arrays.asList(this.jsonAccessor.getDataFromFile()));
+        return new ArrayList<>(Arrays.asList(this.jsonDataAccessor.getDataFromFile()));
+    }
+
+    private void writeJsonFile()
+    {
+        this.jsonDataAccessor.writeInFile(this.workers);
     }
 
     @Override
-    public void create(Worker element) throws FailedToCreate
+    public void create(Worker worker) throws FailedToCreate
     {
+        Worker registeredWorker = this.workers.stream()
+                .filter(w -> w.getLogin().equals(worker.getLogin()))
+                .findFirst()
+                .orElse(null);
 
+        if (registeredWorker != null)
+        {
+            throw new FailedToCreate(Worker.class);
+        }
+
+        this.workers.add(worker);
+        this.writeJsonFile();
     }
 
     @Override
     public Stream<Worker> read()
     {
-        return null;
+        return this.workers.stream();
     }
 
     @Override
     public Worker read(String id) throws ElementNotFound
     {
-        return null;
+        Worker registeredWorker = this.workers.stream()
+                .filter(w -> w.getId().toString().equals(id))
+                .findFirst()
+                .orElse(null);
+
+        if (registeredWorker == null)
+        {
+            throw new ElementNotFound(Worker.class, id);
+        }
+
+        return registeredWorker;
     }
 
     @Override
-    public void update(Worker element) throws ElementNotFound, FailedToUpdate
+    public void update(Worker worker) throws ElementNotFound, FailedToUpdate
     {
 
     }
@@ -54,6 +80,17 @@ public class WorkerRepository implements Repository<Worker>
     @Override
     public void remove(String id) throws ElementNotFound
     {
+        Worker registeredWorker = this.workers.stream()
+                .filter(w -> w.getId().toString().equals(id))
+                .findFirst()
+                .orElse(null);
 
+        if (registeredWorker == null)
+        {
+            throw new ElementNotFound(Worker.class, id);
+        }
+
+        this.workers.remove(registeredWorker);
+        this.writeJsonFile();
     }
 }

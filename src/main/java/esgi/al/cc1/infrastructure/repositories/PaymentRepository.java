@@ -4,7 +4,7 @@ import esgi.al.cc1.domain.models.Payment;
 import esgi.al.cc1.infrastructure.exceptions.repositoriesExceptions.ElementNotFound;
 import esgi.al.cc1.infrastructure.exceptions.repositoriesExceptions.FailedToCreate;
 import esgi.al.cc1.infrastructure.exceptions.repositoriesExceptions.FailedToUpdate;
-import esgi.al.cc1.infrastructure.services.jsonServices.JsonAccessor;
+import esgi.al.cc1.infrastructure.services.jsonServices.JsonDataAccessor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,17 +14,17 @@ import java.util.stream.Stream;
 public class PaymentRepository implements Repository<Payment>
 {
     private final List<Payment> payments;
-    private final JsonAccessor<Payment> jsonAccessor;
+    private final JsonDataAccessor<Payment> jsonDataAccessor;
 
-    public PaymentRepository(JsonAccessor<Payment> jsonAccessor)
+    public PaymentRepository(JsonDataAccessor<Payment> jsonDataAccessor)
     {
-        this.jsonAccessor = jsonAccessor;
+        this.jsonDataAccessor = jsonDataAccessor;
         this.payments = this.getDataFromJsonFile();
     }
 
     private List<Payment> getDataFromJsonFile()
     {
-        return new ArrayList<>(Arrays.asList(this.jsonAccessor.getDataFromFile()));
+        return new ArrayList<>(Arrays.asList(this.jsonDataAccessor.getDataFromFile()));
     }
 
     @Override

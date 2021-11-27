@@ -7,9 +7,9 @@ import java.util.List;
 public enum Command
 {
     // Contractor commands
-    createTradesman("CREATETRADESMAN", 0, 0, "usage cr tr"),
-    readTradesman("SELECTTRADESMAN", 0, 0, "usage re tr"),
-    deleteTradesman("DELETETRADESMAN", 0, 0, "usage de tr"),
+    createContractor("CREATECONTRACTOR", 0, 0, "usage cr co"),
+    readContractor("SELECTCONTRACTOR", 0, 0, "usage re co"),
+    deleteContractor("DELETECONTRACTOR", 0, 0, "usage de co"),
 
     // Payment commands
     createPayment("CREATEPAYMENT", 0, 0, "usage cr pa"),
@@ -22,12 +22,15 @@ public enum Command
     deleteProject("DELETEPROJECT", 0, 0, "usage de pr"),
 
     // Worker commands
-    createWorker("CREATEWORKER", 0, 0, "usage cr wo"),
-    readWorker("SELECTWORKER", 0, 0, "usage re wo"),
-    deleteWorker("DELETEWORKER", 0, 0, "usage de wo"),
+    createWorker("CREATEWORKER", 6, 0, "CREATEWORKER login password name service departement"),
+    readWorker("SELECTWORKER", 1, 2, "usage re wo"),
+    deleteWorker("DELETEWORKER", 2, 0, "usage de wo"),
+
+    // Help command
+    help("HELP", 2, 0, "HELP commandKeyword"),
 
     // Quit command
-    quit("QUIT", 0, 0, null),
+    quit("QUIT", 0, 0, "QUIT"),
 
     // None command (prevents a crash in case of unknown command)
     none(null, 0, 0, null);
@@ -53,7 +56,7 @@ public enum Command
     public static Command getCommand(String keyword)
     {
         return Command.getCommands().stream()
-                .filter(command -> keyword.equals(command.keyword))
+                .filter(command -> keyword.equalsIgnoreCase(command.keyword))
                 .findFirst()
                 .orElse(none);
     }

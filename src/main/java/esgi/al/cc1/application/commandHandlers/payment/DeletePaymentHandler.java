@@ -1,4 +1,4 @@
-package esgi.al.cc1.application.commandHandlers.paymentCommandHandlers;
+package esgi.al.cc1.application.commandHandlers.payment;
 
 import esgi.al.cc1.application.commandHandlers.CommandHandler;
 import esgi.al.cc1.infrastructure.controllers.Controller;

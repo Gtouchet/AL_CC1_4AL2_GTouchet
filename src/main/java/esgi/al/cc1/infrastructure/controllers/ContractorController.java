@@ -18,7 +18,7 @@ public class ContractorController implements Controller<Contractor>
     }
 
     @Override
-    public void create(Contractor element) throws FailedToCreate
+    public void create(String[] values) throws FailedToCreate
     {
 
     }

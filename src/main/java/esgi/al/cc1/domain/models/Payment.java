@@ -2,28 +2,31 @@ package esgi.al.cc1.domain.models;
 
 import esgi.al.cc1.domain.dtos.Date;
 import esgi.al.cc1.domain.dtos.Id;
+import esgi.al.cc1.domain.enumerators.PaymentMethod;
 
 public class Payment
 {
     private final Id id;
     private final Id contractorId;
     private final Id workerId;
+    private final PaymentMethod paidBy;
     private final float amount;
 
     private final Date creationDate;
 
-    private Payment(Id contractorId, Id workerId, float amount)
+    private Payment(Id contractorId, Id workerId, PaymentMethod paidBy, float amount)
     {
         this.id = Id.generate();
         this.contractorId = contractorId;
         this.workerId = workerId;
+        this.paidBy = paidBy;
         this.amount = amount;
         this.creationDate = Date.now();
     }
 
-    public static Payment register(Id contractorId, Id workerId, float amount)
+    public static Payment register(Id contractorId, Id workerId, PaymentMethod paidBy, float amount)
     {
-        return new Payment(contractorId, workerId, amount);
+        return new Payment(contractorId, workerId, paidBy, amount);
     }
 
     public Id getId()
@@ -39,6 +42,11 @@ public class Payment
     public Id getWorkerId()
     {
         return this.workerId;
+    }
+
+    public PaymentMethod getPaidBy()
+    {
+        return this.paidBy;
     }
 
     public float getAmount()

@@ -18,7 +18,7 @@ public class ProjectController implements Controller<Project>
     }
 
     @Override
-    public void create(Project element) throws FailedToCreate
+    public void create(String[] values) throws FailedToCreate
     {
 
     }

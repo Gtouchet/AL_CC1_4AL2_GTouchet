@@ -1,7 +1,6 @@
 package esgi.al.cc1.domain.models;
 
 import esgi.al.cc1.domain.dtos.Password;
-import esgi.al.cc1.domain.enumerators.Role;
 import esgi.al.cc1.domain.enumerators.Service;
 
 public class Worker extends User
@@ -9,17 +8,17 @@ public class Worker extends User
     private Service service;
     private int department;
 
-    private Worker(String login, Password password, String name, Role role, Service service, int department)
+    private Worker(String login, Password password, String name, Service service, int department)
     {
-        super(login, password, name, role);
+        super(login, password, name);
 
         this.service = service;
         this.department = department;
     }
 
-    public static Worker of(String login, Password password, String name, Role role, Service service, int department)
+    public static Worker of(String login, Password password, String name, Service service, int department)
     {
-        return new Worker(login, password, name, role, service, department);
+        return new Worker(login, password, name, service, department);
     }
 
     public Service getService()

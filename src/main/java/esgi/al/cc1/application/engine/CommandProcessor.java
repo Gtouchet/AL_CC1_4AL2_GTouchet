@@ -1,8 +1,11 @@
 package esgi.al.cc1.application.engine;
 
-import esgi.al.cc1.application.commandHandlers.paymentCommandHandlers.CreatePaymentHandler;
-import esgi.al.cc1.application.commandHandlers.paymentCommandHandlers.DeletePaymentHandler;
-import esgi.al.cc1.application.commandHandlers.paymentCommandHandlers.ReadPaymentHandler;
+import esgi.al.cc1.application.commandHandlers.HelpHandler;
+import esgi.al.cc1.application.commandHandlers.payment.CreatePaymentHandler;
+import esgi.al.cc1.application.commandHandlers.payment.DeletePaymentHandler;
+import esgi.al.cc1.application.commandHandlers.payment.ReadPaymentHandler;
+import esgi.al.cc1.application.commandHandlers.worker.CreateWorkerHandler;
+import esgi.al.cc1.application.commandHandlers.worker.ReadWorkerHandler;
 import esgi.al.cc1.application.enumerators.Command;
 import esgi.al.cc1.application.exceptions.WrongNumberOfArgument;
 import esgi.al.cc1.infrastructure.factories.ControllersFactory;
@@ -41,9 +44,22 @@ public class CommandProcessor
                     new DeletePaymentHandler(this.controllersFactory.createPaymentController()).handle(params);
                     break;
 
+                // Worker handlers
+                case createWorker:
+                    new CreateWorkerHandler(this.controllersFactory.createWorkerHandler()).handle(params);
+                    break;
+
+                case readWorker:
+                    new ReadWorkerHandler(this.controllersFactory.createWorkerHandler()).handle(params);
+                    break;
+
 
                 // Todo: implements other handlers
 
+                // Help command
+                case help:
+                    new HelpHandler().handle(params);
+                    break;
 
                 // Unknown command
                 default:

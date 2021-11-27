@@ -8,13 +8,13 @@ import java.io.*;
 import java.lang.reflect.Array;
 import java.util.List;
 
-public class JsonAccessor<T>
+public class JsonDataAccessor<T>
 {
     private final Class<T> dataType;
 
     private final JsonPathCreator jsonPathCreator;
 
-    public JsonAccessor(Class<T> dataType, JsonPathCreator jsonPathCreator)
+    public JsonDataAccessor(Class<T> dataType, JsonPathCreator jsonPathCreator)
     {
         this.dataType = dataType;
 

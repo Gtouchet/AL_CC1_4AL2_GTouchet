@@ -1,4 +1,4 @@
-package esgi.al.cc1.application.commandHandlers.paymentCommandHandlers;
+package esgi.al.cc1.application.commandHandlers.payment;
 
 import esgi.al.cc1.application.enumerators.Command;
 import esgi.al.cc1.application.commandHandlers.CommandHandler;
@@ -26,13 +26,12 @@ public class ReadPaymentHandler implements CommandHandler
         {
             List<Payment> payments = this.paymentController.read().collect(Collectors.toList());
             if (payments.size() == 0) {
-                System.out.println("No payment registered yet.");
+                System.out.println("No payment registered yet");
             }
             else {
                 payments.forEach(System.out::println);
             }
         }
-
         else if (params.length == Command.readPayment.parametersOverloadCount)
         {
             try {
@@ -41,7 +40,6 @@ public class ReadPaymentHandler implements CommandHandler
                 System.out.println(e.getMessage());
             }
         }
-
         else
         {
             throw new WrongNumberOfArgument(Command.readPayment);

@@ -1,7 +1,6 @@
 package esgi.al.cc1.domain.models;
 
 import esgi.al.cc1.domain.dtos.Password;
-import esgi.al.cc1.domain.enumerators.Role;
 import esgi.al.cc1.domain.enumerators.PaymentMethod;
 
 public class Contractor extends User
@@ -9,17 +8,17 @@ public class Contractor extends User
     private PaymentMethod paymentMethod;
     private boolean isPaymentValidated;
 
-    private Contractor(String login, Password password, String name, Role role, PaymentMethod paymentMethod)
+    private Contractor(String login, Password password, String name, PaymentMethod paymentMethod)
     {
-        super(login, password, name, role);
+        super(login, password, name);
 
         this.paymentMethod = paymentMethod;
         this.isPaymentValidated = false;
     }
 
-    public static Contractor of(String login, Password password, String name, Role role, PaymentMethod paymentMethod)
+    public static Contractor of(String login, Password password, String name, PaymentMethod paymentMethod)
     {
-        return new Contractor(login, password, name, role, paymentMethod);
+        return new Contractor(login, password, name, paymentMethod);
     }
 
     public PaymentMethod getPaymentMethod()

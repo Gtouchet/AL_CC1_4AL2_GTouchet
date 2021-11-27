@@ -1,5 +1,7 @@
 package esgi.al.cc1.infrastructure.controllers;
 
+import esgi.al.cc1.domain.dtos.Password;
+import esgi.al.cc1.domain.enumerators.Service;
 import esgi.al.cc1.domain.models.Worker;
 import esgi.al.cc1.infrastructure.exceptions.repositoriesExceptions.ElementNotFound;
 import esgi.al.cc1.infrastructure.exceptions.repositoriesExceptions.FailedToCreate;
@@ -17,22 +19,33 @@ public class WorkerController implements Controller<Worker>
         this.workerRepository = workerRepository;
     }
 
+    // Todo: implements validators
     @Override
-    public void create(Worker element) throws FailedToCreate
+    public void create(String[] values) throws FailedToCreate
     {
-
+        try {
+            int department = Integer.parseInt(values[5]);
+            try {
+                Service service = Service.valueOf(values[4]);
+                this.workerRepository.create(Worker.of(values[1], Password.of(values[2]), values[3], service, department));
+            } catch (IllegalArgumentException e) {
+                System.out.println("Error: unknown service type [" + values[4] + "]");
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Error: impossible to parse [" + values[5] + "] as a department number");
+        }
     }
 
     @Override
     public Stream<Worker> read()
     {
-        return null;
+        return this.workerRepository.read();
     }
 
     @Override
     public Worker read(String id) throws ElementNotFound
     {
-        return null;
+        return this.workerRepository.read(id);
     }
 
     @Override
@@ -44,6 +57,6 @@ public class WorkerController implements Controller<Worker>
     @Override
     public void remove(String id) throws ElementNotFound
     {
-
+        this.workerRepository.remove(id);
     }
 }

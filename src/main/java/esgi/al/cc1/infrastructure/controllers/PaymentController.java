@@ -18,7 +18,7 @@ public class PaymentController implements Controller<Payment>
     }
 
     @Override
-    public void create(Payment element) throws FailedToCreate
+    public void create(String[] values) throws FailedToCreate
     {
 
     }
