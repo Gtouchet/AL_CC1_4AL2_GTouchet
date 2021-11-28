@@ -34,19 +34,28 @@ public class CommandProcessor
             // Todo: implements other handlers
             switch (Command.getCommand(params[0].toUpperCase()))
             {
+                // Contractor handlers
+                case createContractor: break;
+                case readContractor: break;
+                case updateContractor: break;
+                case deleteContractor: break;
+
                 // Payment handlers
                 case createPayment: new CreatePaymentHandler(this.controllersFactory.createPaymentController()).handle(params); break;
                 case readPayment: new ReadPaymentHandler(this.controllersFactory.createPaymentController()).handle(params); break;
                 case deletePayment: new DeletePaymentHandler(this.controllersFactory.createPaymentController()).handle(params); break;
+
+                // Project handlers
+                case createProject: break;
+                case readProject: break;
+                case updateProject: break;
+                case deleteProject: break;
 
                 // Worker handlers
                 case createWorker: new CreateWorkerHandler(this.controllersFactory.createWorkerHandler()).handle(params); break;
                 case readWorker: new ReadWorkerHandler(this.controllersFactory.createWorkerHandler()).handle(params); break;
                 case updateWorker: new UpdateWorkerHandler(this.controllersFactory.createWorkerHandler()).handle(params); break;
                 case deleteWorker: new DeleteWorkerHandler(this.controllersFactory.createWorkerHandler()).handle(params); break;
-
-                // User handlers
-
 
                 // Help command
                 case help: new HelpHandler().handle(params); break;

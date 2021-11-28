@@ -1,6 +1,7 @@
 package esgi.al.cc1.application.commandHandlers.payment;
 
 import esgi.al.cc1.application.commandHandlers.CommandHandler;
+import esgi.al.cc1.application.exceptions.WrongNumberOfArgument;
 import esgi.al.cc1.infrastructure.controllers.Controller;
 import esgi.al.cc1.domain.models.Payment;
 
@@ -14,8 +15,8 @@ public class CreatePaymentHandler implements CommandHandler
     }
 
     @Override
-    public void handle(String[] params)
+    public void handle(String[] params) throws WrongNumberOfArgument
     {
-        System.out.println("On est bien dans le CREATE payment handler");
+
     }
 }

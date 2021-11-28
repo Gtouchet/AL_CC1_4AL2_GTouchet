@@ -1,5 +1,7 @@
 package esgi.al.cc1.infrastructure.controllers;
 
+import esgi.al.cc1.domain.dtos.Date;
+import esgi.al.cc1.domain.dtos.Id;
 import esgi.al.cc1.domain.dtos.Password;
 import esgi.al.cc1.domain.enumerators.Service;
 import esgi.al.cc1.domain.models.Worker;
@@ -24,17 +26,17 @@ public class WorkerController implements Controller<Worker>
     public void create(String[] values) throws FailedToCreate
     {
         try {
-            Service service = Service.valueOf(values[4]);
+            Service service = Service.valueOf(values[4].toLowerCase());
             try {
                 int department = Integer.parseInt(values[5]);
                 this.workerRepository.create(Worker.of(
-                        null,
+                        Id.generate(),
                         values[1],
                         Password.of(values[2]),
                         values[3],
                         service,
                         department,
-                        null
+                        Date.now()
                 ));
             } catch (NumberFormatException e) {
                 System.out.println("Error: impossible to parse [" + values[5] + "] as a department number");
@@ -60,10 +62,10 @@ public class WorkerController implements Controller<Worker>
     public void update(String[] values) throws ElementNotFound, FailedToUpdate
     {
         try {
-            Service service = Service.valueOf(values[4]);
+            Service service = Service.valueOf(values[4].toLowerCase());
             try {
                 int department = Integer.parseInt(values[5]);
-                this.workerRepository.update(values[1], Worker.of(
+                this.workerRepository.update(values[1].toLowerCase(), Worker.of(
                         null,
                         null,
                         Password.of(values[2]),

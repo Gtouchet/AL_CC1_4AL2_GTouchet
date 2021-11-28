@@ -7,14 +7,14 @@
     },
     "login": "GTouchet",
     "password": {
-      "value": "newPass789"
+      "value": "pass123"
     },
     "name": "guillaume",
     "creationDate": {
       "value": "28-11-2021-13-31-26"
     },
     "updateDate": {
-      "value": "28-11-2021-14-37-00"
+      "value": "28-11-2021-13-31-26"
     }
   }
 ]

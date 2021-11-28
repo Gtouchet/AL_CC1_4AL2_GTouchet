@@ -46,6 +46,7 @@ public class WorkerRepository implements Repository<Worker>
         }
 
         this.workers.add(worker);
+
         this.writeJsonFile();
     }
 
@@ -58,6 +59,36 @@ public class WorkerRepository implements Repository<Worker>
     @Override
     public Worker read(String id) throws ElementNotFound
     {
+        return this.findById(id);
+    }
+
+    @Override
+    public void update(String id, Worker worker) throws ElementNotFound, FailedToUpdate
+    {
+        Worker registeredWorker = this.findById(id);
+
+        this.workers.remove(registeredWorker);
+
+        registeredWorker.setPassword(worker.getPassword().toString());
+        registeredWorker.setName(worker.getName());
+        registeredWorker.setService(worker.getService());
+        registeredWorker.setDepartment(worker.getDepartment());
+
+        this.workers.add(registeredWorker);
+
+        this.writeJsonFile();
+    }
+
+    @Override
+    public void remove(String id) throws ElementNotFound
+    {
+        this.workers.remove(this.findById(id));
+
+        this.writeJsonFile();
+    }
+
+    private Worker findById(String id) throws ElementNotFound
+    {
         Worker registeredWorker = this.workers.stream()
                 .filter(w -> w.getId().toString().equals(id))
                 .findFirst()
@@ -69,48 +100,5 @@ public class WorkerRepository implements Repository<Worker>
         }
 
         return registeredWorker;
-    }
-
-    @Override
-    public void update(String id, Worker worker) throws ElementNotFound, FailedToUpdate
-    {
-        Worker registeredWorker = this.workers.stream()
-                .filter(w -> w.getId().toString().equals(id))
-                .findFirst()
-                .orElse(null);
-
-        if (registeredWorker == null)
-        {
-            throw new ElementNotFound(Worker.class, id);
-        }
-
-        this.workers.remove(registeredWorker);
-        this.workers.add(Worker.of(
-                registeredWorker.getId(),
-                registeredWorker.getLogin(),
-                worker.getPassword(),
-                worker.getName(),
-                worker.getService(),
-                worker.getDepartment(),
-                registeredWorker.getCreationDate()
-        ));
-        this.writeJsonFile();
-    }
-
-    @Override
-    public void remove(String id) throws ElementNotFound
-    {
-        Worker registeredWorker = this.workers.stream()
-                .filter(w -> w.getId().toString().equals(id))
-                .findFirst()
-                .orElse(null);
-
-        if (registeredWorker == null)
-        {
-            throw new ElementNotFound(Worker.class, id);
-        }
-
-        this.workers.remove(registeredWorker);
-        this.writeJsonFile();
     }
 }
