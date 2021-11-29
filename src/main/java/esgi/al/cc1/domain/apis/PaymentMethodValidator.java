@@ -1,4 +1,4 @@
-package esgi.al.cc1.domain.services;
+package esgi.al.cc1.domain.apis;
 
 public class PaymentMethodValidator
 {

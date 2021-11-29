@@ -6,33 +6,40 @@ import com.google.gson.stream.JsonReader;
 
 import java.io.*;
 import java.lang.reflect.Array;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class JsonDataAccessor<T>
 {
     private final Class<T> dataType;
+    private final DateFormat dateFormatter;
 
-    private final JsonPathCreator jsonPathCreator;
+    private final String filePath;
+    private final String backupFilePath;
 
-    public JsonDataAccessor(Class<T> dataType, JsonPathCreator jsonPathCreator)
+    public JsonDataAccessor(Class<T> dataType)
     {
         this.dataType = dataType;
+        this.dateFormatter = new SimpleDateFormat("dd-MM-yyyy-HH-mm-ss");
 
-        this.jsonPathCreator = jsonPathCreator;
+        this.filePath = "./res/" + this.dataType.getSimpleName().toLowerCase() + "s.json";
+        this.backupFilePath = "./res/backups/" + this.dataType.getSimpleName().toLowerCase() + "s/";
     }
 
     public T[] getDataFromFile()
     {
         try {
-            JsonReader reader = new JsonReader(new FileReader(this.jsonPathCreator.filePath));
+            JsonReader reader = new JsonReader(new FileReader(this.filePath));
             T[] data = new Gson().fromJson(reader, this.dataType.arrayType());
             return data != null && data.length > 0 ? data : (T[]) Array.newInstance(this.dataType, 0);
 
         } catch (FileNotFoundException e1) {
             try {
-                System.err.println("Error: file [" + this.jsonPathCreator.filePath + "] not found, could not read data.");
+                System.err.println("Error: file [" + this.filePath + "] not found, could not read data.");
 
-                new File(this.jsonPathCreator.filePath).createNewFile();
+                new File(this.filePath).createNewFile();
                 System.err.println("Empty file created to write data in.");
 
                 return this.getDataFromFile();
@@ -50,15 +57,15 @@ public class JsonDataAccessor<T>
 
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         try {
-            FileWriter writer = new FileWriter(this.jsonPathCreator.filePath);
+            FileWriter writer = new FileWriter(this.filePath);
             gson.toJson(data, writer);
             writer.close();
 
         } catch (IOException e1) {
             try {
-                System.err.println("Error: file [" + this.jsonPathCreator.filePath + "] not found, could not write data.");
+                System.err.println("Error: file [" + this.filePath + "] not found, could not write data.");
 
-                new File(this.jsonPathCreator.filePath).createNewFile();
+                new File(this.filePath).createNewFile();
                 System.err.println("Empty file created to write data in.");
 
                 this.writeInFile(data);
@@ -72,8 +79,8 @@ public class JsonDataAccessor<T>
     private void createBackupFile()
     {
         try {
-            InputStream in = new FileInputStream(this.jsonPathCreator.filePath);
-            OutputStream out = new FileOutputStream(this.jsonPathCreator.getBackupFilePath());
+            InputStream in = new FileInputStream(this.filePath);
+            OutputStream out = new FileOutputStream(this.backupFilePath + this.dateFormatter.format(new Date()) + ".json");
 
             byte[] buffer = new byte[1024];
             int length;
