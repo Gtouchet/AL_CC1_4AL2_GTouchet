@@ -15,4 +15,7 @@ public interface Repository<T>
     void remove(String id) throws ElementNotFound;
 
     void validatePayment(String id) throws ElementNotFound;
+
+    void addWorker(String projectId, String workerId) throws ElementNotFound, FailedToUpdate;
+    void removeWorker(String projectId, String workerId) throws ElementNotFound, FailedToUpdate;
 }

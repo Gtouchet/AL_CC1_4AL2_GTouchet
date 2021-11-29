@@ -4,6 +4,7 @@ import esgi.al.cc1.domain.dtos.Date;
 import esgi.al.cc1.domain.dtos.Id;
 import esgi.al.cc1.domain.dtos.Password;
 import esgi.al.cc1.domain.enumerators.Service;
+import esgi.al.cc1.domain.models.Project;
 import esgi.al.cc1.domain.models.Worker;
 import esgi.al.cc1.infrastructure.exceptions.repositoriesExceptions.ElementNotFound;
 import esgi.al.cc1.infrastructure.exceptions.repositoriesExceptions.FailedToCreate;
@@ -15,10 +16,14 @@ import java.util.stream.Stream;
 public class WorkerController implements Controller<Worker>
 {
     private final Repository<Worker> workerRepository;
+    private final Repository<Project> projectRepository;
 
-    public WorkerController(Repository<Worker> workerRepository)
+    public WorkerController(
+            Repository<Worker> workerRepository,
+            Repository<Project> projectRepository)
     {
         this.workerRepository = workerRepository;
+        this.projectRepository = projectRepository;
     }
 
     @Override
@@ -93,6 +98,20 @@ public class WorkerController implements Controller<Worker>
     {
         try {
             this.workerRepository.remove(id);
+
+            // Remove the deleted worker from all projects
+            this.projectRepository.read().forEach(project -> {
+                for (int i = 0; i < project.getWorkersId().size(); i += 1) {
+                    if (project.getWorkersId().get(i).toString().equals(id)) {
+                        try {
+                            this.projectRepository.removeWorker(project.getId().toString(), id);
+                            break;
+                        } catch (ElementNotFound | FailedToUpdate e) {
+                            System.out.println(e.getMessage());
+                        }
+                    }
+                }
+            });
         } catch (ElementNotFound e) {
             System.out.println(e.getMessage());
         }
@@ -100,6 +119,18 @@ public class WorkerController implements Controller<Worker>
 
     @Override
     public void validatePayment(String id)
+    {
+        // Do nothing
+    }
+
+    @Override
+    public void addWorker(String[] values)
+    {
+        // Do nothing
+    }
+
+    @Override
+    public void removeWorker(String[] values)
     {
         // Do nothing
     }

@@ -44,11 +44,11 @@ public class CommandProcessor
 
                 // Project handlers
                 case createProject: new CreateProjectHandler(this.controllersFactory.createProjectController()).handle(params); break;
-                case readProject: break;
-                case updateProject: break;
-                case deleteProject: break;
-                case engageWorker: break; // todo, also handlers implementations
-                case fireWorker: break;
+                case readProject: new ReadProjectHandler(this.controllersFactory.createProjectController()).handle(params); break;
+                case updateProject: new UpdateProjectHandler(this.controllersFactory.createProjectController()).handle(params); break;
+                case deleteProject: new DeleteProjectHandler(this.controllersFactory.createProjectController()).handle(params); break;
+                case engageWorker: new EngageWorkerHandler(this.controllersFactory.createProjectController()).handle(params); break;
+                case fireWorker: new FireWorkerHandler(this.controllersFactory.createProjectController()).handle(params); break;
 
                 // Worker handlers
                 case createWorker: new CreateWorkerHandler(this.controllersFactory.createWorkerHandler()).handle(params); break;

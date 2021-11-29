@@ -61,20 +61,47 @@ public class Project
         this.setUpdateDate();
     }
 
-    public void addWorker(Id workerId)
+    public void addWorker(Worker worker)
     {
-        this.workersId.add(workerId);
+        this.workersId.add(worker.getId());
         this.setUpdateDate();
     }
 
-    public void removeWorker(Id workerId)
+    public void removeWorker(Worker worker)
     {
-        this.workersId.remove(workerId);
+        for (int i = 0; i < this.workersId.size(); i += 1) {
+            if (this.workersId.get(i).toString().equals(worker.getId().toString())) {
+                this.workersId.remove(i);
+                break;
+            }
+        }
         this.setUpdateDate();
     }
 
     private void setUpdateDate()
     {
         this.updateDate = Date.now();
+    }
+
+    @Override
+    public String toString()
+    {
+        StringBuilder toString = new StringBuilder("ID: " + this.id +
+                "\nDepartment: " + this.department +
+                "\nWorkers IDs: ");
+
+        if (this.workersId.size() == 0)
+        {
+            toString.append("None");
+        }
+        else
+        {
+            for (Id id : this.workersId)
+            {
+                toString.append("\n - ").append(id);
+            }
+        }
+
+        return toString.toString();
     }
 }

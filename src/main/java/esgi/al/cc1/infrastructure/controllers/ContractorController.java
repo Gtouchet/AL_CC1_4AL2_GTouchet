@@ -99,4 +99,16 @@ public class ContractorController implements Controller<Contractor>
             System.out.println(e.getMessage());
         }
     }
+
+    @Override
+    public void addWorker(String[] values)
+    {
+        // Do nothing
+    }
+
+    @Override
+    public void removeWorker(String[] values)
+    {
+        // Do nothing
+    }
 }

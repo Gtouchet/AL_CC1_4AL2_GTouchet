@@ -72,6 +72,18 @@ public class PaymentRepository implements Repository<Payment>
         // Do nothing
     }
 
+    @Override
+    public void addWorker(String projectId, String workerId) throws ElementNotFound, FailedToUpdate
+    {
+        // Do nothing
+    }
+
+    @Override
+    public void removeWorker(String projectId, String workerId) throws ElementNotFound, FailedToUpdate
+    {
+        // Do nothing
+    }
+
     private Payment findById(String id) throws ElementNotFound
     {
         Payment registeredPayment = this.payments.stream()

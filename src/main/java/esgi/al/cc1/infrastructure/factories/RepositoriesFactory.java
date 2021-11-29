@@ -20,7 +20,10 @@ public class RepositoriesFactory
 
     public Repository<Project> createProjectRepository()
     {
-        return new ProjectRepository(new JsonAccessorsFactory().createProjectJsonAccessor());
+        return new ProjectRepository(
+                new JsonAccessorsFactory().createProjectJsonAccessor(),
+                this.createWorkerRepository()
+        );
     }
 
     public Repository<Worker> createWorkerRepository()

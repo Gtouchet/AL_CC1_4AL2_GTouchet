@@ -55,8 +55,10 @@ public class ProjectController implements Controller<Project>
         try {
             int department = Integer.parseInt(values[2]);
 
-            this.projectRepository.update(values[1].toLowerCase(), Project.of(department));
-
+            this.projectRepository.update(
+                    values[1].toLowerCase(),
+                    Project.of(department)
+            );
         } catch (NumberFormatException e) {
             System.out.println("Error: impossible to parse [" + values[2] + "] as a department number");
         } catch (ElementNotFound | FailedToUpdate e) {
@@ -78,5 +80,31 @@ public class ProjectController implements Controller<Project>
     public void validatePayment(String id)
     {
         // Do nothing
+    }
+
+    @Override
+    public void addWorker(String[] values)
+    {
+        try {
+            this.projectRepository.addWorker(
+                    values[1].toLowerCase(),
+                    values[2].toLowerCase()
+            );
+        } catch (ElementNotFound | FailedToUpdate e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @Override
+    public void removeWorker(String[] values)
+    {
+        try {
+            this.projectRepository.removeWorker(
+                    values[1].toLowerCase(),
+                    values[2].toLowerCase()
+            );
+        } catch (ElementNotFound | FailedToUpdate e) {
+            System.out.println(e.getMessage());
+        }
     }
 }

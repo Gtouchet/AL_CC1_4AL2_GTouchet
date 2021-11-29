@@ -11,4 +11,7 @@ public interface Controller<T>
     void remove(String id);
 
     void validatePayment(String id);
+
+    void addWorker(String[] values);
+    void removeWorker(String[] values);
 }

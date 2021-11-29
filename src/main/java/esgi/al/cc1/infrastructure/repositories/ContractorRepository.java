@@ -98,6 +98,18 @@ public class ContractorRepository implements Repository<Contractor>
         this.writeJsonFile();
     }
 
+    @Override
+    public void addWorker(String projectId, String workerId) throws ElementNotFound, FailedToUpdate
+    {
+        // Do nothing
+    }
+
+    @Override
+    public void removeWorker(String projectId, String workerId) throws ElementNotFound, FailedToUpdate
+    {
+        // Do nothing
+    }
+
     private Contractor findById(String id) throws ElementNotFound
     {
         Contractor registeredContractor = this.contractors.stream()

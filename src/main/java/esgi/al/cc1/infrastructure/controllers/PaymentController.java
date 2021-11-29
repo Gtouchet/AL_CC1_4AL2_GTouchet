@@ -90,4 +90,16 @@ public class PaymentController implements Controller<Payment>
     {
         // Do nothing
     }
+
+    @Override
+    public void addWorker(String[] values)
+    {
+        // Do nothing
+    }
+
+    @Override
+    public void removeWorker(String[] values)
+    {
+        // Do nothing
+    }
 }

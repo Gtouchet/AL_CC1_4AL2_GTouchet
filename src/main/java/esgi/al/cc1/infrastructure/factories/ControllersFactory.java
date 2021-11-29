@@ -28,6 +28,9 @@ public class ControllersFactory
 
     public Controller<Worker> createWorkerHandler()
     {
-        return new WorkerController(new RepositoriesFactory().createWorkerRepository());
+        return new WorkerController(
+                new RepositoriesFactory().createWorkerRepository(),
+                new RepositoriesFactory().createProjectRepository()
+        );
     }
 }

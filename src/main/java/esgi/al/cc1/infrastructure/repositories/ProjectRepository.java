@@ -1,6 +1,7 @@
 package esgi.al.cc1.infrastructure.repositories;
 
 import esgi.al.cc1.domain.models.Project;
+import esgi.al.cc1.domain.models.Worker;
 import esgi.al.cc1.infrastructure.exceptions.repositoriesExceptions.ElementNotFound;
 import esgi.al.cc1.infrastructure.exceptions.repositoriesExceptions.FailedToCreate;
 import esgi.al.cc1.infrastructure.exceptions.repositoriesExceptions.FailedToUpdate;
@@ -16,10 +17,14 @@ public class ProjectRepository implements Repository<Project>
     private final List<Project> projects;
     private final JsonDataAccessor<Project> jsonDataAccessor;
 
-    public ProjectRepository(JsonDataAccessor<Project> jsonDataAccessor)
+    private final Repository<Worker> workerRepository;
+
+    public ProjectRepository(JsonDataAccessor<Project> jsonDataAccessor, Repository<Worker> workerRepository)
     {
         this.jsonDataAccessor = jsonDataAccessor;
         this.projects = this.getDataFromJsonFile();
+
+        this.workerRepository = workerRepository;
     }
 
     private List<Project> getDataFromJsonFile()
@@ -33,38 +38,114 @@ public class ProjectRepository implements Repository<Project>
     }
 
     @Override
-    public void create(Project element) throws FailedToCreate
+    public void create(Project project) throws FailedToCreate
     {
+        this.projects.add(project);
 
+        this.writeJsonFile();
     }
 
     @Override
     public Stream<Project> read()
     {
-        return null;
+        return this.projects.stream();
     }
 
     @Override
     public Project read(String id) throws ElementNotFound
     {
-        return null;
+        return this.findById(id);
     }
 
     @Override
-    public void update(String id, Project element) throws ElementNotFound, FailedToUpdate
+    public void update(String id, Project project) throws ElementNotFound, FailedToUpdate
     {
+        Project registeredProject = this.findById(id);
 
+        this.projects.remove(registeredProject);
+        registeredProject.setDepartment(project.getDepartment());
+        this.projects.add(registeredProject);
+
+        this.writeJsonFile();
     }
 
     @Override
     public void remove(String id) throws ElementNotFound
     {
+        this.projects.remove(this.findById(id));
 
+        this.writeJsonFile();
     }
 
     @Override
     public void validatePayment(String id) throws ElementNotFound
     {
         // Do nothing
+    }
+
+    @Override
+    public void addWorker(String projectId, String workerId) throws ElementNotFound, FailedToUpdate
+    {
+        Project project = this.findById(projectId);
+        Worker worker = this.findWorkerById(workerId);
+
+        boolean alreadyWorkingOn = project.getWorkersId().stream()
+                .anyMatch(wId -> wId.toString().equals(workerId));
+        if (alreadyWorkingOn)
+        {
+            throw new FailedToUpdate(); // todo: exception message
+        }
+
+        project.addWorker(worker);
+
+        this.writeJsonFile();
+    }
+
+    @Override
+    public void removeWorker(String projectId, String workerId) throws ElementNotFound, FailedToUpdate
+    {
+        Project project = this.findById(projectId);
+        Worker worker = this.findWorkerById(workerId);
+
+        boolean workingOn = project.getWorkersId().stream()
+                .anyMatch(wId -> wId.toString().equals(workerId));
+        if (!workingOn)
+        {
+            throw new FailedToUpdate(); // todo: exception message
+        }
+
+        project.removeWorker(worker);
+
+        this.writeJsonFile();
+    }
+
+    private Project findById(String id) throws ElementNotFound
+    {
+        Project registeredProject = this.projects.stream()
+                .filter(p -> p.getId().toString().equals(id))
+                .findFirst()
+                .orElse(null);
+
+        if (registeredProject == null)
+        {
+            throw new ElementNotFound(Project.class, id);
+        }
+
+        return registeredProject;
+    }
+
+    private Worker findWorkerById(String id) throws ElementNotFound
+    {
+        Worker registeredWorker = this.workerRepository.read()
+                .filter(w -> w.getId().toString().equals(id))
+                .findFirst()
+                .orElse(null);
+
+        if (registeredWorker == null)
+        {
+            throw new ElementNotFound(Worker.class, id);
+        }
+
+        return registeredWorker;
     }
 }
