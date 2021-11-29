@@ -1,4 +1,4 @@
-package esgi.al.cc1.infrastructure.services.jsonServices;
+package esgi.al.cc1.infrastructure.services;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

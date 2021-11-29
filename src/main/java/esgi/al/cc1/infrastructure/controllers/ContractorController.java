@@ -27,7 +27,8 @@ public class ContractorController implements Controller<Contractor>
         try {
             PaymentMethod paymentMethod = PaymentMethod.valueOf(values[4].toLowerCase());
 
-            Contractor newContractor = Contractor.of(Id.generate(),
+            Contractor newContractor = Contractor.of(
+                    Id.generate(),
                     values[1],
                     Password.of(values[2]),
                     values[3],
@@ -87,7 +88,7 @@ public class ContractorController implements Controller<Contractor>
     public void remove(String id)
     {
         try {
-            this.contractorRepository.read(id);
+            this.contractorRepository.remove(id);
         } catch (ElementNotFound e) {
             System.out.println(e.getMessage());
         }

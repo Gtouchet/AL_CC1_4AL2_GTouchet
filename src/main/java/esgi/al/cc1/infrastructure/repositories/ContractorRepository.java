@@ -4,7 +4,7 @@ import esgi.al.cc1.domain.models.Contractor;
 import esgi.al.cc1.infrastructure.exceptions.repositoriesExceptions.ElementNotFound;
 import esgi.al.cc1.infrastructure.exceptions.repositoriesExceptions.FailedToCreate;
 import esgi.al.cc1.infrastructure.exceptions.repositoriesExceptions.FailedToUpdate;
-import esgi.al.cc1.infrastructure.services.jsonServices.JsonDataAccessor;
+import esgi.al.cc1.infrastructure.services.JsonDataAccessor;
 
 import java.util.ArrayList;
 import java.util.Arrays;

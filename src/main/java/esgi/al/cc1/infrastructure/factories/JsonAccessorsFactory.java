@@ -4,7 +4,7 @@ import esgi.al.cc1.domain.models.Contractor;
 import esgi.al.cc1.domain.models.Payment;
 import esgi.al.cc1.domain.models.Project;
 import esgi.al.cc1.domain.models.Worker;
-import esgi.al.cc1.infrastructure.services.jsonServices.JsonDataAccessor;
+import esgi.al.cc1.infrastructure.services.JsonDataAccessor;
 
 public class JsonAccessorsFactory
 {
