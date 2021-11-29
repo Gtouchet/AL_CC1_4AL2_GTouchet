@@ -21,28 +21,28 @@ public class WorkerController implements Controller<Worker>
         this.workerRepository = workerRepository;
     }
 
-    // Todo: implements validators in all controller implementations
     @Override
-    public void create(String[] values) throws FailedToCreate
+    public void create(String[] values)
     {
         try {
             Service service = Service.valueOf(values[4].toLowerCase());
-            try {
-                int department = Integer.parseInt(values[5]);
-                this.workerRepository.create(Worker.of(
-                        Id.generate(),
-                        values[1],
-                        Password.of(values[2]),
-                        values[3],
-                        service,
-                        department,
-                        Date.now()
-                ));
-            } catch (NumberFormatException e) {
-                System.out.println("Error: impossible to parse [" + values[5] + "] as a department number");
-            }
+            int department = Integer.parseInt(values[5]);
+
+            this.workerRepository.create(Worker.of(
+                    Id.generate(),
+                    values[1],
+                    Password.of(values[2]),
+                    values[3],
+                    service,
+                    department,
+                    Date.now()
+            ));
+        } catch (NumberFormatException e) {
+            System.out.println("Error: impossible to parse [" + values[5] + "] as a department number");
         } catch (IllegalArgumentException e) {
             System.out.println("Error: unknown service type [" + values[4] + "]");
+        } catch (FailedToCreate e) {
+            System.out.println(e.getMessage());
         }
     }
 
@@ -53,38 +53,54 @@ public class WorkerController implements Controller<Worker>
     }
 
     @Override
-    public Worker read(String id) throws ElementNotFound
-    {
-        return this.workerRepository.read(id);
-    }
-
-    @Override
-    public void update(String[] values) throws ElementNotFound, FailedToUpdate
+    public Worker read(String id)
     {
         try {
-            Service service = Service.valueOf(values[4].toLowerCase());
-            try {
-                int department = Integer.parseInt(values[5]);
-                this.workerRepository.update(values[1].toLowerCase(), Worker.of(
-                        null,
-                        null,
-                        Password.of(values[2]),
-                        values[3],
-                        service,
-                        department,
-                        null
-                ));
-            } catch (NumberFormatException e) {
-                System.out.println("Error: impossible to parse [" + values[5] + "] as a department number");
-            }
-        } catch (IllegalArgumentException e) {
-            System.out.println("Error: unknown service type [" + values[4] + "]");
+            return this.workerRepository.read(id);
+        } catch (ElementNotFound e) {
+            System.out.println(e.getMessage());
+            return null;
         }
     }
 
     @Override
-    public void remove(String id) throws ElementNotFound
+    public void update(String[] values)
     {
-        this.workerRepository.remove(id);
+        try {
+            Service service = Service.valueOf(values[4].toLowerCase());
+            int department = Integer.parseInt(values[5]);
+
+            this.workerRepository.update(values[1].toLowerCase(), Worker.of(
+                    null,
+                    null,
+                    Password.of(values[2]),
+                    values[3],
+                    service,
+                    department,
+                    null
+            ));
+        } catch (NumberFormatException e) {
+            System.out.println("Error: impossible to parse [" + values[5] + "] as a department number");
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error: unknown service type [" + values[4] + "]");
+        } catch (ElementNotFound | FailedToUpdate e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @Override
+    public void remove(String id)
+    {
+        try {
+            this.workerRepository.remove(id);
+        } catch (ElementNotFound e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @Override
+    public void validatePayment(String id)
+    {
+        // Do nothing
     }
 }

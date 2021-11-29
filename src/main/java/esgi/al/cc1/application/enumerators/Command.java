@@ -7,48 +7,49 @@ import java.util.List;
 public enum Command
 {
     // Contractor commands
-    createContractor("CREATECONTRACTOR", 0, 0, "usage cr co"),
-    readContractor("SELECTCONTRACTOR", 0, 0, "usage re co"),
-    updateContractor("UPDATECONTRACTOR", 0, 0, "usage up co"),
-    deleteContractor("DELETECONTRACTOR", 0, 0, "usage de co\n"),
+    createContractor("CREATECONTRACTOR", 5, "CREATECONTRACTOR login password name paymentMethod"),
+    readContractor("SELECTCONTRACTOR", 1, "SELECTCONTRACTOR -> all contractors\nSELECTCONTRACTOR id -> specific contractor"),
+    updateContractor("UPDATECONTRACTOR", 5, "UPDATECONTRACTOR id password name paymentMethod"),
+    deleteContractor("DELETECONTRACTOR", 2, "DELETECONTRACTOR id"),
+    validatePayment("VALIDATEPAYMENT", 2, "VALIDATEPAYMENT id -> validate the contractor's payment method\n"),
 
     // Payment commands
-    createPayment("CREATEPAYMENT", 0, 0, "usage cr pa"),
-    readPayment("SELECTPAYMENT", 1, 2, "SELECTPAYMENT -> all payments\nSELECTPAYMENT id -> specific payment"),
+    createPayment("CREATEPAYMENT", 4, "CREATEPAYMENT contractorId workerId amount"),
+    readPayment("SELECTPAYMENT", 1, "SELECTPAYMENT -> all payments\nSELECTPAYMENT id -> specific payment"),
     /* No update command for payments */
-    deletePayment("DELETEPAYMENT", 0, 0, "usage de pa\n"),
+    deletePayment("DELETEPAYMENT", 2, "DELETEPAYMENT id\n"),
 
     // Project commands
-    createProject("CREATEPROJECT", 0, 0, "usage cr pr"),
-    readProject("SELECTPROJECT", 0, 0, "usage re pr"),
-    updateProject("UPDATEPROJECT", 0, 0, "usage up pr"),
-    deleteProject("DELETEPROJECT", 0, 0, "usage de pr\n"),
+    createProject("CREATEPROJECT", 2, "CREATEPROJECT department"),
+    readProject("SELECTPROJECT", 1, "SELECTPROJECT -> all projects\nSELECTPROJECT id -> specific project"),
+    updateProject("UPDATEPROJECT", 3, "UPDATEPROJECT id department"),
+    deleteProject("DELETEPROJECT", 2, "DELETEPROJECT id"),
+    engageWorker("ENGAGEWORKER", 3, "ENGAGEWORKER workerId projectId -> add a worker to a project"),
+    fireWorker("FIREWORKER", 3, "FIREWORKER workerId projectId -> remove a worker from a project\n"),
 
     // Worker commands
-    createWorker("CREATEWORKER", 6, 0, "CREATEWORKER login password name service department"),
-    readWorker("SELECTWORKER", 1, 2, "SELECTWORKER -> all workers\nSELECTWORKER id -> specific worker"),
-    updateWorker("UPDATEWORKER", 6, 0, "UPDATEWORKER id newPassword newName newService newDepartment"),
-    deleteWorker("DELETEWORKER", 2, 0, "DELETEWORKER id"),
+    createWorker("CREATEWORKER", 6, "CREATEWORKER login password name service department"),
+    readWorker("SELECTWORKER", 1, "SELECTWORKER -> all workers\nSELECTWORKER id -> specific worker"),
+    updateWorker("UPDATEWORKER", 6, "UPDATEWORKER id newPassword newName newService newDepartment"),
+    deleteWorker("DELETEWORKER", 2, "DELETEWORKER id\n"),
 
     // Help command
-    help("HELP", 2, 0, "HELP commandKeyword -> get command's usage"),
+    help("HELP", 1, "HELP -> get all commands and their usages\nHELP command -> get specific command's usage"),
 
     // Quit command
-    quit("QUIT", 0, 0, "QUIT -> quit the application"),
+    quit("QUIT", 0, "QUIT -> quit the application"),
 
     // None command (prevents a crash in case of unknown command)
-    none(null, 0, 0, null);
+    none(null, 0, null);
 
     public final String keyword;
-    public final int parametersCount;
-    public final int parametersOverloadCount;
+    public final int parameters;
     public final String usage;
 
-    Command(String keyword, int parametersCount, int parametersOverloadCount, String usage)
+    Command(String keyword, int parameters, String usage)
     {
         this.keyword = keyword;
-        this.parametersCount = parametersCount;
-        this.parametersOverloadCount = parametersOverloadCount;
+        this.parameters = parameters;
         this.usage = usage;
     }
 

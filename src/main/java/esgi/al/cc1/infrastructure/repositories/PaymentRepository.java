@@ -27,33 +27,63 @@ public class PaymentRepository implements Repository<Payment>
         return new ArrayList<>(Arrays.asList(this.jsonDataAccessor.getDataFromFile()));
     }
 
-    @Override
-    public void create(Payment element) throws FailedToCreate
+    private void writeJsonFile()
     {
+        this.jsonDataAccessor.writeInFile(this.payments);
+    }
 
+    @Override
+    public void create(Payment payment) throws FailedToCreate
+    {
+        this.payments.add(payment);
+
+        this.writeJsonFile();
     }
 
     @Override
     public Stream<Payment> read()
     {
-        return null;
+        return this.payments.stream();
     }
 
     @Override
     public Payment read(String id) throws ElementNotFound
     {
-        return null;
+        return this.findById(id);
     }
 
     @Override
-    public void update(String id, Payment element) throws ElementNotFound, FailedToUpdate
+    public void update(String id, Payment payment) throws ElementNotFound, FailedToUpdate
     {
-
+        // Do nothing
     }
 
     @Override
     public void remove(String id) throws ElementNotFound
     {
+        this.payments.remove(this.findById(id));
 
+        this.writeJsonFile();
+    }
+
+    @Override
+    public void validatePayment(String id) throws ElementNotFound
+    {
+        // Do nothing
+    }
+
+    private Payment findById(String id) throws ElementNotFound
+    {
+        Payment registeredPayment = this.payments.stream()
+                .filter(p -> p.getId().toString().equals(id))
+                .findFirst()
+                .orElse(null);
+
+        if (registeredPayment == null)
+        {
+            throw new ElementNotFound(Payment.class, id);
+        }
+
+        return registeredPayment;
     }
 }

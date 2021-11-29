@@ -5,7 +5,6 @@ import esgi.al.cc1.application.enumerators.Command;
 import esgi.al.cc1.application.exceptions.WrongNumberOfArgument;
 import esgi.al.cc1.domain.models.Worker;
 import esgi.al.cc1.infrastructure.controllers.Controller;
-import esgi.al.cc1.infrastructure.exceptions.repositoriesExceptions.ElementNotFound;
 
 public class DeleteWorkerHandler implements CommandHandler
 {
@@ -19,13 +18,9 @@ public class DeleteWorkerHandler implements CommandHandler
     @Override
     public void handle(String[] params) throws WrongNumberOfArgument
     {
-        if (params.length == Command.deleteWorker.parametersCount)
+        if (params.length == Command.deleteWorker.parameters)
         {
-            try {
-                this.workerController.remove(params[1]);
-            } catch (ElementNotFound e) {
-                System.out.println(e.getMessage());
-            }
+            this.workerController.remove(params[1]);
         }
         else
         {

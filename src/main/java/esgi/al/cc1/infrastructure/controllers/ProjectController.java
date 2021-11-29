@@ -18,32 +18,65 @@ public class ProjectController implements Controller<Project>
     }
 
     @Override
-    public void create(String[] values) throws FailedToCreate
+    public void create(String[] values)
     {
+        try {
+            int department = Integer.parseInt(values[1]);
 
+            this.projectRepository.create(Project.of(department));
+
+        } catch (NumberFormatException e) {
+            System.out.println("Error: impossible to parse [" + values[1] + "] as a department number");
+        } catch (FailedToCreate e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     @Override
     public Stream<Project> read()
     {
-        return null;
+        return this.projectRepository.read();
     }
 
     @Override
-    public Project read(String id) throws ElementNotFound
+    public Project read(String id)
     {
-        return null;
+        try {
+            return this.projectRepository.read(id);
+        } catch (ElementNotFound e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
     }
 
     @Override
-    public void update(String[] values) throws ElementNotFound, FailedToUpdate
+    public void update(String[] values)
     {
+        try {
+            int department = Integer.parseInt(values[2]);
 
+            this.projectRepository.update(values[1].toLowerCase(), Project.of(department));
+
+        } catch (NumberFormatException e) {
+            System.out.println("Error: impossible to parse [" + values[2] + "] as a department number");
+        } catch (ElementNotFound | FailedToUpdate e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     @Override
-    public void remove(String id) throws ElementNotFound
+    public void remove(String id)
     {
+        try {
+            this.projectRepository.remove(id);
+        } catch (ElementNotFound e) {
+            System.out.println(e.getMessage());
+        }
+    }
 
+    @Override
+    public void validatePayment(String id)
+    {
+        // Do nothing
     }
 }

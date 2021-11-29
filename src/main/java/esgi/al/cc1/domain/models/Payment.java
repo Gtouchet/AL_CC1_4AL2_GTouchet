@@ -9,25 +9,30 @@ public class Payment
     private final Id id;
     private final Id contractorId;
     private final Id workerId;
-    private final PaymentMethod paidBy;
+    private final PaymentMethod paymentMethod;
     private final float amount;
 
     private final Date creationDate;
 
-    private Payment(Id contractorId, Id workerId, PaymentMethod paidBy, float amount)
+    private Payment(Id contractorId, Id workerId, PaymentMethod paymentMethod, float amount)
     {
         this.id = Id.generate();
         this.contractorId = contractorId;
         this.workerId = workerId;
-        this.paidBy = paidBy;
+        this.paymentMethod = paymentMethod;
         this.amount = amount;
 
         this.creationDate = Date.now();
     }
 
-    public static Payment register(Id contractorId, Id workerId, PaymentMethod paidBy, float amount)
+    public static Payment of(Id contractorId, Id workerId, PaymentMethod paymentMethod, float amount)
     {
-        return new Payment(contractorId, workerId, paidBy, amount);
+        return new Payment(contractorId, workerId, paymentMethod, amount);
+    }
+
+    public static Payment of(String contractorId, String workerId, PaymentMethod paymentMethod, float amount)
+    {
+        return new Payment(Id.set(contractorId), Id.set(workerId), paymentMethod, amount);
     }
 
     public Id getId()
@@ -45,9 +50,9 @@ public class Payment
         return this.workerId;
     }
 
-    public PaymentMethod getPaidBy()
+    public PaymentMethod getPaymentMethod()
     {
-        return this.paidBy;
+        return this.paymentMethod;
     }
 
     public float getAmount()
@@ -64,10 +69,10 @@ public class Payment
     public String toString()
     {
         return "ID: " + this.id +
-                "Contractor ID: " + this.contractorId +
-                "Worker ID: " + this.workerId +
-                "Paid by: " + this.paidBy +
-                "Amount: " + this.amount +
-                "Payment date: " + this.creationDate;
+                "\nContractor ID: " + this.contractorId +
+                "\nWorker ID: " + this.workerId +
+                "\nPaid by: " + this.paymentMethod +
+                "\nAmount: " + this.amount +
+                "\nPayment date: " + this.creationDate;
     }
 }

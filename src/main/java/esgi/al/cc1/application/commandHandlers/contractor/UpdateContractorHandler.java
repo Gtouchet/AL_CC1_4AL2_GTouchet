@@ -6,11 +6,11 @@ import esgi.al.cc1.application.exceptions.WrongNumberOfArgument;
 import esgi.al.cc1.domain.models.Contractor;
 import esgi.al.cc1.infrastructure.controllers.Controller;
 
-public class CreateContractorHandler implements CommandHandler
+public class UpdateContractorHandler implements CommandHandler
 {
     private final Controller<Contractor> contractorController;
 
-    public CreateContractorHandler(Controller<Contractor> contractorController)
+    public UpdateContractorHandler(Controller<Contractor> contractorController)
     {
         this.contractorController = contractorController;
     }
@@ -18,13 +18,13 @@ public class CreateContractorHandler implements CommandHandler
     @Override
     public void handle(String[] params) throws WrongNumberOfArgument
     {
-        if (params.length == Command.createContractor.parameters)
+        if (params.length == Command.updateContractor.parameters)
         {
-            this.contractorController.create(params);
+            this.contractorController.update(params);
         }
         else
         {
-            throw new WrongNumberOfArgument(Command.createContractor);
+            throw new WrongNumberOfArgument(Command.updateContractor);
         }
     }
 }

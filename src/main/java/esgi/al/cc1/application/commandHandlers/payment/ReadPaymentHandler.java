@@ -1,11 +1,10 @@
 package esgi.al.cc1.application.commandHandlers.payment;
 
-import esgi.al.cc1.application.enumerators.Command;
 import esgi.al.cc1.application.commandHandlers.CommandHandler;
-import esgi.al.cc1.infrastructure.controllers.Controller;
-import esgi.al.cc1.domain.models.Payment;
+import esgi.al.cc1.application.enumerators.Command;
 import esgi.al.cc1.application.exceptions.WrongNumberOfArgument;
-import esgi.al.cc1.infrastructure.exceptions.repositoriesExceptions.ElementNotFound;
+import esgi.al.cc1.domain.models.Payment;
+import esgi.al.cc1.infrastructure.controllers.Controller;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,23 +21,21 @@ public class ReadPaymentHandler implements CommandHandler
     @Override
     public void handle(String[] params) throws WrongNumberOfArgument
     {
-        if (params.length == Command.readPayment.parametersCount)
+        if (params.length == Command.readPayment.parameters)
         {
-            List<Payment> payments = this.paymentController.read().collect(Collectors.toList());
-            if (payments.size() == 0) {
+            List<Payment> payments = this.paymentController.read().collect(Collectors.toUnmodifiableList());
+            if (payments.size() == 0)
+            {
                 System.out.println("No payment registered yet");
             }
-            else {
+            else
+            {
                 payments.forEach(System.out::println);
             }
         }
-        else if (params.length == Command.readPayment.parametersOverloadCount)
+        else if (params.length == Command.readPayment.parameters + 1) // Accepts an ID as an overloaded parameter
         {
-            try {
-                System.out.println(this.paymentController.read(params[1]));
-            } catch (ElementNotFound e) {
-                System.out.println(e.getMessage());
-            }
+            System.out.println(this.paymentController.read(params[1]));
         }
         else
         {

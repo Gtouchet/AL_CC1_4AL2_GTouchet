@@ -1,13 +1,10 @@
 package esgi.al.cc1.application.engine;
 
 import esgi.al.cc1.application.commandHandlers.HelpHandler;
-import esgi.al.cc1.application.commandHandlers.payment.CreatePaymentHandler;
-import esgi.al.cc1.application.commandHandlers.payment.DeletePaymentHandler;
-import esgi.al.cc1.application.commandHandlers.payment.ReadPaymentHandler;
-import esgi.al.cc1.application.commandHandlers.worker.CreateWorkerHandler;
-import esgi.al.cc1.application.commandHandlers.worker.DeleteWorkerHandler;
-import esgi.al.cc1.application.commandHandlers.worker.ReadWorkerHandler;
-import esgi.al.cc1.application.commandHandlers.worker.UpdateWorkerHandler;
+import esgi.al.cc1.application.commandHandlers.contractor.*;
+import esgi.al.cc1.application.commandHandlers.payment.*;
+import esgi.al.cc1.application.commandHandlers.project.*;
+import esgi.al.cc1.application.commandHandlers.worker.*;
 import esgi.al.cc1.application.enumerators.Command;
 import esgi.al.cc1.application.exceptions.WrongNumberOfArgument;
 import esgi.al.cc1.infrastructure.factories.ControllersFactory;
@@ -31,14 +28,14 @@ public class CommandProcessor
         }
 
         try {
-            // Todo: implements other handlers
             switch (Command.getCommand(params[0].toUpperCase()))
             {
                 // Contractor handlers
-                case createContractor: break;
-                case readContractor: break;
-                case updateContractor: break;
-                case deleteContractor: break;
+                case createContractor: new CreateContractorHandler(this.controllersFactory.createContractorController()).handle(params); break;
+                case readContractor: new ReadContractorHandler(this.controllersFactory.createContractorController()).handle(params); break;
+                case updateContractor: new UpdateContractorHandler(this.controllersFactory.createContractorController()).handle(params); break;
+                case deleteContractor: new DeleteContractorHandler(this.controllersFactory.createContractorController()).handle(params); break;
+                case validatePayment: new ValidatePaymentHandler(this.controllersFactory.createContractorController()).handle(params); break;
 
                 // Payment handlers
                 case createPayment: new CreatePaymentHandler(this.controllersFactory.createPaymentController()).handle(params); break;
@@ -46,10 +43,12 @@ public class CommandProcessor
                 case deletePayment: new DeletePaymentHandler(this.controllersFactory.createPaymentController()).handle(params); break;
 
                 // Project handlers
-                case createProject: break;
+                case createProject: new CreateProjectHandler(this.controllersFactory.createProjectController()).handle(params); break;
                 case readProject: break;
                 case updateProject: break;
                 case deleteProject: break;
+                case engageWorker: break; // todo, also handlers implementations
+                case fireWorker: break;
 
                 // Worker handlers
                 case createWorker: new CreateWorkerHandler(this.controllersFactory.createWorkerHandler()).handle(params); break;

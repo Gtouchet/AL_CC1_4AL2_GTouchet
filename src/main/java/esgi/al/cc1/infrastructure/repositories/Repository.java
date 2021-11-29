@@ -13,4 +13,6 @@ public interface Repository<T>
     T read(String id) throws ElementNotFound;
     void update(String id, T element) throws ElementNotFound, FailedToUpdate;
     void remove(String id) throws ElementNotFound;
+
+    void validatePayment(String id) throws ElementNotFound;
 }

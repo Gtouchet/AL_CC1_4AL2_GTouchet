@@ -27,6 +27,11 @@ public class ProjectRepository implements Repository<Project>
         return new ArrayList<>(Arrays.asList(this.jsonDataAccessor.getDataFromFile()));
     }
 
+    private void writeJsonFile()
+    {
+        this.jsonDataAccessor.writeInFile(this.projects);
+    }
+
     @Override
     public void create(Project element) throws FailedToCreate
     {
@@ -55,5 +60,11 @@ public class ProjectRepository implements Repository<Project>
     public void remove(String id) throws ElementNotFound
     {
 
+    }
+
+    @Override
+    public void validatePayment(String id) throws ElementNotFound
+    {
+        // Do nothing
     }
 }
