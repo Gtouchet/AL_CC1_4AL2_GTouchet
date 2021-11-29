@@ -1,5 +1,6 @@
 package esgi.al.cc1.infrastructure.controllers;
 
+import esgi.al.cc1.domain.dtos.Id;
 import esgi.al.cc1.domain.enumerators.PaymentMethod;
 import esgi.al.cc1.domain.models.Contractor;
 import esgi.al.cc1.domain.models.Payment;
@@ -25,7 +26,7 @@ public class PaymentController implements Controller<Payment>
     }
 
     @Override
-    public void create(String[] values)
+    public Id create(String[] values)
     {
         String contractorId = values[1].toLowerCase();
         try {
@@ -37,12 +38,14 @@ public class PaymentController implements Controller<Payment>
             PaymentMethod paymentMethod = this.contractorRepository.read(contractorId).getPaymentMethod();
             float amount = Float.parseFloat(values[3]);
 
-            this.paymentRepository.create(Payment.of(
-                    contractorId,
+            Payment newPayment = Payment.of(contractorId,
                     values[2].toLowerCase(),
                     paymentMethod,
                     amount
-            ));
+            );
+            this.paymentRepository.create(newPayment);
+            return newPayment.getId();
+
         } catch (NumberFormatException e) {
             System.out.println("Error: impossible to parse [" + values[4] + "] as an amount");
         } catch (IllegalArgumentException e) {
@@ -50,6 +53,7 @@ public class PaymentController implements Controller<Payment>
         } catch (ElementNotFound | FailedToCreate | ContractorPaymentNotValidated e) {
             System.out.println(e.getMessage());
         }
+        return null;
     }
 
     @Override

@@ -22,24 +22,27 @@ public class ContractorController implements Controller<Contractor>
     }
 
     @Override
-    public void create(String[] values)
+    public Id create(String[] values)
     {
         try {
             PaymentMethod paymentMethod = PaymentMethod.valueOf(values[4].toLowerCase());
 
-            this.contractorRepository.create(Contractor.of(
-                        Id.generate(),
-                        values[1],
-                        Password.of(values[2]),
-                        values[3],
-                        paymentMethod,
-                        Date.now()
-            ));
+            Contractor newContractor = Contractor.of(Id.generate(),
+                    values[1],
+                    Password.of(values[2]),
+                    values[3],
+                    paymentMethod,
+                    Date.now()
+            );
+            this.contractorRepository.create(newContractor);
+            return newContractor.getId();
+
         } catch (FailedToCreate e) {
             System.out.println(e.getMessage());
         } catch (IllegalArgumentException e) {
             System.out.println("Error: unknown payment method [" + values[4] + "]");
         }
+        return null;
     }
 
     @Override

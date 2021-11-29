@@ -1,10 +1,12 @@
 package esgi.al.cc1.infrastructure.controllers;
 
+import esgi.al.cc1.domain.dtos.Id;
+
 import java.util.stream.Stream;
 
 public interface Controller<T>
 {
-    void create(String[] values);
+    Id create(String[] values);
     Stream<T> read();
     T read(String id);
     void update(String[] values);

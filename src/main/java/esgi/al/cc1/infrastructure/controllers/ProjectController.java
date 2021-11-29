@@ -1,5 +1,6 @@
 package esgi.al.cc1.infrastructure.controllers;
 
+import esgi.al.cc1.domain.dtos.Id;
 import esgi.al.cc1.domain.models.Project;
 import esgi.al.cc1.infrastructure.exceptions.repositoriesExceptions.ElementNotFound;
 import esgi.al.cc1.infrastructure.exceptions.repositoriesExceptions.FailedToCreate;
@@ -18,18 +19,21 @@ public class ProjectController implements Controller<Project>
     }
 
     @Override
-    public void create(String[] values)
+    public Id create(String[] values)
     {
         try {
             int department = Integer.parseInt(values[1]);
 
-            this.projectRepository.create(Project.of(department));
+            Project newProject = Project.of(department);
+            this.projectRepository.create(newProject);
+            return newProject.getId();
 
         } catch (NumberFormatException e) {
             System.out.println("Error: impossible to parse [" + values[1] + "] as a department number");
         } catch (FailedToCreate e) {
             System.out.println(e.getMessage());
         }
+        return null;
     }
 
     @Override

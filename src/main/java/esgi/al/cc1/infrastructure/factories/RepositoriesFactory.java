@@ -22,7 +22,7 @@ public class RepositoriesFactory
     {
         return new ProjectRepository(
                 new JsonAccessorsFactory().createProjectJsonAccessor(),
-                this.createWorkerRepository()
+                new RepositoriesFactory().createWorkerRepository()
         );
     }
 

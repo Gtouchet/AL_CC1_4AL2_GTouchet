@@ -27,13 +27,13 @@ public class WorkerController implements Controller<Worker>
     }
 
     @Override
-    public void create(String[] values)
+    public Id create(String[] values)
     {
         try {
             Service service = Service.valueOf(values[4].toLowerCase());
             int department = Integer.parseInt(values[5]);
 
-            this.workerRepository.create(Worker.of(
+            Worker newWorker = Worker.of(
                     Id.generate(),
                     values[1],
                     Password.of(values[2]),
@@ -41,7 +41,10 @@ public class WorkerController implements Controller<Worker>
                     service,
                     department,
                     Date.now()
-            ));
+            );
+            this.workerRepository.create(newWorker);
+            return newWorker.getId();
+
         } catch (NumberFormatException e) {
             System.out.println("Error: impossible to parse [" + values[5] + "] as a department number");
         } catch (IllegalArgumentException e) {
@@ -49,6 +52,7 @@ public class WorkerController implements Controller<Worker>
         } catch (FailedToCreate e) {
             System.out.println(e.getMessage());
         }
+        return null;
     }
 
     @Override

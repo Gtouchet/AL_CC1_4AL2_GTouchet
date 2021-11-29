@@ -51,10 +51,10 @@ public class CommandProcessor
                 case fireWorker: new FireWorkerHandler(this.controllersFactory.createProjectController()).handle(params); break;
 
                 // Worker handlers
-                case createWorker: new CreateWorkerHandler(this.controllersFactory.createWorkerHandler()).handle(params); break;
-                case readWorker: new ReadWorkerHandler(this.controllersFactory.createWorkerHandler()).handle(params); break;
-                case updateWorker: new UpdateWorkerHandler(this.controllersFactory.createWorkerHandler()).handle(params); break;
-                case deleteWorker: new DeleteWorkerHandler(this.controllersFactory.createWorkerHandler()).handle(params); break;
+                case createWorker: new CreateWorkerHandler(this.controllersFactory.createWorkerController()).handle(params); break;
+                case readWorker: new ReadWorkerHandler(this.controllersFactory.createWorkerController()).handle(params); break;
+                case updateWorker: new UpdateWorkerHandler(this.controllersFactory.createWorkerController()).handle(params); break;
+                case deleteWorker: new DeleteWorkerHandler(this.controllersFactory.createWorkerController()).handle(params); break;
 
                 // Help command
                 case help: new HelpHandler().handle(params); break;
