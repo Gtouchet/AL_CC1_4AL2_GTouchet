@@ -2,11 +2,11 @@ package esgi.al.cc1;
 
 import esgi.al.cc1.domain.dtos.Id;
 import esgi.al.cc1.infrastructure.factories.ControllersFactory;
-import org.junit.Test;
 
+import org.junit.Test;
 import static org.junit.Assert.*;
 
-public class ProjectTests
+public class ProjectControllerTests
 {
     private final ControllersFactory controllersFactory = new ControllersFactory();
 
@@ -15,9 +15,13 @@ public class ProjectTests
      * So everytime I run a test, I should call this method to clean my fake data
      * @param id The ID of the element to clean
      */
-    private void cleanMyRoom(Id id)
+    private void cleanMyRoomFromFakeProject(Id id)
     {
         this.controllersFactory.createProjectController().remove(id.toString());
+    }
+    private void cleanMyRoomFromFakeWorker(Id id)
+    {
+        this.controllersFactory.createWorkerController().remove(id.toString());
     }
 
     @Test
@@ -33,12 +37,13 @@ public class ProjectTests
         // Check the difference between old and new sizes
         assertEquals(1, newRepoSize - initialRepoSize);
 
-        this.cleanMyRoom(newProjectId);
+        this.cleanMyRoomFromFakeProject(newProjectId);
     }
 
     @Test
-    public void createProject_engageWorker_deleteWorker()
+    public void createProject_engageWorker_fireWorker()
     {
+        Id newProjectId = this.controllersFactory.createProjectController().create(new String[] {"", "75"});
         Id newWorkerId = this.controllersFactory.createWorkerController().create(new String[] {"",
                 "123_Touchet_456",
                 "__password789__",
@@ -46,7 +51,6 @@ public class ProjectTests
                 "plumber",
                 "91"
         });
-        Id newProjectId = this.controllersFactory.createProjectController().create(new String[] {"", "75"});
 
         // No worker engaged yet
         assertEquals(0, this.controllersFactory.createProjectController().read(newProjectId.toString()).getWorkersId().size());
@@ -70,12 +74,27 @@ public class ProjectTests
         assertFalse(this.controllersFactory.createProjectController().read(newProjectId.toString()).getWorkersId().stream()
                 .anyMatch(id -> id.toString().equals(newWorkerId.toString()))
         );
+        assertEquals(0, this.controllersFactory.createProjectController().read(newProjectId.toString()).getWorkersId().size());
 
-        // Re-hiring the worker
-        this.controllersFactory.createProjectController().addWorker(new String[] {"", newProjectId.toString(), newWorkerId.toString()});
-        // He's back
-        assertTrue(this.controllersFactory.createProjectController().read(newProjectId.toString()).getWorkersId().stream()
-                .anyMatch(id -> id.toString().equals(newWorkerId.toString()))
+        this.cleanMyRoomFromFakeProject(newProjectId);
+        this.cleanMyRoomFromFakeWorker(newWorkerId);
+    }
+
+    @Test
+    public void createProject_engageWorker_deleteWorker()
+    {
+        Id newProjectId = this.controllersFactory.createProjectController().create(new String[] {"", "75"});
+        Id newWorkerId = this.controllersFactory.createWorkerController().create(new String[] {"",
+                "123_Touchet_456",
+                "__password789__",
+                "Guillaume_123",
+                "plumber",
+                "91"
+        });
+
+        this.controllersFactory.createProjectController().addWorker(new String[] {"",
+                newProjectId.toString(),
+                newWorkerId.toString()}
         );
 
         // Hard deleting the worker from the worker repo
@@ -85,7 +104,7 @@ public class ProjectTests
                 .anyMatch(id -> id.toString().equals(newWorkerId.toString()))
         );
 
-        this.cleanMyRoom(newProjectId);
+        this.cleanMyRoomFromFakeProject(newProjectId);
     }
 
     @Test
@@ -98,6 +117,6 @@ public class ProjectTests
         // Now it should be in 91
         assertEquals(91, this.controllersFactory.createProjectController().read(newProjectId.toString()).getDepartment());
 
-        this.cleanMyRoom(newProjectId);
+        this.cleanMyRoomFromFakeProject(newProjectId);
     }
 }

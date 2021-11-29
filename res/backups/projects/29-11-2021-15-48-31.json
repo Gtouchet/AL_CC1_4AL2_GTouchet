@@ -1,0 +1,19 @@
+[
+  {
+    "id": {
+      "value": "186e35e4-8d09-4f68-9e04-254f23e35a46"
+    },
+    "department": 75,
+    "workersId": [
+      {
+        "value": "bab957f9-676f-4cd6-8175-4607197e1be1"
+      }
+    ],
+    "creationDate": {
+      "value": "29-11-2021-15-48-31"
+    },
+    "updateDate": {
+      "value": "29-11-2021-15-48-31"
+    }
+  }
+]

@@ -1,0 +1,41 @@
+[
+  {
+    "id": {
+      "value": "606f4e9b-fc0b-477e-b30b-29a5ceb7c2af"
+    },
+    "department": 75,
+    "workersId": [],
+    "creationDate": {
+      "value": "29-11-2021-15-47-33"
+    },
+    "updateDate": {
+      "value": "29-11-2021-15-47-33"
+    }
+  },
+  {
+    "id": {
+      "value": "e1db9205-b72a-4df5-8956-d47cb682868c"
+    },
+    "department": 75,
+    "workersId": [],
+    "creationDate": {
+      "value": "29-11-2021-15-47-33"
+    },
+    "updateDate": {
+      "value": "29-11-2021-15-47-33"
+    }
+  },
+  {
+    "id": {
+      "value": "8feec352-5f07-4354-96a5-b2a33cb54348"
+    },
+    "department": 75,
+    "workersId": [],
+    "creationDate": {
+      "value": "29-11-2021-15-47-33"
+    },
+    "updateDate": {
+      "value": "29-11-2021-15-47-33"
+    }
+  }
+]

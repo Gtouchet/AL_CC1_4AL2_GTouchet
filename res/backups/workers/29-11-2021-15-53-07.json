@@ -1,0 +1,20 @@
+[
+  {
+    "service": "plumber",
+    "department": 91,
+    "id": {
+      "value": "4b297af2-444f-45c2-8cc6-4d0eefabf989"
+    },
+    "login": "123_Touchet_456",
+    "password": {
+      "value": "__password789__"
+    },
+    "name": "Guillaume_123",
+    "creationDate": {
+      "value": "29-11-2021-15-53-07"
+    },
+    "updateDate": {
+      "value": "29-11-2021-15-53-07"
+    }
+  }
+]
