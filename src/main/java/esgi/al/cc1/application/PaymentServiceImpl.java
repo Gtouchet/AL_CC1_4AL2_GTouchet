@@ -29,14 +29,14 @@ public class PaymentServiceImpl implements PaymentService
     }
 
     @Override
-    public void create(Id contractorId, Id workerId, double amount, String reason)
+    public Id create(Id contractorId, Id workerId, double amount, String reason)
     {
         Contractor contractor;
         try {
             contractor = this.contractorRepository.read(contractorId);
         } catch (ElementNotFoundException e) {
             System.out.println(e.getMessage());
-            return;
+            return null;
         }
 
         if (!contractor.isPaymentValidated())
@@ -45,17 +45,17 @@ public class PaymentServiceImpl implements PaymentService
                     "Error: Contractor ID [" + contractorId + "] payment method is not validated yet, " +
                     "please validate it before trying to make a payment."
             );
-            return;
+            return null;
         }
 
         if (!this.workerRepository.exists(workerId))
         {
             System.out.println("Error: no Worker registered with ID [" + workerId + "]");
-            return;
+            return null;
         }
 
         try {
-            this.paymentRepository.create(Payment.of(
+            Payment payment = Payment.of(
                     Id.generate(),
                     contractorId,
                     workerId,
@@ -63,9 +63,13 @@ public class PaymentServiceImpl implements PaymentService
                     amount,
                     reason,
                     Date.now()
-            ));
+            );
+            this.paymentRepository.create(payment);
+            return payment.getId();
+
         } catch (FailedToCreateException e) {
             System.out.println(e.getMessage());
+            return null;
         }
     }
 

@@ -6,7 +6,7 @@ import esgi.al.cc1.domain.valueObjects.Password;
 
 public interface ContractorService
 {
-    void create(String login, Password password, String name, PaymentMethod paymentMethod);
+    Id create(String login, Password password, String name, PaymentMethod paymentMethod);
     void read();
     void read(Id id);
     void update(Id id, Password password, String name, PaymentMethod paymentMethod);

@@ -20,11 +20,6 @@ public class ContractorRepository implements Repository<Contractor>
         this.contractors = this.getDataFromJsonFile();
     }
 
-    private List<Contractor> getDataFromJsonFile()
-    {
-        return new ArrayList<>(Arrays.asList(this.jsonDataAccessor.getDataFromFile()));
-    }
-
     @Override
     public void create(Contractor contractor) throws FailedToCreateException
     {
@@ -83,8 +78,12 @@ public class ContractorRepository implements Repository<Contractor>
         return this.contractors.stream().anyMatch(contractor -> contractor.getId().equals(id));
     }
 
-    @Override
-    public void writeJsonFile()
+    private List<Contractor> getDataFromJsonFile()
+    {
+        return new ArrayList<>(Arrays.asList(this.jsonDataAccessor.getDataFromFile()));
+    }
+
+    private void writeJsonFile()
     {
         this.jsonDataAccessor.writeInFile(this.contractors);
     }

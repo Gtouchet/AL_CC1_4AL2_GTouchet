@@ -4,7 +4,7 @@ import esgi.al.cc1.domain.valueObjects.Id;
 
 public interface PaymentService
 {
-    void create(Id contractorId, Id workerId, double amount, String reason);
+    Id create(Id contractorId, Id workerId, double amount, String reason);
     void read();
     void read(Id id);
     // No updating possibility for any registered payment

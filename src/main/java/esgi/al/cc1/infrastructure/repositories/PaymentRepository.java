@@ -20,11 +20,6 @@ public class PaymentRepository implements Repository<Payment>
         this.payments = this.getDataFromJsonFile();
     }
 
-    private List<Payment> getDataFromJsonFile()
-    {
-        return new ArrayList<>(Arrays.asList(this.jsonDataAccessor.getDataFromFile()));
-    }
-
     @Override
     public void create(Payment payment) throws FailedToCreateException
     {
@@ -63,8 +58,13 @@ public class PaymentRepository implements Repository<Payment>
         return this.payments.stream().anyMatch(payment -> payment.getId().equals(id));
     }
 
-    @Override
-    public void writeJsonFile()
+    private List<Payment> getDataFromJsonFile()
+    {
+        return new ArrayList<>(Arrays.asList(this.jsonDataAccessor.getDataFromFile()));
+    }
+
+
+    private void writeJsonFile()
     {
         this.jsonDataAccessor.writeInFile(this.payments);
     }

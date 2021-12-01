@@ -30,23 +30,27 @@ public class ProjectServiceImpl implements ProjectService
     }
 
     @Override
-    public void create(Id contractorId, int department)
+    public Id create(Id contractorId, int department)
     {
         if(!this.contractorRepository.exists(contractorId))
         {
             System.out.println("Error: no Contractor registered with ID [" + contractorId + "]");
-            return;
+            return null;
         }
 
         try {
-            this.projectRepository.create(Project.of(
+            Project project = Project.of(
                     Id.generate(),
                     contractorId,
                     department,
                     Date.now()
-            ));
+            );
+            this.projectRepository.create(project);
+            return project.getId();
+
         } catch (FailedToCreateException e) {
             System.out.println(e.getMessage());
+            return null;
         }
     }
 

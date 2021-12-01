@@ -32,20 +32,21 @@ public class WorkerServiceImpl implements WorkerService
     }
 
     @Override
-    public void create(String login, Password password, String name, Service service, int department)
+    public Id create(String login, Password password, String name, Service service, int department)
     {
         Contractor registeredContractor = this.contractorRepository.read()
                 .filter(worker -> worker.getLogin().equals(login))
                 .findFirst()
                 .orElse(null);
+
         if (registeredContractor != null)
         {
             System.out.println("Error: login already in use by user ID [" + registeredContractor.getId() + "]");
-            return;
+            return null;
         }
 
         try {
-            this.workerRepository.create(Worker.of(
+            Worker worker = Worker.of(
                     Id.generate(),
                     login,
                     password,
@@ -53,9 +54,13 @@ public class WorkerServiceImpl implements WorkerService
                     service,
                     department,
                     Date.now()
-            ));
+            );
+            this.workerRepository.create(worker);
+            return worker.getId();
+
         } catch (FailedToCreateException e) {
             System.out.println(e.getMessage());
+            return null;
         }
     }
 
@@ -120,9 +125,21 @@ public class WorkerServiceImpl implements WorkerService
             return;
         }
 
-        // Remove the deleted worker from all registered projects
-        this.projectRepository.read().forEach(project -> {
-            project.getWorkersId().removeIf(workerId -> workerId.equals(id));
-        });
+        // Remove the deleted worker from all projects
+        this.projectRepository.read()
+                .filter(project -> project.getWorkersId().contains(id))
+                .collect(Collectors.toList())
+                .forEach(project -> {
+                    project.getWorkersId().remove(id);
+                    try {
+                        this.projectRepository.update(project.getId(),
+                                Project.of(project.getId(),
+                                project.getContractorId(),
+                                project.getDepartment(),
+                                project.getCreationDate()));
+                    } catch (ElementNotFoundException | FailedToUpdateException e) {
+                        System.out.println(e.getMessage());
+                    }
+                });
     }
 }

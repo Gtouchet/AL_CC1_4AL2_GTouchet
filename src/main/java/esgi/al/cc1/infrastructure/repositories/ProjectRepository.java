@@ -20,11 +20,6 @@ public class ProjectRepository implements Repository<Project>
         this.projects = this.getDataFromJsonFile();
     }
 
-    private List<Project> getDataFromJsonFile()
-    {
-        return new ArrayList<>(Arrays.asList(this.jsonDataAccessor.getDataFromFile()));
-    }
-
     @Override
     public void create(Project project) throws FailedToCreateException
     {
@@ -71,8 +66,12 @@ public class ProjectRepository implements Repository<Project>
         return this.projects.stream().anyMatch(project -> project.getId().equals(id));
     }
 
-    @Override
-    public void writeJsonFile()
+    private List<Project> getDataFromJsonFile()
+    {
+        return new ArrayList<>(Arrays.asList(this.jsonDataAccessor.getDataFromFile()));
+    }
+
+    private void writeJsonFile()
     {
         this.jsonDataAccessor.writeInFile(this.projects);
     }

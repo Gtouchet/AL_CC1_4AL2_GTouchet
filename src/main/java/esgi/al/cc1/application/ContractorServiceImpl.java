@@ -29,7 +29,7 @@ public class ContractorServiceImpl implements ContractorService
     }
 
     @Override
-    public void create(String login, Password password, String name, PaymentMethod paymentMethod)
+    public Id create(String login, Password password, String name, PaymentMethod paymentMethod)
     {
         Worker registeredWorker = this.workerRepository.read()
                 .filter(worker -> worker.getLogin().equals(login))
@@ -38,11 +38,11 @@ public class ContractorServiceImpl implements ContractorService
         if (registeredWorker != null)
         {
             System.out.println("Error: login already in use by user ID [" + registeredWorker.getId() + "]");
-            return;
+            return null;
         }
 
         try {
-            this.contractorRepository.create(Contractor.of(
+            Contractor contractor = Contractor.of(
                     Id.generate(),
                     login,
                     password,
@@ -50,9 +50,13 @@ public class ContractorServiceImpl implements ContractorService
                     paymentMethod,
                     false,
                     Date.now()
-            ));
+            );
+            this.contractorRepository.create(contractor);
+            return contractor.getId();
+
         } catch (FailedToCreateException e) {
             System.out.println(e.getMessage());
+            return null;
         }
     }
 
