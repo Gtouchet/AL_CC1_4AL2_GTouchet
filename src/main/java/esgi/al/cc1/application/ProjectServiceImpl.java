@@ -127,7 +127,7 @@ public class ProjectServiceImpl implements ProjectService
 
         Worker worker;
         try {
-            worker = this.workerRepository.read(projectId);
+            worker = this.workerRepository.read(workerId);
         } catch (ElementNotFoundException e) {
             System.out.println(e.getMessage());
             return;
@@ -140,11 +140,11 @@ public class ProjectServiceImpl implements ProjectService
         }
 
         project.addWorker(worker);
-        /*try {
+        try {
             this.projectRepository.update(projectId, project);
         } catch (ElementNotFoundException | FailedToUpdateException e) {
             System.out.println(e.getMessage());
-        }*/
+        }
     }
 
     @Override
@@ -160,7 +160,7 @@ public class ProjectServiceImpl implements ProjectService
 
         Worker worker;
         try {
-            worker = this.workerRepository.read(projectId);
+            worker = this.workerRepository.read(workerId);
         } catch (ElementNotFoundException e) {
             System.out.println(e.getMessage());
             return;
@@ -173,5 +173,10 @@ public class ProjectServiceImpl implements ProjectService
         }
 
         project.removeWorker(worker);
+        try {
+            this.projectRepository.update(projectId, project);
+        } catch (ElementNotFoundException | FailedToUpdateException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }

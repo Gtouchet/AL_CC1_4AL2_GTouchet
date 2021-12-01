@@ -107,7 +107,7 @@ public class Project implements Entity
         }
         else
         {
-            this.workersId.stream().map(project::append);
+            this.workersId.forEach(workerId -> project.append(workerId.toString()));
         }
 
         return project.toString();
