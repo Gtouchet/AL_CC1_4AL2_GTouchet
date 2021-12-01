@@ -1,40 +1,39 @@
 package esgi.al.cc1.domain.models;
 
-import esgi.al.cc1.domain.dtos.Date;
-import esgi.al.cc1.domain.dtos.Id;
-import esgi.al.cc1.domain.enumerators.PaymentMethod;
+import esgi.al.cc1.domain.valueObjects.Date;
+import esgi.al.cc1.domain.valueObjects.Id;
 
-public class Payment
+public class Payment implements Entity
 {
     private final Id id;
     private final Id contractorId;
     private final Id workerId;
     private final PaymentMethod paymentMethod;
-    private final float amount;
+    private final double amount;
+    private final String reason;
 
     private final Date creationDate;
 
-    private Payment(Id contractorId, Id workerId, PaymentMethod paymentMethod, float amount)
+    private Payment(Id id, Id contractorId, Id workerId, PaymentMethod paymentMethod,
+                    double amount, String reason, Date creationDate)
     {
-        this.id = Id.generate();
+        this.id = id;
         this.contractorId = contractorId;
         this.workerId = workerId;
         this.paymentMethod = paymentMethod;
         this.amount = amount;
+        this.reason = reason;
 
-        this.creationDate = Date.now();
+        this.creationDate = creationDate;
     }
 
-    public static Payment of(Id contractorId, Id workerId, PaymentMethod paymentMethod, float amount)
+    public static Payment of(Id id, Id contractorId, Id workerId, PaymentMethod paymentMethod,
+                             double amount, String reason, Date creationDate)
     {
-        return new Payment(contractorId, workerId, paymentMethod, amount);
+        return new Payment(id, contractorId, workerId, paymentMethod, amount, reason, creationDate);
     }
 
-    public static Payment of(String contractorId, String workerId, PaymentMethod paymentMethod, float amount)
-    {
-        return new Payment(Id.set(contractorId), Id.set(workerId), paymentMethod, amount);
-    }
-
+    @Override
     public Id getId()
     {
         return this.id;
@@ -55,9 +54,14 @@ public class Payment
         return this.paymentMethod;
     }
 
-    public float getAmount()
+    public double getAmount()
     {
         return this.amount;
+    }
+
+    public String getReason()
+    {
+        return this.reason;
     }
 
     public Date getCreationDate()
@@ -73,6 +77,7 @@ public class Payment
                 "\nWorker ID: " + this.workerId +
                 "\nPaid by: " + this.paymentMethod +
                 "\nAmount: " + this.amount +
+                "\nReason: " + this.reason +
                 "\nPayment date: " + this.creationDate;
     }
 }

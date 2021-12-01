@@ -1,9 +1,8 @@
 package esgi.al.cc1.domain.models;
 
-import esgi.al.cc1.domain.dtos.Date;
-import esgi.al.cc1.domain.dtos.Id;
-import esgi.al.cc1.domain.dtos.Password;
-import esgi.al.cc1.domain.enumerators.Service;
+import esgi.al.cc1.domain.valueObjects.Date;
+import esgi.al.cc1.domain.valueObjects.Id;
+import esgi.al.cc1.domain.valueObjects.Password;
 
 public class Worker extends User
 {

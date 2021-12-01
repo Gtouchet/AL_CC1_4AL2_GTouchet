@@ -1,10 +1,8 @@
 package esgi.al.cc1.infrastructure.repositories;
 
 import esgi.al.cc1.domain.models.Contractor;
-import esgi.al.cc1.infrastructure.exceptions.repositoriesExceptions.ElementNotFound;
-import esgi.al.cc1.infrastructure.exceptions.repositoriesExceptions.FailedToCreate;
-import esgi.al.cc1.infrastructure.exceptions.repositoriesExceptions.FailedToUpdate;
-import esgi.al.cc1.infrastructure.services.JsonDataAccessor;
+import esgi.al.cc1.domain.valueObjects.Id;
+import esgi.al.cc1.infrastructure.utilitaries.JsonDataAccessor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,13 +25,8 @@ public class ContractorRepository implements Repository<Contractor>
         return new ArrayList<>(Arrays.asList(this.jsonDataAccessor.getDataFromFile()));
     }
 
-    private void writeJsonFile()
-    {
-        this.jsonDataAccessor.writeInFile(this.contractors);
-    }
-
     @Override
-    public void create(Contractor contractor) throws FailedToCreate
+    public void create(Contractor contractor) throws FailedToCreateException
     {
         Contractor registeredContractor = this.contractors.stream()
                 .filter(c -> c.getLogin().equals(contractor.getLogin()))
@@ -42,11 +35,10 @@ public class ContractorRepository implements Repository<Contractor>
 
         if (registeredContractor != null)
         {
-            throw new FailedToCreate(Contractor.class, "login already in use by user ID [" + registeredContractor.getId().toString() + "]");
+            throw new FailedToCreateException(Contractor.class, "login already in use by user ID [" + registeredContractor.getId() + "]");
         }
 
         this.contractors.add(contractor);
-
         this.writeJsonFile();
     }
 
@@ -57,69 +49,56 @@ public class ContractorRepository implements Repository<Contractor>
     }
 
     @Override
-    public Contractor read(String id) throws ElementNotFound
+    public Contractor read(Id id) throws ElementNotFoundException
     {
         return this.findById(id);
     }
 
     @Override
-    public void update(String id, Contractor contractor) throws ElementNotFound, FailedToUpdate
+    public void update(Id id, Contractor contractor) throws ElementNotFoundException, FailedToUpdateException
     {
         Contractor registeredContractor = this.findById(id);
 
         this.contractors.remove(registeredContractor);
 
-        registeredContractor.setPassword(contractor.getPassword().toString());
+        registeredContractor.setPassword(contractor.getPassword());
         registeredContractor.setName(contractor.getName());
         registeredContractor.setPaymentMethod(contractor.getPaymentMethod());
+        registeredContractor.setPaymentValidated(contractor.isPaymentValidated());
 
         this.contractors.add(registeredContractor);
-
         this.writeJsonFile();
     }
 
     @Override
-    public void remove(String id) throws ElementNotFound
+    public void remove(Id id) throws ElementNotFoundException
     {
         this.contractors.remove(this.findById(id));
-
         this.writeJsonFile();
     }
 
     @Override
-    public void validatePayment(String id) throws ElementNotFound
+    public boolean exists(Id id)
     {
-        Contractor registeredContractor = this.findById(id);
-
-        this.contractors.remove(registeredContractor);
-        registeredContractor.setPaymentValidated(true); // todo: mock validation with stubbed service
-        this.contractors.add(registeredContractor);
-
-        this.writeJsonFile();
+        return this.contractors.stream().anyMatch(contractor -> contractor.getId().equals(id));
     }
 
     @Override
-    public void addWorker(String projectId, String workerId) throws ElementNotFound, FailedToUpdate
+    public void writeJsonFile()
     {
-        // Do nothing
+        this.jsonDataAccessor.writeInFile(this.contractors);
     }
 
-    @Override
-    public void removeWorker(String projectId, String workerId) throws ElementNotFound, FailedToUpdate
-    {
-        // Do nothing
-    }
-
-    private Contractor findById(String id) throws ElementNotFound
+    private Contractor findById(Id id) throws ElementNotFoundException
     {
         Contractor registeredContractor = this.contractors.stream()
-                .filter(c -> c.getId().toString().equals(id))
+                .filter(contractor -> contractor.getId().equals(id))
                 .findFirst()
                 .orElse(null);
 
         if (registeredContractor == null)
         {
-            throw new ElementNotFound(Contractor.class, id);
+            throw new ElementNotFoundException(Contractor.class, id.toString());
         }
 
         return registeredContractor;

@@ -1,10 +1,8 @@
 package esgi.al.cc1.infrastructure.repositories;
 
 import esgi.al.cc1.domain.models.Payment;
-import esgi.al.cc1.infrastructure.exceptions.repositoriesExceptions.ElementNotFound;
-import esgi.al.cc1.infrastructure.exceptions.repositoriesExceptions.FailedToCreate;
-import esgi.al.cc1.infrastructure.exceptions.repositoriesExceptions.FailedToUpdate;
-import esgi.al.cc1.infrastructure.services.JsonDataAccessor;
+import esgi.al.cc1.domain.valueObjects.Id;
+import esgi.al.cc1.infrastructure.utilitaries.JsonDataAccessor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,16 +25,10 @@ public class PaymentRepository implements Repository<Payment>
         return new ArrayList<>(Arrays.asList(this.jsonDataAccessor.getDataFromFile()));
     }
 
-    private void writeJsonFile()
-    {
-        this.jsonDataAccessor.writeInFile(this.payments);
-    }
-
     @Override
-    public void create(Payment payment) throws FailedToCreate
+    public void create(Payment payment) throws FailedToCreateException
     {
         this.payments.add(payment);
-
         this.writeJsonFile();
     }
 
@@ -47,53 +39,46 @@ public class PaymentRepository implements Repository<Payment>
     }
 
     @Override
-    public Payment read(String id) throws ElementNotFound
+    public Payment read(Id id) throws ElementNotFoundException
     {
         return this.findById(id);
     }
 
     @Override
-    public void update(String id, Payment payment) throws ElementNotFound, FailedToUpdate
+    public void update(Id id, Payment element) throws ElementNotFoundException, FailedToUpdateException
     {
         // Do nothing
     }
 
     @Override
-    public void remove(String id) throws ElementNotFound
+    public void remove(Id id) throws ElementNotFoundException
     {
         this.payments.remove(this.findById(id));
-
         this.writeJsonFile();
     }
 
     @Override
-    public void validatePayment(String id) throws ElementNotFound
+    public boolean exists(Id id)
     {
-        // Do nothing
+        return this.payments.stream().anyMatch(payment -> payment.getId().equals(id));
     }
 
     @Override
-    public void addWorker(String projectId, String workerId) throws ElementNotFound, FailedToUpdate
+    public void writeJsonFile()
     {
-        // Do nothing
+        this.jsonDataAccessor.writeInFile(this.payments);
     }
 
-    @Override
-    public void removeWorker(String projectId, String workerId) throws ElementNotFound, FailedToUpdate
-    {
-        // Do nothing
-    }
-
-    private Payment findById(String id) throws ElementNotFound
+    private Payment findById(Id id) throws ElementNotFoundException
     {
         Payment registeredPayment = this.payments.stream()
-                .filter(p -> p.getId().toString().equals(id))
+                .filter(payment -> payment.getId().equals(id))
                 .findFirst()
                 .orElse(null);
 
         if (registeredPayment == null)
         {
-            throw new ElementNotFound(Payment.class, id);
+            throw new ElementNotFoundException(Payment.class, id.toString());
         }
 
         return registeredPayment;

@@ -1,10 +1,8 @@
 package esgi.al.cc1.infrastructure.repositories;
 
 import esgi.al.cc1.domain.models.Worker;
-import esgi.al.cc1.infrastructure.exceptions.repositoriesExceptions.ElementNotFound;
-import esgi.al.cc1.infrastructure.exceptions.repositoriesExceptions.FailedToCreate;
-import esgi.al.cc1.infrastructure.exceptions.repositoriesExceptions.FailedToUpdate;
-import esgi.al.cc1.infrastructure.services.JsonDataAccessor;
+import esgi.al.cc1.domain.valueObjects.Id;
+import esgi.al.cc1.infrastructure.utilitaries.JsonDataAccessor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,13 +25,8 @@ public class WorkerRepository implements Repository<Worker>
         return new ArrayList<>(Arrays.asList(this.jsonDataAccessor.getDataFromFile()));
     }
 
-    private void writeJsonFile()
-    {
-        this.jsonDataAccessor.writeInFile(this.workers);
-    }
-
     @Override
-    public void create(Worker worker) throws FailedToCreate
+    public void create(Worker worker) throws FailedToCreateException
     {
         Worker registeredWorker = this.workers.stream()
                 .filter(w -> w.getLogin().equals(worker.getLogin()))
@@ -42,11 +35,10 @@ public class WorkerRepository implements Repository<Worker>
 
         if (registeredWorker != null)
         {
-            throw new FailedToCreate(Worker.class, "login already in use by user ID [" + registeredWorker.getId().toString() + "]");
+            throw new FailedToCreateException(Worker.class, "login already in use by user ID [" + registeredWorker.getId() + "]");
         }
 
         this.workers.add(worker);
-
         this.writeJsonFile();
     }
 
@@ -57,64 +49,56 @@ public class WorkerRepository implements Repository<Worker>
     }
 
     @Override
-    public Worker read(String id) throws ElementNotFound
+    public Worker read(Id id) throws ElementNotFoundException
     {
         return this.findById(id);
     }
 
     @Override
-    public void update(String id, Worker worker) throws ElementNotFound, FailedToUpdate
+    public void update(Id id, Worker worker) throws ElementNotFoundException, FailedToUpdateException
     {
         Worker registeredWorker = this.findById(id);
 
         this.workers.remove(registeredWorker);
 
-        registeredWorker.setPassword(worker.getPassword().toString());
+        registeredWorker.setPassword(worker.getPassword());
         registeredWorker.setName(worker.getName());
         registeredWorker.setService(worker.getService());
         registeredWorker.setDepartment(worker.getDepartment());
 
         this.workers.add(registeredWorker);
-
         this.writeJsonFile();
     }
 
     @Override
-    public void remove(String id) throws ElementNotFound
+    public void remove(Id id) throws ElementNotFoundException
     {
         this.workers.remove(this.findById(id));
-
         this.writeJsonFile();
     }
 
     @Override
-    public void validatePayment(String id) throws ElementNotFound
+    public boolean exists(Id id)
     {
-        // Do nothing
+        return this.workers.stream().anyMatch(worker -> worker.getId().equals(id));
     }
 
     @Override
-    public void addWorker(String projectId, String workerId) throws ElementNotFound, FailedToUpdate
+    public void writeJsonFile()
     {
-        // Do nothing
+        this.jsonDataAccessor.writeInFile(this.workers);
     }
 
-    @Override
-    public void removeWorker(String projectId, String workerId) throws ElementNotFound, FailedToUpdate
-    {
-        // Do nothing
-    }
-
-    private Worker findById(String id) throws ElementNotFound
+    private Worker findById(Id id) throws ElementNotFoundException
     {
         Worker registeredWorker = this.workers.stream()
-                .filter(w -> w.getId().toString().equals(id))
+                .filter(worker -> worker.getId().equals(id))
                 .findFirst()
                 .orElse(null);
 
         if (registeredWorker == null)
         {
-            throw new ElementNotFound(Worker.class, id);
+            throw new ElementNotFoundException(Worker.class, id.toString());
         }
 
         return registeredWorker;

@@ -1,26 +1,28 @@
 package esgi.al.cc1.domain.models;
 
-import esgi.al.cc1.domain.dtos.Date;
-import esgi.al.cc1.domain.dtos.Id;
-import esgi.al.cc1.domain.dtos.Password;
-import esgi.al.cc1.domain.enumerators.PaymentMethod;
+import esgi.al.cc1.domain.valueObjects.Date;
+import esgi.al.cc1.domain.valueObjects.Id;
+import esgi.al.cc1.domain.valueObjects.Password;
 
 public class Contractor extends User
 {
     private PaymentMethod paymentMethod;
     private boolean isPaymentValidated;
 
-    private Contractor(Id id, String login, Password password, String name, PaymentMethod paymentMethod, Date creationDate)
+    private Contractor(Id id, String login, Password password, String name,
+                       PaymentMethod paymentMethod, boolean isPaymentValidated, Date creationDate)
     {
         super(id, login, password, name, creationDate);
 
         this.paymentMethod = paymentMethod;
-        this.isPaymentValidated = false;
+        this.isPaymentValidated = isPaymentValidated;
     }
 
-    public static Contractor of(Id id, String login, Password password, String name, PaymentMethod paymentMethod, Date creationDate)
+    public static Contractor of(
+            Id id, String login, Password password, String name,
+            PaymentMethod paymentMethod, boolean isPaymentValidated, Date creationDate)
     {
-        return new Contractor(id, login, password, name, paymentMethod, creationDate);
+        return new Contractor(id, login, password, name, paymentMethod, isPaymentValidated, creationDate);
     }
 
     public PaymentMethod getPaymentMethod()

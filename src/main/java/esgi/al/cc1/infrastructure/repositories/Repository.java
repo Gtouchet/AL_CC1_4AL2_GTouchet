@@ -1,21 +1,19 @@
 package esgi.al.cc1.infrastructure.repositories;
 
-import esgi.al.cc1.infrastructure.exceptions.repositoriesExceptions.ElementNotFound;
-import esgi.al.cc1.infrastructure.exceptions.repositoriesExceptions.FailedToCreate;
-import esgi.al.cc1.infrastructure.exceptions.repositoriesExceptions.FailedToUpdate;
+import esgi.al.cc1.domain.models.Entity;
+import esgi.al.cc1.domain.valueObjects.Id;
 
 import java.util.stream.Stream;
 
-public interface Repository<T>
+public interface Repository<T extends Entity>
 {
-    void create(T element) throws FailedToCreate;
+    void create(T element) throws FailedToCreateException;
     Stream<T> read();
-    T read(String id) throws ElementNotFound;
-    void update(String id, T element) throws ElementNotFound, FailedToUpdate;
-    void remove(String id) throws ElementNotFound;
+    T read(Id id) throws ElementNotFoundException;
+    void update(Id id, T element) throws ElementNotFoundException, FailedToUpdateException;
+    void remove(Id id) throws ElementNotFoundException;
 
-    void validatePayment(String id) throws ElementNotFound;
+    boolean exists(Id id);
 
-    void addWorker(String projectId, String workerId) throws ElementNotFound, FailedToUpdate;
-    void removeWorker(String projectId, String workerId) throws ElementNotFound, FailedToUpdate;
+    void writeJsonFile();
 }

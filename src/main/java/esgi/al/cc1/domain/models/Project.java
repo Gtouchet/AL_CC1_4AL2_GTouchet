@@ -1,38 +1,46 @@
 package esgi.al.cc1.domain.models;
 
-import esgi.al.cc1.domain.dtos.Date;
-import esgi.al.cc1.domain.dtos.Id;
+import esgi.al.cc1.domain.valueObjects.Date;
+import esgi.al.cc1.domain.valueObjects.Id;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Project
+public class Project implements Entity
 {
     private final Id id;
+    private Id contractorId;
     private int department;
     private final List<Id> workersId;
 
     private final Date creationDate;
     private Date updateDate;
 
-    private Project(int department)
+    private Project(Id id, Id contractorId, int department, Date creationDate)
     {
-        this.id = Id.generate();
+        this.id = id;
+        this.contractorId = contractorId;
         this.department = department;
         this.workersId = new ArrayList<>();
 
-        this.creationDate = Date.now();
+        this.creationDate = creationDate;
         this.updateDate = Date.now();
     }
 
-    public static Project of(int department)
+    public static Project of(Id id, Id contractorId, int department, Date creationDate)
     {
-        return new Project(department);
+        return new Project(id, contractorId, department, creationDate);
     }
 
+    @Override
     public Id getId()
     {
         return this.id;
+    }
+
+    public Id getContractorId()
+    {
+        return this.contractorId;
     }
 
     public int getDepartment()
@@ -55,6 +63,11 @@ public class Project
         return this.updateDate;
     }
 
+    public void setContractorId(Id id)
+    {
+        this.contractorId = Id.fromString(id.toString());
+    }
+
     public void setDepartment(int department)
     {
         this.department = department;
@@ -69,12 +82,7 @@ public class Project
 
     public void removeWorker(Worker worker)
     {
-        for (int i = 0; i < this.workersId.size(); i += 1) {
-            if (this.workersId.get(i).toString().equals(worker.getId().toString())) {
-                this.workersId.remove(i);
-                break;
-            }
-        }
+        this.workersId.remove(worker.getId());
         this.setUpdateDate();
     }
 
@@ -86,22 +94,22 @@ public class Project
     @Override
     public String toString()
     {
-        StringBuilder toString = new StringBuilder("ID: " + this.id +
+        StringBuilder project = new StringBuilder(
+                "ID: " + this.id +
+                "\nContractor ID: " + this.contractorId +
                 "\nDepartment: " + this.department +
-                "\nWorkers IDs: ");
+                "\nWorkers IDs: "
+        );
 
         if (this.workersId.size() == 0)
         {
-            toString.append("None");
+            project.append("None");
         }
         else
         {
-            for (Id id : this.workersId)
-            {
-                toString.append("\n - ").append(id);
-            }
+            this.workersId.stream().map(project::append);
         }
 
-        return toString.toString();
+        return project.toString();
     }
 }
