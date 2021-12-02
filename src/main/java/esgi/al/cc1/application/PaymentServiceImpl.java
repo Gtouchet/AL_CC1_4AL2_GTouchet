@@ -5,8 +5,7 @@ import esgi.al.cc1.domain.models.Payment;
 import esgi.al.cc1.domain.models.Worker;
 import esgi.al.cc1.domain.valueObjects.Date;
 import esgi.al.cc1.domain.valueObjects.Id;
-import esgi.al.cc1.infrastructure.repositories.ElementNotFoundException;
-import esgi.al.cc1.infrastructure.repositories.FailedToCreateException;
+import esgi.al.cc1.infrastructure.repositories.EntityNotFoundException;
 import esgi.al.cc1.infrastructure.repositories.Repository;
 
 import java.util.List;
@@ -34,17 +33,17 @@ public class PaymentServiceImpl implements PaymentService
         Contractor contractor;
         try {
             contractor = this.contractorRepository.read(contractorId);
-        } catch (ElementNotFoundException e) {
-            System.out.println(e.getMessage());
-            return null;
-        }
 
-        if (!contractor.isPaymentValidated())
-        {
-            System.out.println(
-                    "Error: Contractor ID [" + contractorId + "] payment method is not validated yet, " +
-                    "please validate it before trying to make a payment."
-            );
+            if (!contractor.isPaymentValidated())
+            {
+                System.out.println(
+                        "Error: Contractor ID [" + contractorId + "] payment method is not validated yet, " +
+                        "please validate it before trying to make a payment."
+                );
+                return null;
+            }
+        } catch (EntityNotFoundException e) {
+            System.out.println(e.getMessage());
             return null;
         }
 
@@ -54,23 +53,17 @@ public class PaymentServiceImpl implements PaymentService
             return null;
         }
 
-        try {
-            Payment payment = Payment.of(
-                    Id.generate(),
-                    contractorId,
-                    workerId,
-                    contractor.getPaymentMethod(),
-                    amount,
-                    reason,
-                    Date.now()
-            );
-            this.paymentRepository.create(payment);
-            return payment.getId();
-
-        } catch (FailedToCreateException e) {
-            System.out.println(e.getMessage());
-            return null;
-        }
+        Payment payment = Payment.of(
+                Id.generate(),
+                contractorId,
+                workerId,
+                contractor.getPaymentMethod(),
+                amount,
+                reason,
+                Date.now()
+        );
+        this.paymentRepository.create(payment);
+        return payment.getId();
     }
 
     @Override
@@ -93,7 +86,7 @@ public class PaymentServiceImpl implements PaymentService
     {
         try {
             System.out.println(this.paymentRepository.read(id));
-        } catch (ElementNotFoundException e) {
+        } catch (EntityNotFoundException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -103,8 +96,20 @@ public class PaymentServiceImpl implements PaymentService
     {
         try {
             this.paymentRepository.remove(id);
-        } catch (ElementNotFoundException e) {
+        } catch (EntityNotFoundException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    @Override
+    public long getRepositorySize()
+    {
+        return this.paymentRepository.read().count();
+    }
+
+    @Override
+    public boolean exists(Id id)
+    {
+        return this.paymentRepository.exists(id);
     }
 }

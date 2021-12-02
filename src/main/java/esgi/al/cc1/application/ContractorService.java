@@ -12,5 +12,7 @@ public interface ContractorService
     void update(Id id, Password password, String name, PaymentMethod paymentMethod);
     void delete(Id id);
 
+    long getRepositorySize();
+    boolean exists(Id id);
     void validatePayment(Id id);
 }

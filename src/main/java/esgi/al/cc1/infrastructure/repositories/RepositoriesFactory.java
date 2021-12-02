@@ -10,21 +10,21 @@ public class RepositoriesFactory
 {
     public Repository<Contractor> createContractorRepository()
     {
-        return new ContractorRepository(new JsonAccessorsFactory().createContractorJsonAccessor());
+        return new RepositoryImpl<>(new JsonAccessorsFactory().createContractorJsonAccessor());
     }
 
     public Repository<Payment> createPaymentRepository()
     {
-        return new PaymentRepository(new JsonAccessorsFactory().createPaymentJsonAccessor());
+        return new RepositoryImpl<>(new JsonAccessorsFactory().createPaymentJsonAccessor());
     }
 
     public Repository<Project> createProjectRepository()
     {
-        return new ProjectRepository(new JsonAccessorsFactory().createProjectJsonAccessor());
+        return new RepositoryImpl<>(new JsonAccessorsFactory().createProjectJsonAccessor());
     }
 
     public Repository<Worker> createWorkerRepository()
     {
-        return new WorkerRepository(new JsonAccessorsFactory().createWorkerJsonAccessor());
+        return new RepositoryImpl<>(new JsonAccessorsFactory().createWorkerJsonAccessor());
     }
 }

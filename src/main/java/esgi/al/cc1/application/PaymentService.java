@@ -9,4 +9,7 @@ public interface PaymentService
     void read(Id id);
     // No updating possibility for any registered payment
     void delete(Id id);
+
+    long getRepositorySize();
+    boolean exists(Id id);
 }

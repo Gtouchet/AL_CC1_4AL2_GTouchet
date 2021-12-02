@@ -7,9 +7,7 @@ import esgi.al.cc1.domain.models.Worker;
 import esgi.al.cc1.domain.valueObjects.Date;
 import esgi.al.cc1.domain.valueObjects.Id;
 import esgi.al.cc1.domain.valueObjects.Password;
-import esgi.al.cc1.infrastructure.repositories.ElementNotFoundException;
-import esgi.al.cc1.infrastructure.repositories.FailedToCreateException;
-import esgi.al.cc1.infrastructure.repositories.FailedToUpdateException;
+import esgi.al.cc1.infrastructure.repositories.EntityNotFoundException;
 import esgi.al.cc1.infrastructure.repositories.Repository;
 
 import java.util.List;
@@ -34,34 +32,24 @@ public class WorkerServiceImpl implements WorkerService
     @Override
     public Id create(String login, Password password, String name, Service service, int department)
     {
-        Contractor registeredContractor = this.contractorRepository.read()
-                .filter(worker -> worker.getLogin().equals(login))
-                .findFirst()
-                .orElse(null);
-
-        if (registeredContractor != null)
+        if (this.contractorRepository.read().anyMatch(contractor -> contractor.getLogin().equals(login)) ||
+            this.workerRepository.read().anyMatch(worker -> worker.getLogin().equals(login)))
         {
-            System.out.println("Error: login already in use by user ID [" + registeredContractor.getId() + "]");
+            System.out.println("Error: login already in use");
             return null;
         }
 
-        try {
-            Worker worker = Worker.of(
-                    Id.generate(),
-                    login,
-                    password,
-                    name,
-                    service,
-                    department,
-                    Date.now()
-            );
-            this.workerRepository.create(worker);
-            return worker.getId();
-
-        } catch (FailedToCreateException e) {
-            System.out.println(e.getMessage());
-            return null;
-        }
+        Worker worker = Worker.of(
+                Id.generate(),
+                login,
+                password,
+                name,
+                service,
+                department,
+                Date.now()
+        );
+        this.workerRepository.create(worker);
+        return worker.getId();
     }
 
     @Override
@@ -84,7 +72,7 @@ public class WorkerServiceImpl implements WorkerService
     {
         try {
             System.out.println(this.workerRepository.read(id));
-        } catch (ElementNotFoundException e) {
+        } catch (EntityNotFoundException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -92,15 +80,9 @@ public class WorkerServiceImpl implements WorkerService
     @Override
     public void update(Id id, Password password, String name, Service service, int department)
     {
-        Worker worker;
         try {
-            worker = this.workerRepository.read(id);
-        } catch (ElementNotFoundException e) {
-            System.out.println(e.getMessage());
-            return;
-        }
+            Worker worker = this.workerRepository.read(id);
 
-        try {
             this.workerRepository.update(id, Worker.of(
                     worker.getId(),
                     worker.getLogin(),
@@ -110,7 +92,7 @@ public class WorkerServiceImpl implements WorkerService
                     department,
                     worker.getCreationDate()
             ));
-        } catch (ElementNotFoundException | FailedToUpdateException e) {
+        } catch (EntityNotFoundException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -120,7 +102,7 @@ public class WorkerServiceImpl implements WorkerService
     {
         try {
             this.workerRepository.remove(id);
-        } catch (ElementNotFoundException e) {
+        } catch (EntityNotFoundException e) {
             System.out.println(e.getMessage());
             return;
         }
@@ -132,14 +114,26 @@ public class WorkerServiceImpl implements WorkerService
                 .forEach(project -> {
                     project.getWorkersId().remove(id);
                     try {
-                        this.projectRepository.update(project.getId(),
-                                Project.of(project.getId(),
+                        this.projectRepository.update(project.getId(), Project.of(
+                                project.getId(),
                                 project.getContractorId(),
                                 project.getDepartment(),
                                 project.getCreationDate()));
-                    } catch (ElementNotFoundException | FailedToUpdateException e) {
+                    } catch (EntityNotFoundException e) {
                         System.out.println(e.getMessage());
                     }
                 });
+    }
+
+    @Override
+    public long getRepositorySize()
+    {
+        return this.workerRepository.read().count();
+    }
+
+    @Override
+    public boolean exists(Id id)
+    {
+        return this.workerRepository.exists(id);
     }
 }

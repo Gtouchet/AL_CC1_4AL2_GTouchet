@@ -10,6 +10,9 @@ public interface ProjectService
     void update(Id id, Id contractorId, int department);
     void delete(Id id);
 
+    long getRepositorySize();
+    boolean exists(Id id);
+
     void engageWorker(Id projectId, Id workerId);
     void fireWorker(Id projectId, Id workerId);
 }

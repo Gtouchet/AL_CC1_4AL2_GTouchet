@@ -11,4 +11,7 @@ public interface WorkerService
     void read(Id id);
     void update(Id id, Password password, String name, Service service, int department);
     void delete(Id id);
+
+    long getRepositorySize();
+    boolean exists(Id id);
 }

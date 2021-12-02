@@ -7,11 +7,11 @@ import java.util.stream.Stream;
 
 public interface Repository<T extends Entity>
 {
-    void create(T entity) throws FailedToCreateException;
+    void create(T entity);
     Stream<T> read();
-    T read(Id id) throws ElementNotFoundException;
-    void update(Id id, T entity) throws ElementNotFoundException, FailedToUpdateException;
-    void remove(Id id) throws ElementNotFoundException;
+    T read(Id id) throws EntityNotFoundException;
+    void update(Id id, T entity) throws EntityNotFoundException;
+    void remove(Id id) throws EntityNotFoundException;
 
     boolean exists(Id id);
 }

@@ -6,36 +6,24 @@ import esgi.al.cc1.domain.valueObjects.Id;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Project implements Entity
+public class Project extends Entity
 {
-    private final Id id;
     private Id contractorId;
     private int department;
     private final List<Id> workersId;
 
-    private final Date creationDate;
-    private Date updateDate;
-
     private Project(Id id, Id contractorId, int department, Date creationDate)
     {
-        this.id = id;
+        super(id, creationDate);
+
         this.contractorId = contractorId;
         this.department = department;
         this.workersId = new ArrayList<>();
-
-        this.creationDate = creationDate;
-        this.updateDate = Date.now();
     }
 
     public static Project of(Id id, Id contractorId, int department, Date creationDate)
     {
         return new Project(id, contractorId, department, creationDate);
-    }
-
-    @Override
-    public Id getId()
-    {
-        return this.id;
     }
 
     public Id getContractorId()
@@ -51,16 +39,6 @@ public class Project implements Entity
     public List<Id> getWorkersId()
     {
         return this.workersId;
-    }
-
-    public Date getCreationDate()
-    {
-        return this.creationDate;
-    }
-
-    public Date getUpdateDate()
-    {
-        return this.updateDate;
     }
 
     public void setContractorId(Id id)
@@ -86,16 +64,11 @@ public class Project implements Entity
         this.setUpdateDate();
     }
 
-    private void setUpdateDate()
-    {
-        this.updateDate = Date.now();
-    }
-
     @Override
     public String toString()
     {
         StringBuilder project = new StringBuilder(
-                "ID: " + this.id +
+                super.toString() +
                 "\nContractor ID: " + this.contractorId +
                 "\nDepartment: " + this.department +
                 "\nWorkers IDs: "

@@ -6,23 +6,27 @@ import esgi.al.cc1.domain.models.Service;
 import esgi.al.cc1.domain.models.Worker;
 import esgi.al.cc1.domain.valueObjects.Id;
 import esgi.al.cc1.domain.valueObjects.Password;
+import esgi.al.cc1.infrastructure.repositories.EntityNotFoundException;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class WorkerServiceTests extends ServicesAndRepositoriesManager
+public class WorkerServiceTests
 {
+    private ServicesAndRepositoriesManager manager;
+
     @Test
     public void createWorker()
     {
-        this.resetServiceAndRepositories();
+        this.manager = new ServicesAndRepositoriesManager();
+        long workerRepoSize;
 
         // No worker registered yet
-        long repositorySize = this.workerIMR.read().count();
-        assertEquals(0, repositorySize);
+        workerRepoSize = this.manager.workerService.getRepositorySize();
+        assertEquals(0, workerRepoSize);
 
-        // Creating a worker
-        this.workerService.create(
+        // Create a worker
+        Id workerId = this.manager.workerService.create(
                 "GTouchet",
                 Password.of("pass123"),
                 "Guillaume",
@@ -30,131 +34,139 @@ public class WorkerServiceTests extends ServicesAndRepositoriesManager
                 91
         );
 
-        // Now there is a worker registered
-        repositorySize = this.workerIMR.read().count();
-        assertEquals(1, repositorySize);
+        // Now there is one worker registered
+        workerRepoSize = this.manager.workerService.getRepositorySize();
+        assertEquals(1, workerRepoSize);
+        assertTrue(this.manager.workerService.exists(workerId));
     }
 
     @Test
     public void createWorker_deleteWorker()
     {
-        this.resetServiceAndRepositories();
+        this.manager = new ServicesAndRepositoriesManager();
+        long workerRepoSize;
 
-        Id workerId = this.workerService.create(
+        Id workerId = this.manager.workerService.create(
                 "GTouchet",
-                Password.of("123pass456"),
+                Password.of("pass123"),
                 "Guillaume",
                 Service.builder,
                 91
         );
 
-        // There is a worker registered
-        long repositorySize = this.workerIMR.read().count();
-        assertEquals(1, repositorySize);
-        assertTrue(this.workerIMR.exists(workerId));
-
         // Deleting the worker
-        this.workerService.delete(workerId);
+        this.manager.workerService.delete(workerId);
 
         // No more worker registered
-        repositorySize = this.workerIMR.read().count();
-        assertEquals(0, repositorySize);
-        assertFalse(this.workerIMR.exists(workerId));
+        workerRepoSize = this.manager.workerService.getRepositorySize();
+        assertEquals(0, workerRepoSize);
+        assertFalse(this.manager.workerService.exists(workerId));
     }
 
     @Test
     public void createTwoWorkers_sameLogin()
     {
-        this.resetServiceAndRepositories();
-
+        this.manager = new ServicesAndRepositoriesManager();
         final String login = "GTouchet";
+        long workerRepoSize;
 
-        // Creating the first worker with login
-        Id workerId1 = this.workerService.create(
+        // Creating a first worker with login
+        Id workerId1 = this.manager.workerService.create(
                 login,
-                Password.of("123pass456"),
+                Password.of("pass123"),
                 "Guillaume",
                 Service.builder,
                 91
         );
 
-        // Trying to create a second worker with same login
-        Id workerId2 = this.workerService.create(
+        // Creating a second worker with same login
+        Id workerId2 = this.manager.workerService.create(
                 login,
-                Password.of("bonjour789"),
-                "Touchet",
-                Service.electrician,
-                75
+                Password.of("pass123"),
+                "Guillaume",
+                Service.builder,
+                91
         );
 
-        // The first worker was created
-        assertTrue(this.workerIMR.exists(workerId1));
+        // Only one worker got created
+        workerRepoSize = this.manager.workerService.getRepositorySize();
+        assertEquals(1, workerRepoSize);
+
+        // The first one got created
+        assertTrue(this.manager.workerService.exists(workerId1));
         // But not the second one
-        assertFalse(this.workerIMR.exists(workerId2));
+        assertFalse(this.manager.workerService.exists(workerId2));
     }
 
     @Test
     public void createWorker_createContractor_sameLogin()
     {
-        this.resetServiceAndRepositories();
-
+        this.manager = new ServicesAndRepositoriesManager();
         final String login = "GTouchet";
+        long workerAndContractorReposSize;
 
-        // Creating the first worker with login
-        Id workerId = this.workerService.create(
+        // Creating worker with login
+        Id workerId = this.manager.workerService.create(
                 login,
-                Password.of("123pass456"),
+                Password.of("pass123"),
                 "Guillaume",
                 Service.builder,
                 91
         );
 
-        // Trying to create a contractor with same login
-        Id contractorId = this.contractorService.create(
+        // Creating contractor with same login
+        Id contractorId = this.manager.contractorService.create(
                 login,
-                Password.of("bonjour789"),
+                Password.of("123pass"),
                 "Touchet",
                 PaymentMethod.card
         );
 
-        // The worker was created
-        assertTrue(this.workerIMR.exists(workerId));
+        // Only one of them got created
+        workerAndContractorReposSize =
+                this.manager.workerService.getRepositorySize() +
+                this.manager.contractorService.getRepositorySize();
+        assertEquals(1, workerAndContractorReposSize);
+
+        // The worker got created
+        assertTrue(this.manager.workerService.exists(workerId));
         // But not the contractor
-        assertFalse(this.contractorIMR.exists(contractorId));
+        assertFalse(this.manager.contractorService.exists(contractorId));
     }
 
     @Test
-    public void createWorker_updateWorker()
+    public void createWorker_updateWorker() throws EntityNotFoundException
     {
-        this.resetServiceAndRepositories();
+        this.manager = new ServicesAndRepositoriesManager();
 
-        Id workerId = this.workerService.create(
+        Id workerId = this.manager.workerService.create(
                 "GTouchet",
-                Password.of("123pass456"),
+                Password.of("pass123"),
                 "Guillaume",
                 Service.builder,
                 91
         );
 
-        // Updating worker's password, name, service and department
-        final Password newPassword = Password.of("?1234abcd!");
+        final Password newPassword = Password.of("456pass");
         final String newName = "Robert";
         final Service newService = Service.electrician;
         final int newDepartment = 75;
 
-        this.workerService.update(workerId,
+        // Updating the worker
+        this.manager.workerService.update(workerId,
                 newPassword,
                 newName,
                 newService,
                 newDepartment
         );
 
-        // Worker has been updated
-        Worker updatedWorker = this.workerIMR.read(workerId);
+        // The worker's properties got updated
+        Worker updatedWorker = this.manager.workerIMR.read(workerId);
         assertEquals(newPassword, updatedWorker.getPassword());
         assertEquals(newName, updatedWorker.getName());
         assertEquals(newService, updatedWorker.getService());
         assertEquals(newDepartment, updatedWorker.getDepartment());
+
         // But not his ID
         assertEquals(workerId, updatedWorker.getId());
     }

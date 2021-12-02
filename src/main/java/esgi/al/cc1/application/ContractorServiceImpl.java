@@ -6,9 +6,7 @@ import esgi.al.cc1.domain.models.Worker;
 import esgi.al.cc1.domain.valueObjects.Date;
 import esgi.al.cc1.domain.valueObjects.Id;
 import esgi.al.cc1.domain.valueObjects.Password;
-import esgi.al.cc1.infrastructure.repositories.ElementNotFoundException;
-import esgi.al.cc1.infrastructure.repositories.FailedToCreateException;
-import esgi.al.cc1.infrastructure.repositories.FailedToUpdateException;
+import esgi.al.cc1.infrastructure.repositories.EntityNotFoundException;
 import esgi.al.cc1.infrastructure.repositories.Repository;
 
 import java.util.List;
@@ -31,33 +29,24 @@ public class ContractorServiceImpl implements ContractorService
     @Override
     public Id create(String login, Password password, String name, PaymentMethod paymentMethod)
     {
-        Worker registeredWorker = this.workerRepository.read()
-                .filter(worker -> worker.getLogin().equals(login))
-                .findFirst()
-                .orElse(null);
-        if (registeredWorker != null)
+        if (this.workerRepository.read().anyMatch(worker -> worker.getLogin().equals(login)) ||
+            this.contractorRepository.read().anyMatch(contractor -> contractor.getLogin().equals(login)))
         {
-            System.out.println("Error: login already in use by user ID [" + registeredWorker.getId() + "]");
+            System.out.println("Error: login already in use");
             return null;
         }
 
-        try {
-            Contractor contractor = Contractor.of(
-                    Id.generate(),
-                    login,
-                    password,
-                    name,
-                    paymentMethod,
-                    false,
-                    Date.now()
-            );
-            this.contractorRepository.create(contractor);
-            return contractor.getId();
-
-        } catch (FailedToCreateException e) {
-            System.out.println(e.getMessage());
-            return null;
-        }
+        Contractor contractor = Contractor.of(
+                Id.generate(),
+                login,
+                password,
+                name,
+                paymentMethod,
+                false,
+                Date.now()
+        );
+        this.contractorRepository.create(contractor);
+        return contractor.getId();
     }
 
     @Override
@@ -80,7 +69,7 @@ public class ContractorServiceImpl implements ContractorService
     {
         try {
             System.out.println(this.contractorRepository.read(id));
-        } catch (ElementNotFoundException e) {
+        } catch (EntityNotFoundException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -88,15 +77,9 @@ public class ContractorServiceImpl implements ContractorService
     @Override
     public void update(Id id, Password password, String name, PaymentMethod paymentMethod)
     {
-        Contractor contractor;
         try {
-            contractor = this.contractorRepository.read(id);
-        } catch (ElementNotFoundException e) {
-            System.out.println(e.getMessage());
-            return;
-        }
+            Contractor contractor = this.contractorRepository.read(id);
 
-        try {
             this.contractorRepository.update(id, Contractor.of(
                     contractor.getId(),
                     contractor.getLogin(),
@@ -106,7 +89,7 @@ public class ContractorServiceImpl implements ContractorService
                     contractor.isPaymentValidated(),
                     contractor.getCreationDate()
             ));
-        } catch (ElementNotFoundException | FailedToUpdateException e) {
+        } catch (EntityNotFoundException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -116,36 +99,40 @@ public class ContractorServiceImpl implements ContractorService
     {
         try {
             this.contractorRepository.remove(id);
-        } catch (ElementNotFoundException e) {
+        } catch (EntityNotFoundException e) {
             System.out.println(e.getMessage());
         }
     }
 
     @Override
+    public long getRepositorySize()
+    {
+        return this.contractorRepository.read().count();
+    }
+
+    @Override
+    public boolean exists(Id id)
+    {
+        return this.contractorRepository.exists(id);
+    }
+
+    @Override
     public void validatePayment(Id id)
     {
-        Contractor contractor;
         try {
-            contractor = this.contractorRepository.read(id);
-        } catch (ElementNotFoundException e) {
-            System.out.println(e.getMessage());
-            return;
-        }
+            Contractor contractor = this.contractorRepository.read(id);
 
-        // todo: call the mock API payment validation here
-
-        try {
             this.contractorRepository.update(id, Contractor.of(
                     contractor.getId(),
                     contractor.getLogin(),
                     contractor.getPassword(),
                     contractor.getName(),
                     contractor.getPaymentMethod(),
-                    true,
+                    true, // todo: call the mock API payment validation here
                     contractor.getCreationDate()
             ));
-        } catch (ElementNotFoundException | FailedToUpdateException e) {
-            System.out.println(e.getMessage());;
+        } catch (EntityNotFoundException e) {
+            System.out.println(e.getMessage());
         }
     }
 }

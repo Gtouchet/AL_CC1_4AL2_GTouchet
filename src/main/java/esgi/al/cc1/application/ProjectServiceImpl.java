@@ -5,9 +5,7 @@ import esgi.al.cc1.domain.models.Project;
 import esgi.al.cc1.domain.models.Worker;
 import esgi.al.cc1.domain.valueObjects.Date;
 import esgi.al.cc1.domain.valueObjects.Id;
-import esgi.al.cc1.infrastructure.repositories.ElementNotFoundException;
-import esgi.al.cc1.infrastructure.repositories.FailedToCreateException;
-import esgi.al.cc1.infrastructure.repositories.FailedToUpdateException;
+import esgi.al.cc1.infrastructure.repositories.EntityNotFoundException;
 import esgi.al.cc1.infrastructure.repositories.Repository;
 
 import java.util.List;
@@ -38,20 +36,14 @@ public class ProjectServiceImpl implements ProjectService
             return null;
         }
 
-        try {
-            Project project = Project.of(
-                    Id.generate(),
-                    contractorId,
-                    department,
-                    Date.now()
-            );
-            this.projectRepository.create(project);
-            return project.getId();
-
-        } catch (FailedToCreateException e) {
-            System.out.println(e.getMessage());
-            return null;
-        }
+        Project project = Project.of(
+                Id.generate(),
+                contractorId,
+                department,
+                Date.now()
+        );
+        this.projectRepository.create(project);
+        return project.getId();
     }
 
     @Override
@@ -74,7 +66,7 @@ public class ProjectServiceImpl implements ProjectService
     {
         try {
             this.projectRepository.read(id);
-        } catch (ElementNotFoundException e) {
+        } catch (EntityNotFoundException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -82,14 +74,6 @@ public class ProjectServiceImpl implements ProjectService
     @Override
     public void update(Id id, Id contractorId, int department)
     {
-        Project project;
-        try {
-            project = this.projectRepository.read(id);
-        } catch (ElementNotFoundException e) {
-            System.out.println(e.getMessage());
-            return;
-        }
-
         if(!this.contractorRepository.exists(contractorId))
         {
             System.out.println("Error: no Contractor registered with ID [" + contractorId + "]");
@@ -97,13 +81,15 @@ public class ProjectServiceImpl implements ProjectService
         }
 
         try {
+            Project project = this.projectRepository.read(id);
+
             this.projectRepository.update(id, Project.of(
                     project.getId(),
                     contractorId,
                     department,
                     project.getCreationDate()
             ));
-        } catch (ElementNotFoundException | FailedToUpdateException e) {
+        } catch (EntityNotFoundException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -113,40 +99,47 @@ public class ProjectServiceImpl implements ProjectService
     {
         try {
             this.projectRepository.remove(id);
-        } catch (ElementNotFoundException e) {
+        } catch (EntityNotFoundException e) {
             System.out.println(e.getMessage());
         }
     }
 
     @Override
+    public long getRepositorySize()
+    {
+        return this.projectRepository.read().count();
+    }
+
+    @Override
+    public boolean exists(Id id)
+    {
+        return this.projectRepository.exists(id);
+    }
+
+    @Override
     public void engageWorker(Id projectId, Id workerId)
     {
-        Project project;
-        try {
-            project = this.projectRepository.read(projectId);
-        } catch (ElementNotFoundException e) {
-            System.out.println(e.getMessage());
-            return;
-        }
-
         Worker worker;
         try {
             worker = this.workerRepository.read(workerId);
-        } catch (ElementNotFoundException e) {
+        } catch (EntityNotFoundException e) {
             System.out.println(e.getMessage());
             return;
         }
 
-        if (project.getWorkersId().contains(workerId))
-        {
-            System.out.println("Error: Worker ID [" + workerId + "] is already working on project [" + projectId + "]");
-            return;
-        }
-
-        project.addWorker(worker);
         try {
+            Project project = this.projectRepository.read(projectId);
+
+            if (project.getWorkersId().contains(workerId))
+            {
+                System.out.println("Error: Worker ID [" + workerId + "] is already working on project [" + projectId + "]");
+                return;
+            }
+
+            project.addWorker(worker);
             this.projectRepository.update(projectId, project);
-        } catch (ElementNotFoundException | FailedToUpdateException e) {
+
+        } catch (EntityNotFoundException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -154,32 +147,27 @@ public class ProjectServiceImpl implements ProjectService
     @Override
     public void fireWorker(Id projectId, Id workerId)
     {
-        Project project;
-        try {
-            project = this.projectRepository.read(projectId);
-        } catch (ElementNotFoundException e) {
-            System.out.println(e.getMessage());
-            return;
-        }
-
         Worker worker;
         try {
             worker = this.workerRepository.read(workerId);
-        } catch (ElementNotFoundException e) {
+        } catch (EntityNotFoundException e) {
             System.out.println(e.getMessage());
             return;
         }
 
-        if (!project.getWorkersId().contains(workerId))
-        {
-            System.out.println("Error: Worker ID [" + workerId + "] is not working on project [" + projectId + "]");
-            return;
-        }
-
-        project.removeWorker(worker);
         try {
+            Project project = this.projectRepository.read(projectId);
+
+            if (project.getWorkersId().contains(workerId))
+            {
+                System.out.println("Error: Worker ID [" + workerId + "] is already working on project [" + projectId + "]");
+                return;
+            }
+
+            project.removeWorker(worker);
             this.projectRepository.update(projectId, project);
-        } catch (ElementNotFoundException | FailedToUpdateException e) {
+
+        } catch (EntityNotFoundException e) {
             System.out.println(e.getMessage());
         }
     }
