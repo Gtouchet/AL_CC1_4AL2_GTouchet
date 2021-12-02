@@ -1,5 +1,6 @@
 package esgi.al.cc1.application;
 
+import esgi.al.cc1.infrastructure.apis.PaymentMethodValidatorApi;
 import esgi.al.cc1.infrastructure.repositories.RepositoriesFactory;
 
 public class ServicesFactory
@@ -8,7 +9,8 @@ public class ServicesFactory
     {
         return new ContractorServiceImpl(
                 new RepositoriesFactory().createContractorRepository(),
-                new RepositoriesFactory().createWorkerRepository()
+                new RepositoriesFactory().createWorkerRepository(),
+                new PaymentMethodValidatorApi()
         );
     }
 

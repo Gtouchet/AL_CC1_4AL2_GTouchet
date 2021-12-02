@@ -6,6 +6,7 @@ import esgi.al.cc1.domain.models.Worker;
 import esgi.al.cc1.domain.valueObjects.Date;
 import esgi.al.cc1.domain.valueObjects.Id;
 import esgi.al.cc1.domain.valueObjects.Password;
+import esgi.al.cc1.infrastructure.apis.PaymentMethodValidatorApi;
 import esgi.al.cc1.infrastructure.repositories.EntityNotFoundException;
 import esgi.al.cc1.infrastructure.repositories.Repository;
 
@@ -16,14 +17,17 @@ public class ContractorServiceImpl implements ContractorService
 {
     private final Repository<Contractor> contractorRepository;
     private final Repository<Worker> workerRepository;
+    private final PaymentMethodValidatorApi paymentMethodValidatorApi;
 
     public ContractorServiceImpl(
             Repository<Contractor> contractorRepository,
-            Repository<Worker> workerRepository
+            Repository<Worker> workerRepository,
+            PaymentMethodValidatorApi paymentMethodValidatorApi
     )
     {
         this.contractorRepository = contractorRepository;
         this.workerRepository = workerRepository;
+        this.paymentMethodValidatorApi = paymentMethodValidatorApi;
     }
 
     @Override
@@ -122,13 +126,19 @@ public class ContractorServiceImpl implements ContractorService
         try {
             Contractor contractor = this.contractorRepository.read(id);
 
+            if (contractor.isPaymentValidated())
+            {
+                System.out.println("Error: Contractor's payment method already validated");
+                return;
+            }
+
             this.contractorRepository.update(id, Contractor.of(
                     contractor.getId(),
                     contractor.getLogin(),
                     contractor.getPassword(),
                     contractor.getName(),
                     contractor.getPaymentMethod(),
-                    true, // todo: call the mock API payment validation here
+                    this.paymentMethodValidatorApi.validate(contractor.getPaymentMethod()),
                     contractor.getCreationDate()
             ));
         } catch (EntityNotFoundException e) {

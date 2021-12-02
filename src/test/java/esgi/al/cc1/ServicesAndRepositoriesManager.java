@@ -8,6 +8,7 @@ import esgi.al.cc1.domain.models.Contractor;
 import esgi.al.cc1.domain.models.Payment;
 import esgi.al.cc1.domain.models.Project;
 import esgi.al.cc1.domain.models.Worker;
+import esgi.al.cc1.infrastructure.apis.PaymentMethodValidatorApi;
 
 public class ServicesAndRepositoriesManager
 {
@@ -30,7 +31,8 @@ public class ServicesAndRepositoriesManager
 
         this.contractorService = new ContractorServiceImpl(
                 this.contractorIMR,
-                this.workerIMR
+                this.workerIMR,
+                new PaymentMethodValidatorApi()
         );
         this.paymentService = new PaymentServiceImpl(
                 this.paymentIMR,
