@@ -1,7 +1,7 @@
 package esgi.al.cc1.console.engine;
 
 import esgi.al.cc1.application.ServicesFactory;
-import esgi.al.cc1.console.commandHandlers.HelpHandler;
+import esgi.al.cc1.console.commandHandlers.miscellaneous.HelpHandler;
 import esgi.al.cc1.console.commandHandlers.contractor.*;
 import esgi.al.cc1.console.commandHandlers.payment.CreatePaymentHandler;
 import esgi.al.cc1.console.commandHandlers.payment.DeletePaymentHandler;

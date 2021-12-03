@@ -1,5 +1,6 @@
-package esgi.al.cc1.console.commandHandlers;
+package esgi.al.cc1.console.commandHandlers.miscellaneous;
 
+import esgi.al.cc1.console.commandHandlers.CommandHandler;
 import esgi.al.cc1.console.engine.Command;
 
 public class HelpHandler implements CommandHandler

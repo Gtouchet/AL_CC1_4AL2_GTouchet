@@ -32,7 +32,7 @@ public class UpdateWorkerHandler implements CommandHandler
                         Service.valueOf(params[4].toLowerCase()),
                         Integer.parseInt(params[5])
                 );
-            } catch (IllegalFormatException e) {
+            } catch (NumberFormatException e) {
                 System.out.println("Error: could not parse [" + params[5] + "] as a department");
             } catch (IllegalArgumentException e) {
                 System.out.println("Error: unknown service [" + params[4] + "]");
