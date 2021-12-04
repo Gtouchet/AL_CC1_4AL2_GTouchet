@@ -8,6 +8,7 @@ import esgi.al.cc1.domain.models.Contractor;
 import esgi.al.cc1.domain.models.Payment;
 import esgi.al.cc1.domain.models.Project;
 import esgi.al.cc1.domain.models.Worker;
+import esgi.al.cc1.domain.validators.PasswordValidator;
 import esgi.al.cc1.infrastructure.apis.PaymentMethodValidatorApi;
 
 public class ServicesAndRepositoriesManager
@@ -16,6 +17,9 @@ public class ServicesAndRepositoriesManager
     public final InMemoryRepository<Payment> paymentIMR;
     public final InMemoryRepository<Project> serviceIMR;
     public final InMemoryRepository<Worker> workerIMR;
+
+    public final PaymentMethodValidatorApi paymentMethodValidatorApi;
+    public final PasswordValidator passwordValidator;
 
     public final ContractorServiceImpl contractorService;
     public final PaymentServiceImpl paymentService;
@@ -29,10 +33,14 @@ public class ServicesAndRepositoriesManager
         this.serviceIMR = new InMemoryRepository<>();
         this.workerIMR = new InMemoryRepository<>();
 
+        this.paymentMethodValidatorApi = new PaymentMethodValidatorApi();
+        this.passwordValidator = new PasswordValidator();
+
         this.contractorService = new ContractorServiceImpl(
                 this.contractorIMR,
                 this.workerIMR,
-                new PaymentMethodValidatorApi()
+                this.paymentMethodValidatorApi,
+                this.passwordValidator
         );
         this.paymentService = new PaymentServiceImpl(
                 this.paymentIMR,
@@ -47,7 +55,8 @@ public class ServicesAndRepositoriesManager
         this.workerService = new WorkerServiceImpl(
                 this.workerIMR,
                 this.contractorIMR,
-                this.serviceIMR
+                this.serviceIMR,
+                this.passwordValidator
         );
     }
 }

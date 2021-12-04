@@ -4,9 +4,11 @@ import esgi.al.cc1.domain.models.Contractor;
 import esgi.al.cc1.domain.models.Project;
 import esgi.al.cc1.domain.models.Service;
 import esgi.al.cc1.domain.models.Worker;
+import esgi.al.cc1.domain.validators.PasswordValidator;
 import esgi.al.cc1.domain.valueObjects.Date;
 import esgi.al.cc1.domain.valueObjects.Id;
 import esgi.al.cc1.domain.valueObjects.Password;
+import esgi.al.cc1.domain.valueObjects.PasswordFormatException;
 import esgi.al.cc1.infrastructure.repositories.EntityNotFoundException;
 import esgi.al.cc1.infrastructure.repositories.Repository;
 
@@ -18,15 +20,18 @@ public class WorkerServiceImpl implements WorkerService
     private final Repository<Worker> workerRepository;
     private final Repository<Project> projectRepository;
     private final Repository<Contractor> contractorRepository;
+    private final PasswordValidator passwordValidator;
 
     public WorkerServiceImpl(
             Repository<Worker> workerRepository,
             Repository<Contractor> contractorRepository,
-            Repository<Project> projectRepository)
+            Repository<Project> projectRepository,
+            PasswordValidator passwordValidator)
     {
         this.workerRepository = workerRepository;
         this.contractorRepository = contractorRepository;
         this.projectRepository = projectRepository;
+        this.passwordValidator = passwordValidator;
     }
 
     @Override
@@ -36,6 +41,13 @@ public class WorkerServiceImpl implements WorkerService
             this.workerRepository.read().anyMatch(worker -> worker.getLogin().equals(login)))
         {
             System.out.println("Error: login already in use");
+            return null;
+        }
+
+        try {
+            this.passwordValidator.validate(password);
+        } catch (PasswordFormatException e) {
+            System.out.println(e.getMessage());
             return null;
         }
 

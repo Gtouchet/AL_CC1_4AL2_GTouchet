@@ -162,7 +162,7 @@ public class WorkerServiceTests
     public void unrecognizedService()
     {
         this.manager = new ServicesAndRepositoriesManager();
-        exception.expect(IllegalArgumentException.class);
+        this.exception.expect(IllegalArgumentException.class);
 
         this.manager.workerService.create(
                 "GTouchet",
@@ -177,7 +177,7 @@ public class WorkerServiceTests
     public void departmentNotDigit()
     {
         this.manager = new ServicesAndRepositoriesManager();
-        exception.expect(NumberFormatException.class);
+        this.exception.expect(NumberFormatException.class);
 
         this.manager.workerService.create(
                 "GTouchet",

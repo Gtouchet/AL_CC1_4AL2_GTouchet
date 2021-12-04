@@ -3,9 +3,11 @@ package esgi.al.cc1.application;
 import esgi.al.cc1.domain.models.Contractor;
 import esgi.al.cc1.domain.models.PaymentMethod;
 import esgi.al.cc1.domain.models.Worker;
+import esgi.al.cc1.domain.validators.PasswordValidator;
 import esgi.al.cc1.domain.valueObjects.Date;
 import esgi.al.cc1.domain.valueObjects.Id;
 import esgi.al.cc1.domain.valueObjects.Password;
+import esgi.al.cc1.domain.valueObjects.PasswordFormatException;
 import esgi.al.cc1.infrastructure.apis.PaymentMethodValidatorApi;
 import esgi.al.cc1.infrastructure.repositories.EntityNotFoundException;
 import esgi.al.cc1.infrastructure.repositories.Repository;
@@ -18,16 +20,18 @@ public class ContractorServiceImpl implements ContractorService
     private final Repository<Contractor> contractorRepository;
     private final Repository<Worker> workerRepository;
     private final PaymentMethodValidatorApi paymentMethodValidatorApi;
+    private final PasswordValidator passwordValidator;
 
     public ContractorServiceImpl(
             Repository<Contractor> contractorRepository,
             Repository<Worker> workerRepository,
-            PaymentMethodValidatorApi paymentMethodValidatorApi
-    )
+            PaymentMethodValidatorApi paymentMethodValidatorApi,
+            PasswordValidator passwordValidator)
     {
         this.contractorRepository = contractorRepository;
         this.workerRepository = workerRepository;
         this.paymentMethodValidatorApi = paymentMethodValidatorApi;
+        this.passwordValidator = passwordValidator;
     }
 
     @Override
@@ -37,6 +41,13 @@ public class ContractorServiceImpl implements ContractorService
             this.contractorRepository.read().anyMatch(contractor -> contractor.getLogin().equals(login)))
         {
             System.out.println("Error: login already in use");
+            return null;
+        }
+
+        try {
+            this.passwordValidator.validate(password);
+        } catch (PasswordFormatException e) {
+            System.out.println(e.getMessage());
             return null;
         }
 
