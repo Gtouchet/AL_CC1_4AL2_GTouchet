@@ -28,7 +28,7 @@ public class PaymentServiceImpl implements PaymentService
     }
 
     @Override
-    public Id create(Id contractorId, Id workerId, double amount, String reason)
+    public Id create(Id contractorId, Id workerId, double amount, String reason) // todo use builder
     {
         Contractor contractor;
         try {

@@ -6,8 +6,8 @@ import esgi.al.cc1.domain.valueObjects.Password;
 
 public class Worker extends User
 {
-    private Service service;
-    private int department;
+    private final Service service;
+    private final int department;
 
     private Worker(Id id, String login, Password password, String name, Service service, int department, Date creationDate)
     {
@@ -30,18 +30,6 @@ public class Worker extends User
     public int getDepartment()
     {
         return this.department;
-    }
-
-    public void setService(Service service)
-    {
-        this.service = service;
-        this.setUpdateDate();
-    }
-
-    public void setDepartment(int department)
-    {
-        this.department = department;
-        this.setUpdateDate();
     }
 
     @Override

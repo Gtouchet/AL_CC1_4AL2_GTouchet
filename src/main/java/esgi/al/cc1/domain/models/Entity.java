@@ -7,13 +7,13 @@ public abstract class Entity
 {
     private final Id id;
     private final Date creationDate;
-    private Date updateDate;
+    private final Date updateDate;
 
     protected Entity(Id id, Date creationDate)
     {
         this.id = id;
         this.creationDate = creationDate;
-        this.updateDate = creationDate;
+        this.updateDate = Date.now();
     }
 
     public Id getId()
@@ -29,11 +29,6 @@ public abstract class Entity
     public Date getUpdateDate()
     {
         return this.updateDate;
-    }
-
-    public void setUpdateDate()
-    {
-        this.updateDate = Date.now();
     }
 
     @Override

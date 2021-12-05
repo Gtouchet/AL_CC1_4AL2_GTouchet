@@ -2,7 +2,7 @@ package esgi.al.cc1.validatorsTests;
 
 import esgi.al.cc1.domain.validators.PasswordValidator;
 import esgi.al.cc1.domain.valueObjects.Password;
-import esgi.al.cc1.domain.valueObjects.PasswordFormatException;
+import esgi.al.cc1.domain.validators.PasswordFormatException;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;

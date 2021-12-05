@@ -7,6 +7,7 @@ import esgi.al.cc1.domain.models.Worker;
 import esgi.al.cc1.domain.valueObjects.Id;
 import esgi.al.cc1.domain.valueObjects.Password;
 import esgi.al.cc1.infrastructure.repositories.EntityNotFoundException;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -20,10 +21,15 @@ public class WorkerServiceTests
 
     private ServicesAndRepositoriesManager manager;
 
+    @Before
+    public void setup()
+    {
+        this.manager = new ServicesAndRepositoriesManager();
+    }
+
     @Test
     public void createWorker()
     {
-        this.manager = new ServicesAndRepositoriesManager();
         long workerRepoSize;
 
         workerRepoSize = this.manager.workerService.getRepositorySize();
@@ -31,7 +37,7 @@ public class WorkerServiceTests
 
         Id workerId = this.manager.workerService.create(
                 "GTouchet",
-                Password.of("pass123"),
+                Password.of("ABcd1234!"),
                 "Guillaume",
                 Service.builder,
                 91
@@ -45,12 +51,11 @@ public class WorkerServiceTests
     @Test
     public void deleteWorker()
     {
-        this.manager = new ServicesAndRepositoriesManager();
         long workerRepoSize;
 
         Id workerId = this.manager.workerService.create(
                 "GTouchet",
-                Password.of("pass123"),
+                Password.of("ABcd1234!"),
                 "Guillaume",
                 Service.builder,
                 91
@@ -66,13 +71,12 @@ public class WorkerServiceTests
     @Test
     public void createTwoWorkers_sameLogin()
     {
-        this.manager = new ServicesAndRepositoriesManager();
-        final String login = "GTouchet";
+        String login = "GTouchet";
         long workerRepoSize;
 
         Id workerId1 = this.manager.workerService.create(
                 login,
-                Password.of("pass123"),
+                Password.of("ABcd1234!"),
                 "Guillaume",
                 Service.builder,
                 91
@@ -80,7 +84,7 @@ public class WorkerServiceTests
 
         Id workerId2 = this.manager.workerService.create(
                 login,
-                Password.of("pass123"),
+                Password.of("ABcd1234!"),
                 "Guillaume",
                 Service.builder,
                 91
@@ -96,13 +100,12 @@ public class WorkerServiceTests
     @Test
     public void createWorkerAndContractor_sameLogin()
     {
-        this.manager = new ServicesAndRepositoriesManager();
-        final String login = "GTouchet";
+        String login = "GTouchet";
         long workerAndContractorReposSize;
 
         Id workerId = this.manager.workerService.create(
                 login,
-                Password.of("pass123"),
+                Password.of("ABcd1234!"),
                 "Guillaume",
                 Service.builder,
                 91
@@ -110,7 +113,7 @@ public class WorkerServiceTests
 
         Id contractorId = this.manager.contractorService.create(
                 login,
-                Password.of("123pass"),
+                Password.of("ABcd1234!"),
                 "Touchet",
                 PaymentMethod.card
         );
@@ -127,20 +130,20 @@ public class WorkerServiceTests
     @Test
     public void updateWorker() throws EntityNotFoundException
     {
-        this.manager = new ServicesAndRepositoriesManager();
-
         Id workerId = this.manager.workerService.create(
                 "GTouchet",
-                Password.of("pass123"),
+                Password.of("ABcd1234!"),
                 "Guillaume",
                 Service.builder,
                 91
         );
 
-        final Password newPassword = Password.of("456pass");
-        final String newName = "Robert";
-        final Service newService = Service.electrician;
-        final int newDepartment = 75;
+        Worker originalWorker = this.manager.workerIMR.read(workerId);
+
+        Password newPassword = Password.of("newPass123??");
+        String newName = "Robert";
+        Service newService = Service.electrician;
+        int newDepartment = 75;
 
         this.manager.workerService.update(workerId,
                 newPassword,
@@ -150,23 +153,23 @@ public class WorkerServiceTests
         );
 
         Worker updatedWorker = this.manager.workerIMR.read(workerId);
-        assertEquals(newPassword, updatedWorker.getPassword());
-        assertEquals(newName, updatedWorker.getName());
-        assertEquals(newService, updatedWorker.getService());
-        assertEquals(newDepartment, updatedWorker.getDepartment());
 
-        assertEquals(workerId, updatedWorker.getId());
+        assertNotSame(originalWorker, updatedWorker);
+        assertEquals(originalWorker.getId(), updatedWorker.getId());
+        assertEquals(updatedWorker.getPassword(), newPassword);
+        assertEquals(updatedWorker.getName(), newName);
+        assertEquals(updatedWorker.getService(), newService);
+        assertEquals(updatedWorker.getDepartment(), newDepartment);
     }
 
     @Test
     public void unrecognizedService()
     {
-        this.manager = new ServicesAndRepositoriesManager();
         this.exception.expect(IllegalArgumentException.class);
 
         this.manager.workerService.create(
                 "GTouchet",
-                Password.of("pass123"),
+                Password.of("ABcd1234!"),
                 "Guillaume",
                 Service.valueOf("developer"),
                 91
@@ -176,21 +179,14 @@ public class WorkerServiceTests
     @Test
     public void departmentNotDigit()
     {
-        this.manager = new ServicesAndRepositoriesManager();
         this.exception.expect(NumberFormatException.class);
 
         this.manager.workerService.create(
                 "GTouchet",
-                Password.of("pass123"),
+                Password.of("ABcd1234!"),
                 "Guillaume",
                 Service.builder,
                 Integer.parseInt("ninety one")
         );
-    }
-
-    @Test
-    public void invalidPassword()
-    {
-        // Todo, not implemented yet :s
     }
 }

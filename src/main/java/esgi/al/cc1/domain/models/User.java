@@ -7,8 +7,8 @@ import esgi.al.cc1.domain.valueObjects.Password;
 public abstract class User extends Entity
 {
     private final String login;
-    private Password password;
-    private String name;
+    private final Password password;
+    private final String name;
 
     protected User(Id id, String login, Password password, String name, Date creationDate)
     {
@@ -32,18 +32,6 @@ public abstract class User extends Entity
     public String getName()
     {
         return name;
-    }
-
-    public void setPassword(Password password)
-    {
-        this.password = password;
-        this.setUpdateDate();
-    }
-
-    public void setName(String name)
-    {
-        this.name = name;
-        this.setUpdateDate();
     }
 
     @Override

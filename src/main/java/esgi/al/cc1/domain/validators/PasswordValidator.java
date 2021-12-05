@@ -1,6 +1,5 @@
 package esgi.al.cc1.domain.validators;
 
-import esgi.al.cc1.domain.valueObjects.PasswordFormatException;
 import esgi.al.cc1.domain.valueObjects.Password;
 
 import java.util.regex.Pattern;

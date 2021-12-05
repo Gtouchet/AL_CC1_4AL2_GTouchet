@@ -7,6 +7,7 @@ import esgi.al.cc1.domain.models.Service;
 import esgi.al.cc1.domain.valueObjects.Id;
 import esgi.al.cc1.domain.valueObjects.Password;
 import esgi.al.cc1.infrastructure.repositories.EntityNotFoundException;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -20,10 +21,15 @@ public class ContractorServiceTests
 
     private ServicesAndRepositoriesManager manager;
 
+    @Before
+    public void setup()
+    {
+        this.manager = new ServicesAndRepositoriesManager();
+    }
+
     @Test
     public void createContractor()
     {
-        this.manager = new ServicesAndRepositoriesManager();
         long contractorRepoSize;
 
         contractorRepoSize = this.manager.contractorService.getRepositorySize();
@@ -31,7 +37,7 @@ public class ContractorServiceTests
 
         Id contractorId = this.manager.contractorService.create(
                 "GTouchet",
-                Password.of("pass123"),
+                Password.of("ABcd1234!"),
                 "Guillaume",
                 PaymentMethod.card
         );
@@ -44,12 +50,11 @@ public class ContractorServiceTests
     @Test
     public void deleteContractor()
     {
-        this.manager = new ServicesAndRepositoriesManager();
         long contractorRepoSize;
 
         Id contractorId = this.manager.contractorService.create(
                 "GTouchet",
-                Password.of("pass123"),
+                Password.of("ABcd1234!"),
                 "Guillaume",
                 PaymentMethod.card
         );
@@ -64,20 +69,19 @@ public class ContractorServiceTests
     @Test
     public void createTwoContractors_sameLogin()
     {
-        this.manager = new ServicesAndRepositoriesManager();
         final String login = "GTouchet";
         long contractorRepoSize;
 
         Id contractorId1 = this.manager.contractorService.create(
                 login,
-                Password.of("pass123"),
+                Password.of("ABcd1234!"),
                 "Guillaume",
                 PaymentMethod.card
         );
 
         Id contractorId2 = this.manager.contractorService.create(
                 login,
-                Password.of("pass123"),
+                Password.of("ABcd1234!"),
                 "Guillaume",
                 PaymentMethod.card
         );
@@ -92,20 +96,19 @@ public class ContractorServiceTests
     @Test
     public void createContractorAndWorker_sameLogin()
     {
-        this.manager = new ServicesAndRepositoriesManager();
         final String login = "GTouchet";
         long contractorAndWorkerReposSize;
 
         Id contractorId = this.manager.contractorService.create(
                 login,
-                Password.of("123pass"),
+                Password.of("ABcd1234!"),
                 "Touchet",
                 PaymentMethod.card
         );
 
         Id workerId = this.manager.workerService.create(
                 login,
-                Password.of("pass123"),
+                Password.of("ABcd1234!"),
                 "Guillaume",
                 Service.builder,
                 91
@@ -123,18 +126,18 @@ public class ContractorServiceTests
     @Test
     public void updateContractor() throws EntityNotFoundException
     {
-        this.manager = new ServicesAndRepositoriesManager();
-
         Id contractorId = this.manager.contractorService.create(
                 "GTouchet",
-                Password.of("pass123"),
+                Password.of("ABcd1234!"),
                 "Guillaume",
                 PaymentMethod.card
         );
 
-        final Password newPassword = Password.of("456pass");
-        final String newName = "Robert";
-        final PaymentMethod newPaymentMethod = PaymentMethod.paypal;
+        Contractor originalContractor = this.manager.contractorIMR.read(contractorId);
+
+        Password newPassword = Password.of("newPass123??");
+        String newName = "Robert";
+        PaymentMethod newPaymentMethod = PaymentMethod.paypal;
 
         this.manager.contractorService.update(contractorId,
                 newPassword,
@@ -143,21 +146,20 @@ public class ContractorServiceTests
         );
 
         Contractor updatedContractor = this.manager.contractorIMR.read(contractorId);
-        assertEquals(newPassword, updatedContractor.getPassword());
-        assertEquals(newName, updatedContractor.getName());
-        assertEquals(newPaymentMethod, updatedContractor.getPaymentMethod());
 
-        assertEquals(contractorId, updatedContractor.getId());
+        assertNotSame(originalContractor, updatedContractor);
+        assertEquals(originalContractor.getId(), updatedContractor.getId());
+        assertEquals(updatedContractor.getPassword(), newPassword);
+        assertEquals(updatedContractor.getName(), newName);
+        assertEquals(updatedContractor.getPaymentMethod(), newPaymentMethod);
     }
 
     @Test
     public void validatePaymentMethod() throws EntityNotFoundException
     {
-        this.manager = new ServicesAndRepositoriesManager();
-
         Id contractorId = this.manager.contractorService.create(
                 "GTouchet",
-                Password.of("pass123"),
+                Password.of("ABcd1234!"),
                 "Guillaume",
                 PaymentMethod.card
         );
@@ -174,20 +176,13 @@ public class ContractorServiceTests
     @Test
     public void unrecognizedPaymentMethod()
     {
-        this.manager = new ServicesAndRepositoriesManager();
         exception.expect(IllegalArgumentException.class);
 
         this.manager.contractorService.create(
                 "GTouchet",
-                Password.of("pass123"),
+                Password.of("ABcd1234!"),
                 "Guillaume",
                 PaymentMethod.valueOf("cash")
         );
-    }
-
-    @Test
-    public void invalidPassword()
-    {
-        // Todo, not implemented yet :s
     }
 }

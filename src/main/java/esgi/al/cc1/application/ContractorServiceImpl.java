@@ -7,7 +7,7 @@ import esgi.al.cc1.domain.validators.PasswordValidator;
 import esgi.al.cc1.domain.valueObjects.Date;
 import esgi.al.cc1.domain.valueObjects.Id;
 import esgi.al.cc1.domain.valueObjects.Password;
-import esgi.al.cc1.domain.valueObjects.PasswordFormatException;
+import esgi.al.cc1.domain.validators.PasswordFormatException;
 import esgi.al.cc1.infrastructure.apis.PaymentMethodValidatorApi;
 import esgi.al.cc1.infrastructure.repositories.EntityNotFoundException;
 import esgi.al.cc1.infrastructure.repositories.Repository;
@@ -35,7 +35,7 @@ public class ContractorServiceImpl implements ContractorService
     }
 
     @Override
-    public Id create(String login, Password password, String name, PaymentMethod paymentMethod)
+    public Id create(String login, Password password, String name, PaymentMethod paymentMethod) // todo use builder
     {
         if (this.workerRepository.read().anyMatch(worker -> worker.getLogin().equals(login)) ||
             this.contractorRepository.read().anyMatch(contractor -> contractor.getLogin().equals(login)))
@@ -90,10 +90,17 @@ public class ContractorServiceImpl implements ContractorService
     }
 
     @Override
-    public void update(Id id, Password password, String name, PaymentMethod paymentMethod)
+    public void update(Id id, Password password, String name, PaymentMethod paymentMethod) // todo use builder
     {
         try {
             Contractor contractor = this.contractorRepository.read(id);
+
+            try {
+                this.passwordValidator.validate(password);
+            } catch (PasswordFormatException e) {
+                System.out.println(e.getMessage());
+                return;
+            }
 
             this.contractorRepository.update(id, Contractor.of(
                     contractor.getId(),
@@ -132,14 +139,21 @@ public class ContractorServiceImpl implements ContractorService
     }
 
     @Override
-    public void validatePayment(Id id)
+    public void validatePayment(Id id) // todo use builder ?
     {
         try {
             Contractor contractor = this.contractorRepository.read(id);
 
             if (contractor.isPaymentValidated())
             {
-                System.out.println("Error: Contractor's payment method already validated");
+                System.out.println("Error: payment method already validated for Contractor ID [" + id + "]");
+                return;
+            }
+
+            try {
+                this.paymentMethodValidatorApi.validate(contractor.getPaymentMethod());
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
                 return;
             }
 
@@ -149,7 +163,7 @@ public class ContractorServiceImpl implements ContractorService
                     contractor.getPassword(),
                     contractor.getName(),
                     contractor.getPaymentMethod(),
-                    this.paymentMethodValidatorApi.validate(contractor.getPaymentMethod()),
+                    true,
                     contractor.getCreationDate()
             ));
         } catch (EntityNotFoundException e) {

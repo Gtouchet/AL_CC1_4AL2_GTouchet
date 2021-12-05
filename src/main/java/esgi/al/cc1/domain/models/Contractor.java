@@ -6,8 +6,8 @@ import esgi.al.cc1.domain.valueObjects.Password;
 
 public class Contractor extends User
 {
-    private PaymentMethod paymentMethod;
-    private boolean isPaymentValidated;
+    private final PaymentMethod paymentMethod;
+    private final boolean isPaymentValidated;
 
     private Contractor(Id id, String login, Password password, String name,
                        PaymentMethod paymentMethod, boolean isPaymentValidated, Date creationDate)
@@ -33,18 +33,6 @@ public class Contractor extends User
     public boolean isPaymentValidated()
     {
         return this.isPaymentValidated;
-    }
-
-    public void setPaymentMethod(PaymentMethod paymentMethod)
-    {
-        this.paymentMethod = paymentMethod;
-        this.setUpdateDate();
-    }
-
-    public void setPaymentValidated(boolean isPaymentValidated)
-    {
-        this.isPaymentValidated = isPaymentValidated;
-        this.setUpdateDate();
     }
 
     @Override

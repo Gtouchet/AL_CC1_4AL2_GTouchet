@@ -15,7 +15,7 @@ public class ServicesAndRepositoriesManager
 {
     public final InMemoryRepository<Contractor> contractorIMR;
     public final InMemoryRepository<Payment> paymentIMR;
-    public final InMemoryRepository<Project> serviceIMR;
+    public final InMemoryRepository<Project> projectIMR;
     public final InMemoryRepository<Worker> workerIMR;
 
     public final PaymentMethodValidatorApi paymentMethodValidatorApi;
@@ -30,7 +30,7 @@ public class ServicesAndRepositoriesManager
     {
         this.contractorIMR = new InMemoryRepository<>();
         this.paymentIMR = new InMemoryRepository<>();
-        this.serviceIMR = new InMemoryRepository<>();
+        this.projectIMR = new InMemoryRepository<>();
         this.workerIMR = new InMemoryRepository<>();
 
         this.paymentMethodValidatorApi = new PaymentMethodValidatorApi();
@@ -48,14 +48,14 @@ public class ServicesAndRepositoriesManager
                 this.workerIMR
         );
         this.projectService = new ProjectServiceImpl(
-                this.serviceIMR,
+                this.projectIMR,
                 this.contractorIMR,
                 this.workerIMR
         );
         this.workerService = new WorkerServiceImpl(
                 this.workerIMR,
                 this.contractorIMR,
-                this.serviceIMR,
+                this.projectIMR,
                 this.passwordValidator
         );
     }

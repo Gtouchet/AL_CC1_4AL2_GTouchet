@@ -1,14 +1,16 @@
 package esgi.al.cc1.application;
 
+import esgi.al.cc1.domain.builders.ProjectBuilder;
+import esgi.al.cc1.domain.builders.WorkerBuilder;
 import esgi.al.cc1.domain.models.Contractor;
 import esgi.al.cc1.domain.models.Project;
 import esgi.al.cc1.domain.models.Service;
 import esgi.al.cc1.domain.models.Worker;
+import esgi.al.cc1.domain.validators.PasswordFormatException;
 import esgi.al.cc1.domain.validators.PasswordValidator;
 import esgi.al.cc1.domain.valueObjects.Date;
 import esgi.al.cc1.domain.valueObjects.Id;
 import esgi.al.cc1.domain.valueObjects.Password;
-import esgi.al.cc1.domain.valueObjects.PasswordFormatException;
 import esgi.al.cc1.infrastructure.repositories.EntityNotFoundException;
 import esgi.al.cc1.infrastructure.repositories.Repository;
 
@@ -51,7 +53,7 @@ public class WorkerServiceImpl implements WorkerService
             return null;
         }
 
-        Worker worker = Worker.of(
+        Worker worker = WorkerBuilder.init(Worker.of(
                 Id.generate(),
                 login,
                 password,
@@ -59,7 +61,8 @@ public class WorkerServiceImpl implements WorkerService
                 service,
                 department,
                 Date.now()
-        );
+        )).build();
+
         this.workerRepository.create(worker);
         return worker.getId();
     }
@@ -95,15 +98,22 @@ public class WorkerServiceImpl implements WorkerService
         try {
             Worker worker = this.workerRepository.read(id);
 
-            this.workerRepository.update(id, Worker.of(
-                    worker.getId(),
-                    worker.getLogin(),
-                    password,
-                    name,
-                    service,
-                    department,
-                    worker.getCreationDate()
-            ));
+            try {
+                this.passwordValidator.validate(password);
+            } catch (PasswordFormatException e) {
+                System.out.println(e.getMessage());
+                return;
+            }
+
+            worker = WorkerBuilder.init(worker)
+                    .setPassword(password)
+                    .setName(name)
+                    .setService(service)
+                    .setDepartment(department)
+                    .build();
+
+            this.workerRepository.update(id, worker);
+
         } catch (EntityNotFoundException e) {
             System.out.println(e.getMessage());
         }
@@ -126,11 +136,15 @@ public class WorkerServiceImpl implements WorkerService
                 .forEach(project -> {
                     project.getWorkersId().remove(id);
                     try {
-                        this.projectRepository.update(project.getId(), Project.of(
-                                project.getId(),
-                                project.getContractorId(),
-                                project.getDepartment(),
-                                project.getCreationDate()));
+                        List<Id> workersId = project.getWorkersId();
+                        workersId.remove(id);
+
+                        project = ProjectBuilder.init(project)
+                                .setWorkersId(workersId)
+                                .build();
+
+                        this.projectRepository.update(project.getId(), project);
+
                     } catch (EntityNotFoundException e) {
                         System.out.println(e.getMessage());
                     }

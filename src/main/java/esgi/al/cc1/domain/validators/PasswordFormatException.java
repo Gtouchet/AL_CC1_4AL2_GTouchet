@@ -1,4 +1,4 @@
-package esgi.al.cc1.domain.valueObjects;
+package esgi.al.cc1.domain.validators;
 
 public class PasswordFormatException extends Exception
 {
