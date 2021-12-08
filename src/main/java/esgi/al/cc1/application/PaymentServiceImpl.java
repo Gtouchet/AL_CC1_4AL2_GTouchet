@@ -1,5 +1,6 @@
 package esgi.al.cc1.application;
 
+import esgi.al.cc1.domain.builders.PaymentBuilder;
 import esgi.al.cc1.domain.models.Contractor;
 import esgi.al.cc1.domain.models.Payment;
 import esgi.al.cc1.domain.models.Worker;
@@ -28,11 +29,10 @@ public class PaymentServiceImpl implements PaymentService
     }
 
     @Override
-    public Id create(Id contractorId, Id workerId, double amount, String reason) // todo use builder
+    public Id create(Id contractorId, Id workerId, double amount, String reason)
     {
-        Contractor contractor;
         try {
-            contractor = this.contractorRepository.read(contractorId);
+            Contractor contractor = this.contractorRepository.read(contractorId);
 
             if (!contractor.isPaymentValidated())
             {
@@ -53,15 +53,13 @@ public class PaymentServiceImpl implements PaymentService
             return null;
         }
 
-        Payment payment = Payment.of(
-                Id.generate(),
-                contractorId,
-                workerId,
-                contractor.getPaymentMethod(),
-                amount,
-                reason,
-                Date.now()
-        );
+        Payment payment = PaymentBuilder.init(Id.generate(), Date.now())
+                .setContractorId(contractorId)
+                .setWorkerId(workerId)
+                .setAmount(amount)
+                .setReason(reason)
+                .build();
+
         this.paymentRepository.create(payment);
         return payment.getId();
     }

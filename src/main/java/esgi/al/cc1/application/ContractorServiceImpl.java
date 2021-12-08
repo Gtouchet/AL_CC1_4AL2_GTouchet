@@ -1,13 +1,14 @@
 package esgi.al.cc1.application;
 
+import esgi.al.cc1.domain.builders.ContractorBuilder;
 import esgi.al.cc1.domain.models.Contractor;
 import esgi.al.cc1.domain.models.PaymentMethod;
 import esgi.al.cc1.domain.models.Worker;
+import esgi.al.cc1.domain.validators.PasswordFormatException;
 import esgi.al.cc1.domain.validators.PasswordValidator;
 import esgi.al.cc1.domain.valueObjects.Date;
 import esgi.al.cc1.domain.valueObjects.Id;
 import esgi.al.cc1.domain.valueObjects.Password;
-import esgi.al.cc1.domain.validators.PasswordFormatException;
 import esgi.al.cc1.infrastructure.apis.PaymentMethodValidatorApi;
 import esgi.al.cc1.infrastructure.repositories.EntityNotFoundException;
 import esgi.al.cc1.infrastructure.repositories.Repository;
@@ -35,7 +36,7 @@ public class ContractorServiceImpl implements ContractorService
     }
 
     @Override
-    public Id create(String login, Password password, String name, PaymentMethod paymentMethod) // todo use builder
+    public Id create(String login, Password password, String name, PaymentMethod paymentMethod)
     {
         if (this.workerRepository.read().anyMatch(worker -> worker.getLogin().equals(login)) ||
             this.contractorRepository.read().anyMatch(contractor -> contractor.getLogin().equals(login)))
@@ -51,15 +52,12 @@ public class ContractorServiceImpl implements ContractorService
             return null;
         }
 
-        Contractor contractor = Contractor.of(
-                Id.generate(),
-                login,
-                password,
-                name,
-                paymentMethod,
-                false,
-                Date.now()
-        );
+        Contractor contractor = ContractorBuilder.init(Id.generate(), login, Date.now())
+                .setPassword(password)
+                .setName(name)
+                .setPaymentMethod(paymentMethod)
+                .build();
+
         this.contractorRepository.create(contractor);
         return contractor.getId();
     }
@@ -90,7 +88,7 @@ public class ContractorServiceImpl implements ContractorService
     }
 
     @Override
-    public void update(Id id, Password password, String name, PaymentMethod paymentMethod) // todo use builder
+    public void update(Id id, Password password, String name, PaymentMethod paymentMethod)
     {
         try {
             Contractor contractor = this.contractorRepository.read(id);
@@ -102,15 +100,14 @@ public class ContractorServiceImpl implements ContractorService
                 return;
             }
 
-            this.contractorRepository.update(id, Contractor.of(
-                    contractor.getId(),
-                    contractor.getLogin(),
-                    password,
-                    name,
-                    paymentMethod,
-                    contractor.isPaymentValidated(),
-                    contractor.getCreationDate()
-            ));
+            contractor = ContractorBuilder.init(contractor.getId(), contractor.getLogin(), contractor.getCreationDate())
+                    .setPassword(password)
+                    .setName(name)
+                    .setPaymentMethod(paymentMethod)
+                    .build();
+
+            this.contractorRepository.update(id, contractor);
+
         } catch (EntityNotFoundException e) {
             System.out.println(e.getMessage());
         }
@@ -139,7 +136,7 @@ public class ContractorServiceImpl implements ContractorService
     }
 
     @Override
-    public void validatePayment(Id id) // todo use builder ?
+    public void validatePayment(Id id)
     {
         try {
             Contractor contractor = this.contractorRepository.read(id);
@@ -157,15 +154,15 @@ public class ContractorServiceImpl implements ContractorService
                 return;
             }
 
-            this.contractorRepository.update(id, Contractor.of(
-                    contractor.getId(),
-                    contractor.getLogin(),
-                    contractor.getPassword(),
-                    contractor.getName(),
-                    contractor.getPaymentMethod(),
-                    true,
-                    contractor.getCreationDate()
-            ));
+            contractor = ContractorBuilder.init(contractor.getId(), contractor.getLogin(), contractor.getCreationDate())
+                    .setPassword(contractor.getPassword())
+                    .setName(contractor.getName())
+                    .setPaymentMethod(contractor.getPaymentMethod())
+                    .setIsPaymentValidated(true)
+                    .build();
+
+            this.contractorRepository.update(id, contractor);
+
         } catch (EntityNotFoundException e) {
             System.out.println(e.getMessage());
         }

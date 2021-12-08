@@ -15,18 +15,18 @@ public class ProjectBuilder implements Builder<Project>
     private List<Id> workersId;
     private final Date creationDate;
 
-    private ProjectBuilder(Project project)
+    private ProjectBuilder(Id id, Date creationDate)
     {
-        this.id = Objects.requireNonNull(project.getId());
-        this.contractorId = Objects.requireNonNull(project.getContractorId());
-        this.department = project.getDepartment();
-        this.workersId = Objects.requireNonNull(project.getWorkersId());
-        this.creationDate = Objects.requireNonNull(project.getCreationDate());
+        this.id = id;
+        this.creationDate = creationDate;
     }
 
-    public static ProjectBuilder init(Project project)
+    public static ProjectBuilder init(Id id, Date creationDate)
     {
-        return new ProjectBuilder(project);
+        return new ProjectBuilder(
+                Objects.requireNonNull(id),
+                Objects.requireNonNull(creationDate)
+        );
     }
 
     @Override
@@ -34,9 +34,9 @@ public class ProjectBuilder implements Builder<Project>
     {
         return Project.of(
                 this.id,
-                this.contractorId,
+                Objects.requireNonNull(this.contractorId),
                 this.department,
-                this.workersId,
+                Objects.requireNonNull(this.workersId),
                 this.creationDate
         );
     }

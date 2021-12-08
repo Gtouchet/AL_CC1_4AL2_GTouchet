@@ -1,4 +1,4 @@
-package esgi.al.cc1.serviceTests;
+package esgi.al.cc1.servicesTests;
 
 import esgi.al.cc1.ServicesAndRepositoriesManager;
 import esgi.al.cc1.domain.models.Contractor;
@@ -30,9 +30,8 @@ public class ContractorServiceTests
     @Test
     public void createContractor()
     {
-        long contractorRepoSize;
+        long contractorRepoSize = this.manager.contractorService.getRepositorySize();
 
-        contractorRepoSize = this.manager.contractorService.getRepositorySize();
         assertEquals(0, contractorRepoSize);
 
         Id contractorId = this.manager.contractorService.create(
@@ -43,6 +42,7 @@ public class ContractorServiceTests
         );
 
         contractorRepoSize = this.manager.contractorService.getRepositorySize();
+
         assertEquals(1, contractorRepoSize);
         assertTrue(this.manager.contractorService.exists(contractorId));
     }
@@ -50,8 +50,6 @@ public class ContractorServiceTests
     @Test
     public void deleteContractor()
     {
-        long contractorRepoSize;
-
         Id contractorId = this.manager.contractorService.create(
                 "GTouchet",
                 Password.of("ABcd1234!"),
@@ -61,7 +59,8 @@ public class ContractorServiceTests
 
         this.manager.contractorService.delete(contractorId);
 
-        contractorRepoSize = this.manager.contractorService.getRepositorySize();
+        long contractorRepoSize = this.manager.contractorService.getRepositorySize();
+
         assertEquals(0, contractorRepoSize);
         assertFalse(this.manager.contractorService.exists(contractorId));
     }
@@ -87,8 +86,8 @@ public class ContractorServiceTests
         );
 
         contractorRepoSize = this.manager.contractorService.getRepositorySize();
-        assertEquals(1, contractorRepoSize);
 
+        assertEquals(1, contractorRepoSize);
         assertTrue(this.manager.contractorService.exists(contractorId1));
         assertFalse(this.manager.contractorService.exists(contractorId2));
     }
@@ -117,8 +116,8 @@ public class ContractorServiceTests
         contractorAndWorkerReposSize =
                 this.manager.contractorService.getRepositorySize() +
                 this.manager.workerService.getRepositorySize();
-        assertEquals(1, contractorAndWorkerReposSize);
 
+        assertEquals(1, contractorAndWorkerReposSize);
         assertTrue(this.manager.contractorService.exists(contractorId));
         assertFalse(this.manager.workerService.exists(workerId));
     }
@@ -182,7 +181,7 @@ public class ContractorServiceTests
                 "GTouchet",
                 Password.of("ABcd1234!"),
                 "Guillaume",
-                PaymentMethod.valueOf("cash")
+                PaymentMethod.valueOf("CA$H")
         );
     }
 }

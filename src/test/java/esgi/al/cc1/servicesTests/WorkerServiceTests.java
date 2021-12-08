@@ -1,4 +1,4 @@
-package esgi.al.cc1.serviceTests;
+package esgi.al.cc1.servicesTests;
 
 import esgi.al.cc1.ServicesAndRepositoriesManager;
 import esgi.al.cc1.domain.models.PaymentMethod;
@@ -30,9 +30,8 @@ public class WorkerServiceTests
     @Test
     public void createWorker()
     {
-        long workerRepoSize;
+        long workerRepoSize = this.manager.workerService.getRepositorySize();
 
-        workerRepoSize = this.manager.workerService.getRepositorySize();
         assertEquals(0, workerRepoSize);
 
         Id workerId = this.manager.workerService.create(
@@ -44,6 +43,7 @@ public class WorkerServiceTests
         );
 
         workerRepoSize = this.manager.workerService.getRepositorySize();
+
         assertEquals(1, workerRepoSize);
         assertTrue(this.manager.workerService.exists(workerId));
     }
@@ -51,8 +51,6 @@ public class WorkerServiceTests
     @Test
     public void deleteWorker()
     {
-        long workerRepoSize;
-
         Id workerId = this.manager.workerService.create(
                 "GTouchet",
                 Password.of("ABcd1234!"),
@@ -63,7 +61,8 @@ public class WorkerServiceTests
 
         this.manager.workerService.delete(workerId);
 
-        workerRepoSize = this.manager.workerService.getRepositorySize();
+        long workerRepoSize = this.manager.workerService.getRepositorySize();
+
         assertEquals(0, workerRepoSize);
         assertFalse(this.manager.workerService.exists(workerId));
     }
@@ -91,8 +90,8 @@ public class WorkerServiceTests
         );
 
         workerRepoSize = this.manager.workerService.getRepositorySize();
-        assertEquals(1, workerRepoSize);
 
+        assertEquals(1, workerRepoSize);
         assertTrue(this.manager.workerService.exists(workerId1));
         assertFalse(this.manager.workerService.exists(workerId2));
     }
@@ -121,8 +120,8 @@ public class WorkerServiceTests
         workerAndContractorReposSize =
                 this.manager.workerService.getRepositorySize() +
                 this.manager.contractorService.getRepositorySize();
-        assertEquals(1, workerAndContractorReposSize);
 
+        assertEquals(1, workerAndContractorReposSize);
         assertTrue(this.manager.workerService.exists(workerId));
         assertFalse(this.manager.contractorService.exists(contractorId));
     }

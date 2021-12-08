@@ -53,15 +53,12 @@ public class WorkerServiceImpl implements WorkerService
             return null;
         }
 
-        Worker worker = WorkerBuilder.init(Worker.of(
-                Id.generate(),
-                login,
-                password,
-                name,
-                service,
-                department,
-                Date.now()
-        )).build();
+        Worker worker = WorkerBuilder.init(Id.generate(), login, Date.now())
+                .setPassword(password)
+                .setName(name)
+                .setService(service)
+                .setDepartment(department)
+                .build();
 
         this.workerRepository.create(worker);
         return worker.getId();
@@ -105,7 +102,7 @@ public class WorkerServiceImpl implements WorkerService
                 return;
             }
 
-            worker = WorkerBuilder.init(worker)
+            worker = WorkerBuilder.init(worker.getId(), worker.getLogin(), worker.getCreationDate())
                     .setPassword(password)
                     .setName(name)
                     .setService(service)
@@ -139,7 +136,9 @@ public class WorkerServiceImpl implements WorkerService
                         List<Id> workersId = project.getWorkersId();
                         workersId.remove(id);
 
-                        project = ProjectBuilder.init(project)
+                        project = ProjectBuilder.init(project.getId(), project.getCreationDate())
+                                .setContractorId(project.getContractorId())
+                                .setDepartment(project.getDepartment())
                                 .setWorkersId(workersId)
                                 .build();
 

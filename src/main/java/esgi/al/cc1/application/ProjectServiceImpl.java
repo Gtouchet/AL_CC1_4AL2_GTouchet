@@ -38,13 +38,11 @@ public class ProjectServiceImpl implements ProjectService
             return null;
         }
 
-        Project project = ProjectBuilder.init(Project.of(
-                Id.generate(),
-                contractorId,
-                department,
-                new ArrayList<>(),
-                Date.now()
-        )).build();
+        Project project = ProjectBuilder.init(Id.generate(), Date.now())
+                .setContractorId(contractorId)
+                .setDepartment(department)
+                .setWorkersId(new ArrayList<>())
+                .build();
 
         this.projectRepository.create(project);
         return project.getId();
@@ -87,10 +85,10 @@ public class ProjectServiceImpl implements ProjectService
         try {
             Project project = this.projectRepository.read(id);
 
-            project = ProjectBuilder.init(project)
+            project = ProjectBuilder.init(project.getId(), project.getCreationDate())
                     .setContractorId(contractorId)
                     .setDepartment(department)
-                    .setWorkersId(project.getWorkersId())
+                    .setWorkersId(new ArrayList<>())
                     .build();
 
             this.projectRepository.update(id, project);
@@ -142,7 +140,10 @@ public class ProjectServiceImpl implements ProjectService
             }
 
             workersId.add(workerId);
-            project = ProjectBuilder.init(project)
+
+            project = ProjectBuilder.init(project.getId(), project.getCreationDate())
+                    .setContractorId(project.getContractorId())
+                    .setDepartment(project.getDepartment())
                     .setWorkersId(workersId)
                     .build();
 
@@ -172,7 +173,9 @@ public class ProjectServiceImpl implements ProjectService
                 return;
             }
 
-            project = ProjectBuilder.init(project)
+            project = ProjectBuilder.init(project.getId(), project.getCreationDate())
+                    .setContractorId(project.getContractorId())
+                    .setDepartment(project.getDepartment())
                     .setWorkersId(workersId)
                     .build();
 

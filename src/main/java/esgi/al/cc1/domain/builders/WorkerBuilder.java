@@ -18,20 +18,20 @@ public class WorkerBuilder implements Builder<Worker>
     private int department;
     private final Date creationDate;
 
-    private WorkerBuilder(Worker worker)
+    private WorkerBuilder(Id id, String login, Date creationDate)
     {
-        this.id = Objects.requireNonNull(worker.getId());
-        this.login = Objects.requireNonNull(worker.getLogin());
-        this.password = Objects.requireNonNull(worker.getPassword());
-        this.name = Objects.requireNonNull(worker.getName());
-        this.service = Objects.requireNonNull(worker.getService());
-        this.department = worker.getDepartment();
-        this.creationDate = Objects.requireNonNull(worker.getCreationDate());
+        this.id = id;
+        this.login = login;
+        this.creationDate = creationDate;
     }
 
-    public static WorkerBuilder init(Worker worker)
+    public static WorkerBuilder init(Id id, String login, Date creationDate)
     {
-        return new WorkerBuilder(worker);
+        return new WorkerBuilder(
+                Objects.requireNonNull(id),
+                Objects.requireNonNull(login),
+                Objects.requireNonNull(creationDate)
+        );
     }
 
     @Override
@@ -40,9 +40,9 @@ public class WorkerBuilder implements Builder<Worker>
         return Worker.of(
                 this.id,
                 this.login,
-                this.password,
-                this.name,
-                this.service,
+                Objects.requireNonNull(this.password),
+                Objects.requireNonNull(this.name),
+                Objects.requireNonNull(this.service),
                 this.department,
                 this.creationDate
         );

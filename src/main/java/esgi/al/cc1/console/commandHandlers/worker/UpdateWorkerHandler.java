@@ -8,8 +8,6 @@ import esgi.al.cc1.domain.models.Service;
 import esgi.al.cc1.domain.valueObjects.Id;
 import esgi.al.cc1.domain.valueObjects.Password;
 
-import java.util.IllegalFormatException;
-
 public class UpdateWorkerHandler implements CommandHandler
 {
     private final WorkerService workerService;

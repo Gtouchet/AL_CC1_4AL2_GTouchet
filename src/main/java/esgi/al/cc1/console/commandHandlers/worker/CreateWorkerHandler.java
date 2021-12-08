@@ -7,8 +7,6 @@ import esgi.al.cc1.console.engine.WrongNumberOfArgumentException;
 import esgi.al.cc1.domain.models.Service;
 import esgi.al.cc1.domain.valueObjects.Password;
 
-import java.util.IllegalFormatException;
-
 public class CreateWorkerHandler implements CommandHandler
 {
     private final WorkerService workerService;
