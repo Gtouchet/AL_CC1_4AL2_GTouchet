@@ -20,7 +20,9 @@ public class ContractorBuilderTests
     @Test
     public void buildContractor()
     {
-        Contractor contractor = ContractorBuilder.init(Id.generate(), "GTouchet", Date.now())
+        Id id = Id.generate();
+
+        Contractor contractor = ContractorBuilder.init(id, "GTouchet", Date.now())
                 .setPassword(Password.of("ABcd1234!"))
                 .setName("Guillaume")
                 .setPaymentMethod(PaymentMethod.card)
@@ -29,6 +31,7 @@ public class ContractorBuilderTests
 
         assertNotNull(contractor);
 
+        assertEquals(id, contractor.getId());
         assertEquals("ABcd1234!", contractor.getPassword().toString());
         assertEquals("Guillaume", contractor.getName());
         assertEquals(PaymentMethod.card, contractor.getPaymentMethod());
@@ -42,7 +45,7 @@ public class ContractorBuilderTests
                 .setPassword(Password.of("ABcd1234!"))
                 .setName("Guillaume")
                 .setPaymentMethod(PaymentMethod.card)
-                // Set to false by default if not specified
+                // Payment validation set to Boolean's default if not specified (false)
                 .build();
 
         assertNotNull(contractor);
@@ -59,6 +62,7 @@ public class ContractorBuilderTests
                 .setPassword(Password.of("ABcd1234!"))
                 //.setName("Guillaume")
                 .setPaymentMethod(PaymentMethod.card)
+                .setIsPaymentValidated(false)
                 .build();
     }
 }

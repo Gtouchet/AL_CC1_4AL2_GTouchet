@@ -31,8 +31,9 @@ public class PaymentServiceImpl implements PaymentService
     @Override
     public Id create(Id contractorId, Id workerId, double amount, String reason)
     {
+        Contractor contractor;
         try {
-            Contractor contractor = this.contractorRepository.read(contractorId);
+            contractor = this.contractorRepository.read(contractorId);
 
             if (!contractor.isPaymentValidated())
             {
@@ -56,6 +57,7 @@ public class PaymentServiceImpl implements PaymentService
         Payment payment = PaymentBuilder.init(Id.generate(), Date.now())
                 .setContractorId(contractorId)
                 .setWorkerId(workerId)
+                .setPaymentMethod(contractor.getPaymentMethod())
                 .setAmount(amount)
                 .setReason(reason)
                 .build();

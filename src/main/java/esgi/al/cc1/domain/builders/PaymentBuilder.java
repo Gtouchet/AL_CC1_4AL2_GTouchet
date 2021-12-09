@@ -5,6 +5,8 @@ import esgi.al.cc1.domain.models.PaymentMethod;
 import esgi.al.cc1.domain.valueObjects.Date;
 import esgi.al.cc1.domain.valueObjects.Id;
 
+import java.util.Objects;
+
 public class PaymentBuilder implements Builder<Payment>
 {
     private final Id id;
@@ -23,7 +25,10 @@ public class PaymentBuilder implements Builder<Payment>
 
     public static PaymentBuilder init(Id id, Date creationDate)
     {
-        return new PaymentBuilder(id, creationDate);
+        return new PaymentBuilder(
+                Objects.requireNonNull(id),
+                Objects.requireNonNull(creationDate)
+        );
     }
 
     @Override
@@ -31,11 +36,11 @@ public class PaymentBuilder implements Builder<Payment>
     {
         return Payment.of(
                 this.id,
-                this.contractorId,
-                this.workerId,
-                this.paymentMethod,
+                Objects.requireNonNull(this.contractorId),
+                Objects.requireNonNull(this.workerId),
+                Objects.requireNonNull(this.paymentMethod),
                 this.amount,
-                this.reason,
+                Objects.requireNonNull(this.reason),
                 this.creationDate
         );
     }

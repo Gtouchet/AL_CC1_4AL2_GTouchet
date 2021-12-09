@@ -4,6 +4,7 @@ import esgi.al.cc1.domain.models.Project;
 import esgi.al.cc1.domain.valueObjects.Date;
 import esgi.al.cc1.domain.valueObjects.Id;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -36,7 +37,7 @@ public class ProjectBuilder implements Builder<Project>
                 this.id,
                 Objects.requireNonNull(this.contractorId),
                 this.department,
-                Objects.requireNonNull(this.workersId),
+                Objects.requireNonNullElse(this.workersId, new ArrayList<>()),
                 this.creationDate
         );
     }
