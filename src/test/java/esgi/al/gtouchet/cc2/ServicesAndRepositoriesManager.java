@@ -10,13 +10,17 @@ import esgi.al.gtouchet.cc2.domain.models.Project;
 import esgi.al.gtouchet.cc2.domain.models.Worker;
 import esgi.al.gtouchet.cc2.domain.validators.PasswordValidator;
 import esgi.al.gtouchet.cc2.infrastructure.apis.PaymentMethodValidatorApi;
+import esgi.al.gtouchet.cc2.infrastructure.repositories.MemoryRepositoryImpl;
 
+/**
+ * For test purposes only
+ */
 public class ServicesAndRepositoriesManager
 {
-    public final InMemoryRepository<Contractor> contractorIMR;
-    public final InMemoryRepository<Payment> paymentIMR;
-    public final InMemoryRepository<Project> projectIMR;
-    public final InMemoryRepository<Worker> workerIMR;
+    public final MemoryRepositoryImpl<Contractor> contractorIMR;
+    public final MemoryRepositoryImpl<Payment> paymentIMR;
+    public final MemoryRepositoryImpl<Project> projectIMR;
+    public final MemoryRepositoryImpl<Worker> workerIMR;
 
     public final PaymentMethodValidatorApi paymentMethodValidatorApi;
     public final PasswordValidator passwordValidator;
@@ -28,10 +32,10 @@ public class ServicesAndRepositoriesManager
 
     public ServicesAndRepositoriesManager()
     {
-        this.contractorIMR = new InMemoryRepository<>();
-        this.paymentIMR = new InMemoryRepository<>();
-        this.projectIMR = new InMemoryRepository<>();
-        this.workerIMR = new InMemoryRepository<>();
+        this.contractorIMR = new MemoryRepositoryImpl<>();
+        this.paymentIMR = new MemoryRepositoryImpl<>();
+        this.projectIMR = new MemoryRepositoryImpl<>();
+        this.workerIMR = new MemoryRepositoryImpl<>();
 
         this.paymentMethodValidatorApi = new PaymentMethodValidatorApi();
         this.passwordValidator = new PasswordValidator();

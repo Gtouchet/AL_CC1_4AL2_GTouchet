@@ -1,19 +1,17 @@
-package esgi.al.gtouchet.cc2;
+package esgi.al.gtouchet.cc2.infrastructure.repositories;
 
 import esgi.al.gtouchet.cc2.domain.models.Entity;
 import esgi.al.gtouchet.cc2.domain.valueObjects.Id;
-import esgi.al.gtouchet.cc2.infrastructure.repositories.EntityNotFoundException;
-import esgi.al.gtouchet.cc2.infrastructure.repositories.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
-public class InMemoryRepository<T extends Entity> implements Repository<T>
+public class MemoryRepositoryImpl<T extends Entity> implements Repository<T>
 {
-    private final List<T> entities;
+    protected List<T> entities;
 
-    public InMemoryRepository()
+    public MemoryRepositoryImpl()
     {
         this.entities = new ArrayList<>();
     }
