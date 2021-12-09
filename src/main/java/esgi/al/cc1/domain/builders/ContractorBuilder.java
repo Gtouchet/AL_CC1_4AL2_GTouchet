@@ -26,34 +26,30 @@ public class ContractorBuilder implements Builder<Contractor> // todo implements
     }
 
     @Override
-    public Contractor build()
+    public Contractor build() throws NullPointerException
     {
         return Contractor.of(
-                this.id,
-                this.login,
+                Objects.requireNonNull(this.id),
+                Objects.requireNonNull(this.login),
                 Objects.requireNonNull(this.password),
                 Objects.requireNonNull(this.name),
                 Objects.requireNonNull(this.paymentMethod),
                 this.isPaymentValidated,
-                this.creationDate
+                Objects.requireNonNull(this.creationDate)
         );
     }
 
     public static ContractorBuilder init(Id id, String login, Date creationDate)
     {
-        return new ContractorBuilder(
-                Objects.requireNonNull(id),
-                Objects.requireNonNull(login),
-                Objects.requireNonNull(creationDate)
-        );
+        return new ContractorBuilder(id, login, creationDate);
     }
 
     public static ContractorBuilder init(Contractor contractor)
     {
         ContractorBuilder builder = new ContractorBuilder(
-                Objects.requireNonNull(contractor.getId()),
-                Objects.requireNonNull(contractor.getLogin()),
-                Objects.requireNonNull(contractor.getCreationDate())
+                contractor.getId(),
+                contractor.getLogin(),
+                contractor.getCreationDate()
         );
 
         builder.password = contractor.getPassword();

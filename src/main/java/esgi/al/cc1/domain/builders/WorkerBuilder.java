@@ -26,34 +26,30 @@ public class WorkerBuilder implements Builder<Worker>
     }
 
     @Override
-    public Worker build()
+    public Worker build() throws NullPointerException
     {
         return Worker.of(
-                this.id,
-                this.login,
+                Objects.requireNonNull(this.id),
+                Objects.requireNonNull(this.login),
                 Objects.requireNonNull(this.password),
                 Objects.requireNonNull(this.name),
                 Objects.requireNonNull(this.service),
                 this.department,
-                this.creationDate
+                Objects.requireNonNull(this.creationDate)
         );
     }
 
     public static WorkerBuilder init(Id id, String login, Date creationDate)
     {
-        return new WorkerBuilder(
-                Objects.requireNonNull(id),
-                Objects.requireNonNull(login),
-                Objects.requireNonNull(creationDate)
-        );
+        return new WorkerBuilder(id, login, creationDate);
     }
 
     public static WorkerBuilder init(Worker worker)
     {
         WorkerBuilder builder = new WorkerBuilder(
-                Objects.requireNonNull(worker.getId()),
-                Objects.requireNonNull(worker.getLogin()),
-                Objects.requireNonNull(worker.getCreationDate())
+                worker.getId(),
+                worker.getLogin(),
+                worker.getCreationDate()
         );
 
         builder.password = worker.getPassword();

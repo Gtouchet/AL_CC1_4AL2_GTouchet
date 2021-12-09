@@ -53,12 +53,20 @@ public class WorkerServiceImpl implements WorkerService
             return null;
         }
 
-        Worker worker = WorkerBuilder.init(Id.generate(), login, Date.now())
-                .setPassword(password)
-                .setName(name)
-                .setService(service)
-                .setDepartment(department)
-                .build();
+        Worker worker;
+
+        try {
+            worker = WorkerBuilder.init(Id.generate(), login, Date.now())
+                    .setPassword(password)
+                    .setName(name)
+                    .setService(service)
+                    .setDepartment(department)
+                    .build();
+
+        } catch (NullPointerException e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
 
         this.workerRepository.create(worker);
         return worker.getId();
@@ -92,16 +100,23 @@ public class WorkerServiceImpl implements WorkerService
     @Override
     public void update(Id id, Password password, String name, Service service, int department)
     {
+        Worker worker;
+
         try {
-            Worker worker = this.workerRepository.read(id);
+            worker = this.workerRepository.read(id);
+        } catch (EntityNotFoundException e) {
+            System.out.println(e.getMessage());
+            return;
+        }
 
-            try {
-                this.passwordValidator.validate(password);
-            } catch (PasswordFormatException e) {
-                System.out.println(e.getMessage());
-                return;
-            }
+        try {
+            this.passwordValidator.validate(password);
+        } catch (PasswordFormatException e) {
+            System.out.println(e.getMessage());
+            return;
+        }
 
+        try {
             worker = WorkerBuilder.init(worker)
                     .setPassword(password)
                     .setName(name)
@@ -109,8 +124,13 @@ public class WorkerServiceImpl implements WorkerService
                     .setDepartment(department)
                     .build();
 
-            this.workerRepository.update(id, worker);
+        } catch (NullPointerException e) {
+            System.out.println(e.getMessage());
+            return;
+        }
 
+        try {
+            this.workerRepository.update(id, worker);
         } catch (EntityNotFoundException e) {
             System.out.println(e.getMessage());
         }
@@ -142,7 +162,7 @@ public class WorkerServiceImpl implements WorkerService
 
                         this.projectRepository.update(project.getId(), project);
 
-                    } catch (EntityNotFoundException e) {
+                    } catch (EntityNotFoundException | NullPointerException e) {
                         System.out.println(e.getMessage());
                     }
                 });

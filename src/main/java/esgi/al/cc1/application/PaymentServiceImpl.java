@@ -32,19 +32,20 @@ public class PaymentServiceImpl implements PaymentService
     public Id create(Id contractorId, Id workerId, double amount, String reason)
     {
         Contractor contractor;
+
         try {
             contractor = this.contractorRepository.read(contractorId);
-
-            if (!contractor.isPaymentValidated())
-            {
-                System.out.println(
-                        "Error: Contractor ID [" + contractorId + "] payment method is not validated yet, " +
-                        "please validate it before trying to make a payment."
-                );
-                return null;
-            }
         } catch (EntityNotFoundException e) {
             System.out.println(e.getMessage());
+            return null;
+        }
+
+        if (!contractor.isPaymentValidated())
+        {
+            System.out.println(
+                    "Error: Contractor ID [" + contractorId + "] payment method is not validated yet, " +
+                            "please validate it before trying to make a payment."
+            );
             return null;
         }
 
@@ -54,13 +55,21 @@ public class PaymentServiceImpl implements PaymentService
             return null;
         }
 
-        Payment payment = PaymentBuilder.init(Id.generate(), Date.now())
-                .setContractorId(contractorId)
-                .setWorkerId(workerId)
-                .setPaymentMethod(contractor.getPaymentMethod())
-                .setAmount(amount)
-                .setReason(reason)
-                .build();
+        Payment payment;
+
+        try {
+            payment = PaymentBuilder.init(Id.generate(), Date.now())
+                    .setContractorId(contractorId)
+                    .setWorkerId(workerId)
+                    .setPaymentMethod(contractor.getPaymentMethod())
+                    .setAmount(amount)
+                    .setReason(reason)
+                    .build();
+
+        } catch (NullPointerException e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
 
         this.paymentRepository.create(payment);
         return payment.getId();

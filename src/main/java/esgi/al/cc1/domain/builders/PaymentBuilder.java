@@ -24,25 +24,22 @@ public class PaymentBuilder implements Builder<Payment>
     }
 
     @Override
-    public Payment build()
+    public Payment build() throws NullPointerException
     {
         return Payment.of(
-                this.id,
+                Objects.requireNonNull(this.id),
                 Objects.requireNonNull(this.contractorId),
                 Objects.requireNonNull(this.workerId),
                 Objects.requireNonNull(this.paymentMethod),
                 this.amount,
                 Objects.requireNonNull(this.reason),
-                this.creationDate
+                Objects.requireNonNull(this.creationDate)
         );
     }
 
     public static PaymentBuilder init(Id id, Date creationDate)
     {
-        return new PaymentBuilder(
-                Objects.requireNonNull(id),
-                Objects.requireNonNull(creationDate)
-        );
+        return new PaymentBuilder(id, creationDate);
     }
 
     public PaymentBuilder setContractorId(Id contractorId)

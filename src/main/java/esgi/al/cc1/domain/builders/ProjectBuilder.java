@@ -23,30 +23,27 @@ public class ProjectBuilder implements Builder<Project>
     }
 
     @Override
-    public Project build()
+    public Project build() throws NullPointerException
     {
         return Project.of(
-                this.id,
+                Objects.requireNonNull(this.id),
                 Objects.requireNonNull(this.contractorId),
                 this.department,
                 Objects.requireNonNullElse(this.workersId, new ArrayList<>()),
-                this.creationDate
+                Objects.requireNonNull(this.creationDate)
         );
     }
 
     public static ProjectBuilder init(Id id, Date creationDate)
     {
-        return new ProjectBuilder(
-                Objects.requireNonNull(id),
-                Objects.requireNonNull(creationDate)
-        );
+        return new ProjectBuilder(id, creationDate);
     }
 
     public static ProjectBuilder init(Project project)
     {
         ProjectBuilder builder = new ProjectBuilder(
-                Objects.requireNonNull(project.getId()),
-                Objects.requireNonNull(project.getCreationDate())
+                project.getId(),
+                project.getCreationDate()
         );
 
         builder.contractorId = project.getContractorId();

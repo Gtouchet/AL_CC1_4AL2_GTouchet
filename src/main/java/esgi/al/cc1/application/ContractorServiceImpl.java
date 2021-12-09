@@ -52,11 +52,19 @@ public class ContractorServiceImpl implements ContractorService
             return null;
         }
 
-        Contractor contractor = ContractorBuilder.init(Id.generate(), login, Date.now())
-                .setPassword(password)
-                .setName(name)
-                .setPaymentMethod(paymentMethod)
-                .build();
+        Contractor contractor;
+
+        try {
+            contractor = ContractorBuilder.init(Id.generate(), login, Date.now())
+                    .setPassword(password)
+                    .setName(name)
+                    .setPaymentMethod(paymentMethod)
+                    .build();
+
+        } catch (NullPointerException e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
 
         this.contractorRepository.create(contractor);
         return contractor.getId();
@@ -90,24 +98,36 @@ public class ContractorServiceImpl implements ContractorService
     @Override
     public void update(Id id, Password password, String name, PaymentMethod paymentMethod)
     {
+        Contractor contractor;
+
         try {
-            Contractor contractor = this.contractorRepository.read(id);
+            contractor = this.contractorRepository.read(id);
+        } catch (EntityNotFoundException e) {
+            System.out.println(e.getMessage());
+            return;
+        }
 
-            try {
-                this.passwordValidator.validate(password);
-            } catch (PasswordFormatException e) {
-                System.out.println(e.getMessage());
-                return;
-            }
+        try {
+            this.passwordValidator.validate(password);
+        } catch (PasswordFormatException e) {
+            System.out.println(e.getMessage());
+            return;
+        }
 
+        try {
             contractor = ContractorBuilder.init(contractor)
                     .setPassword(password)
                     .setName(name)
                     .setPaymentMethod(paymentMethod)
                     .build();
 
-            this.contractorRepository.update(id, contractor);
+        } catch (NullPointerException e) {
+            System.out.println(e.getMessage());
+            return;
+        }
 
+        try {
+            this.contractorRepository.update(id, contractor);
         } catch (EntityNotFoundException e) {
             System.out.println(e.getMessage());
         }
@@ -138,28 +158,40 @@ public class ContractorServiceImpl implements ContractorService
     @Override
     public void validatePayment(Id id)
     {
+        Contractor contractor;
+
         try {
-            Contractor contractor = this.contractorRepository.read(id);
+            contractor = this.contractorRepository.read(id);
+        } catch (EntityNotFoundException e) {
+            System.out.println(e.getMessage());
+            return;
+        }
 
-            if (contractor.isPaymentValidated())
-            {
-                System.out.println("Error: payment method already validated for Contractor ID [" + id + "]");
-                return;
-            }
+        if (contractor.isPaymentValidated())
+        {
+            System.out.println("Error: payment method already validated for Contractor ID [" + id + "]");
+            return;
+        }
 
-            try {
-                this.paymentMethodValidatorApi.validate(contractor.getPaymentMethod());
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-                return;
-            }
+        try {
+            this.paymentMethodValidatorApi.validate(contractor.getPaymentMethod());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return;
+        }
 
+        try {
             contractor = ContractorBuilder.init(contractor)
                     .setIsPaymentValidated(true)
                     .build();
 
-            this.contractorRepository.update(id, contractor);
+        } catch (NullPointerException e) {
+            System.out.println(e.getMessage());
+            return;
+        }
 
+        try {
+            this.contractorRepository.update(id, contractor);
         } catch (EntityNotFoundException e) {
             System.out.println(e.getMessage());
         }
