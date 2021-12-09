@@ -23,14 +23,6 @@ public class PaymentBuilder implements Builder<Payment>
         this.creationDate = creationDate;
     }
 
-    public static PaymentBuilder init(Id id, Date creationDate)
-    {
-        return new PaymentBuilder(
-                Objects.requireNonNull(id),
-                Objects.requireNonNull(creationDate)
-        );
-    }
-
     @Override
     public Payment build()
     {
@@ -42,6 +34,14 @@ public class PaymentBuilder implements Builder<Payment>
                 this.amount,
                 Objects.requireNonNull(this.reason),
                 this.creationDate
+        );
+    }
+
+    public static PaymentBuilder init(Id id, Date creationDate)
+    {
+        return new PaymentBuilder(
+                Objects.requireNonNull(id),
+                Objects.requireNonNull(creationDate)
         );
     }
 

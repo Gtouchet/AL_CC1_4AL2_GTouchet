@@ -9,7 +9,6 @@ import esgi.al.cc1.domain.valueObjects.Id;
 import esgi.al.cc1.infrastructure.repositories.EntityNotFoundException;
 import esgi.al.cc1.infrastructure.repositories.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,7 +40,6 @@ public class ProjectServiceImpl implements ProjectService
         Project project = ProjectBuilder.init(Id.generate(), Date.now())
                 .setContractorId(contractorId)
                 .setDepartment(department)
-                .setWorkersId(new ArrayList<>())
                 .build();
 
         this.projectRepository.create(project);
@@ -85,10 +83,9 @@ public class ProjectServiceImpl implements ProjectService
         try {
             Project project = this.projectRepository.read(id);
 
-            project = ProjectBuilder.init(project.getId(), project.getCreationDate())
+            project = ProjectBuilder.init(project)
                     .setContractorId(contractorId)
                     .setDepartment(department)
-                    .setWorkersId(new ArrayList<>())
                     .build();
 
             this.projectRepository.update(id, project);
@@ -141,9 +138,7 @@ public class ProjectServiceImpl implements ProjectService
 
             workersId.add(workerId);
 
-            project = ProjectBuilder.init(project.getId(), project.getCreationDate())
-                    .setContractorId(project.getContractorId())
-                    .setDepartment(project.getDepartment())
+            project = ProjectBuilder.init(project)
                     .setWorkersId(workersId)
                     .build();
 
@@ -173,9 +168,7 @@ public class ProjectServiceImpl implements ProjectService
                 return;
             }
 
-            project = ProjectBuilder.init(project.getId(), project.getCreationDate())
-                    .setContractorId(project.getContractorId())
-                    .setDepartment(project.getDepartment())
+            project = ProjectBuilder.init(project)
                     .setWorkersId(workersId)
                     .build();
 

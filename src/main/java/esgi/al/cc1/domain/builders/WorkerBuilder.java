@@ -25,15 +25,6 @@ public class WorkerBuilder implements Builder<Worker>
         this.creationDate = creationDate;
     }
 
-    public static WorkerBuilder init(Id id, String login, Date creationDate)
-    {
-        return new WorkerBuilder(
-                Objects.requireNonNull(id),
-                Objects.requireNonNull(login),
-                Objects.requireNonNull(creationDate)
-        );
-    }
-
     @Override
     public Worker build()
     {
@@ -46,6 +37,31 @@ public class WorkerBuilder implements Builder<Worker>
                 this.department,
                 this.creationDate
         );
+    }
+
+    public static WorkerBuilder init(Id id, String login, Date creationDate)
+    {
+        return new WorkerBuilder(
+                Objects.requireNonNull(id),
+                Objects.requireNonNull(login),
+                Objects.requireNonNull(creationDate)
+        );
+    }
+
+    public static WorkerBuilder init(Worker worker)
+    {
+        WorkerBuilder builder = new WorkerBuilder(
+                Objects.requireNonNull(worker.getId()),
+                Objects.requireNonNull(worker.getLogin()),
+                Objects.requireNonNull(worker.getCreationDate())
+        );
+
+        builder.password = worker.getPassword();
+        builder.name = worker.getName();
+        builder.service = worker.getService();
+        builder.department = worker.getDepartment();
+
+        return builder;
     }
 
     public WorkerBuilder setPassword(Password password)

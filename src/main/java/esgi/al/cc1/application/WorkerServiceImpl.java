@@ -102,7 +102,7 @@ public class WorkerServiceImpl implements WorkerService
                 return;
             }
 
-            worker = WorkerBuilder.init(worker.getId(), worker.getLogin(), worker.getCreationDate())
+            worker = WorkerBuilder.init(worker)
                     .setPassword(password)
                     .setName(name)
                     .setService(service)
@@ -136,9 +136,7 @@ public class WorkerServiceImpl implements WorkerService
                         List<Id> workersId = project.getWorkersId();
                         workersId.remove(id);
 
-                        project = ProjectBuilder.init(project.getId(), project.getCreationDate())
-                                .setContractorId(project.getContractorId())
-                                .setDepartment(project.getDepartment())
+                        project = ProjectBuilder.init(project)
                                 .setWorkersId(workersId)
                                 .build();
 

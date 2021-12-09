@@ -22,14 +22,6 @@ public class ProjectBuilder implements Builder<Project>
         this.creationDate = creationDate;
     }
 
-    public static ProjectBuilder init(Id id, Date creationDate)
-    {
-        return new ProjectBuilder(
-                Objects.requireNonNull(id),
-                Objects.requireNonNull(creationDate)
-        );
-    }
-
     @Override
     public Project build()
     {
@@ -40,6 +32,28 @@ public class ProjectBuilder implements Builder<Project>
                 Objects.requireNonNullElse(this.workersId, new ArrayList<>()),
                 this.creationDate
         );
+    }
+
+    public static ProjectBuilder init(Id id, Date creationDate)
+    {
+        return new ProjectBuilder(
+                Objects.requireNonNull(id),
+                Objects.requireNonNull(creationDate)
+        );
+    }
+
+    public static ProjectBuilder init(Project project)
+    {
+        ProjectBuilder builder = new ProjectBuilder(
+                Objects.requireNonNull(project.getId()),
+                Objects.requireNonNull(project.getCreationDate())
+        );
+
+        builder.contractorId = project.getContractorId();
+        builder.department = project.getDepartment();
+        builder.workersId = project.getWorkersId();
+
+        return builder;
     }
 
     public ProjectBuilder setContractorId(Id contractorId)

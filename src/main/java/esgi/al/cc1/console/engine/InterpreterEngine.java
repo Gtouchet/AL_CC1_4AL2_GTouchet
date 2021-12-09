@@ -13,21 +13,12 @@ public class InterpreterEngine extends Thread
     {
         this.servicesFactory = servicesFactory;
         this.scanner = new Scanner(System.in);
-
-        this.displayCommandsList();
-    }
-
-    private void displayCommandsList()
-    {
-        System.out.println("---Available commands---");
-        Command.getCommands().forEach(command -> {
-            if (command.usage != null) System.out.println(command.usage);
-        });
-        System.out.println("---Command input---");
     }
 
     public void run()
     {
+        System.out.println("\nType 'help' to see the list of commands\n");
+
         String command = "";
         while (!command.trim().split(" ")[0].equalsIgnoreCase(Command.quit.keyword))
         {
@@ -35,6 +26,7 @@ public class InterpreterEngine extends Thread
             command = this.scanner.nextLine();
             new CommandProcessor(this.servicesFactory).process(command);
         }
+
         System.out.println("See ya !");
     }
 }

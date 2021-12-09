@@ -100,7 +100,7 @@ public class ContractorServiceImpl implements ContractorService
                 return;
             }
 
-            contractor = ContractorBuilder.init(contractor.getId(), contractor.getLogin(), contractor.getCreationDate())
+            contractor = ContractorBuilder.init(contractor)
                     .setPassword(password)
                     .setName(name)
                     .setPaymentMethod(paymentMethod)
@@ -154,10 +154,7 @@ public class ContractorServiceImpl implements ContractorService
                 return;
             }
 
-            contractor = ContractorBuilder.init(contractor.getId(), contractor.getLogin(), contractor.getCreationDate())
-                    .setPassword(contractor.getPassword())
-                    .setName(contractor.getName())
-                    .setPaymentMethod(contractor.getPaymentMethod())
+            contractor = ContractorBuilder.init(contractor)
                     .setIsPaymentValidated(true)
                     .build();
 

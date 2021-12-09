@@ -2,6 +2,7 @@ package esgi.al.cc1;
 
 import esgi.al.cc1.application.ServicesFactory;
 import esgi.al.cc1.console.engine.InterpreterEngine;
+import esgi.al.cc1.web.ApiEngine;
 
 public class App
 {
@@ -11,6 +12,7 @@ public class App
         new InterpreterEngine(new ServicesFactory()).start();
 
         // Starts the API thread
-        // Todo: implements
+        // Todo: implements (spring boot ?)
+        new ApiEngine().start();
     }
 }

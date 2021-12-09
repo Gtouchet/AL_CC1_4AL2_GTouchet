@@ -10,11 +10,9 @@ public class HelpHandler implements CommandHandler
     {
         if (params.length == Command.help.parameters)
         {
-            System.out.println("---Available commands---");
             Command.getCommands().forEach(command -> {
                 if (command.usage != null) System.out.println(command.usage);
             });
-            System.out.println("---Command input---");
         }
         else
         {

@@ -25,15 +25,6 @@ public class ContractorBuilder implements Builder<Contractor> // todo implements
         this.creationDate = creationDate;
     }
 
-    public static ContractorBuilder init(Id id, String login, Date creationDate)
-    {
-        return new ContractorBuilder(
-                Objects.requireNonNull(id),
-                Objects.requireNonNull(login),
-                Objects.requireNonNull(creationDate)
-        );
-    }
-
     @Override
     public Contractor build()
     {
@@ -46,6 +37,31 @@ public class ContractorBuilder implements Builder<Contractor> // todo implements
                 this.isPaymentValidated,
                 this.creationDate
         );
+    }
+
+    public static ContractorBuilder init(Id id, String login, Date creationDate)
+    {
+        return new ContractorBuilder(
+                Objects.requireNonNull(id),
+                Objects.requireNonNull(login),
+                Objects.requireNonNull(creationDate)
+        );
+    }
+
+    public static ContractorBuilder init(Contractor contractor)
+    {
+        ContractorBuilder builder = new ContractorBuilder(
+                Objects.requireNonNull(contractor.getId()),
+                Objects.requireNonNull(contractor.getLogin()),
+                Objects.requireNonNull(contractor.getCreationDate())
+        );
+
+        builder.password = contractor.getPassword();
+        builder.name = contractor.getName();
+        builder.paymentMethod = contractor.getPaymentMethod();
+        builder.isPaymentValidated = contractor.isPaymentValidated();
+
+        return builder;
     }
 
     public ContractorBuilder setPassword(Password password)
