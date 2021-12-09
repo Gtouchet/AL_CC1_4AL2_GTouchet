@@ -147,25 +147,21 @@ public class WorkerServiceImpl implements WorkerService
         }
 
         // Remove the deleted worker from all projects
-        this.projectRepository.read()
+        List<Project> projectsContainingWorker = this.projectRepository.read()
                 .filter(project -> project.getWorkersId().contains(id))
-                .collect(Collectors.toList())
-                .forEach(project -> {
-                    project.getWorkersId().remove(id);
-                    try {
-                        List<Id> workersId = project.getWorkersId();
-                        workersId.remove(id);
+                .collect(Collectors.toList());
 
-                        project = ProjectBuilder.init(project)
-                                .setWorkersId(workersId)
-                                .build();
+        projectsContainingWorker.forEach(project -> project.getWorkersId().remove(id));
 
-                        this.projectRepository.update(project.getId(), project);
+        projectsContainingWorker.forEach(project -> {
+            try {
+                project = ProjectBuilder.init(project).build();
+                this.projectRepository.update(project.getId(), project);
 
-                    } catch (EntityNotFoundException | NullPointerException e) {
-                        System.out.println(e.getMessage());
-                    }
-                });
+            } catch (EntityNotFoundException | NullPointerException e) {
+                System.out.println(e.getMessage());
+            }
+        });
     }
 
     @Override
