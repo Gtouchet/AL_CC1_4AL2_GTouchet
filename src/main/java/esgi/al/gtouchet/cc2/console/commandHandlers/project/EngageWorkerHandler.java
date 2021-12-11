@@ -18,7 +18,7 @@ public class EngageWorkerHandler implements CommandHandler
     @Override
     public void handle(String[] params) throws WrongNumberOfArgumentException
     {
-        if (params.length == Command.engageWorker.parameters)
+        if (params.length == Command.ENGAGE_WORKER.parameters)
         {
             this.projectService.engageWorker(
                     Id.fromString(params[1].toLowerCase()),
@@ -27,7 +27,7 @@ public class EngageWorkerHandler implements CommandHandler
         }
         else
         {
-            throw new WrongNumberOfArgumentException(Command.engageWorker);
+            throw new WrongNumberOfArgumentException(Command.ENGAGE_WORKER);
         }
     }
 }

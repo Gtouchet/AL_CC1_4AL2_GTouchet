@@ -18,7 +18,7 @@ public class ValidatePaymentHandler implements CommandHandler
     @Override
     public void handle(String[] params) throws WrongNumberOfArgumentException
     {
-        if (params.length == Command.validatePayment.parameters)
+        if (params.length == Command.VALIDATE_PAYMENT.parameters)
         {
             this.contractorService.validatePayment(
                     Id.fromString(params[1].toLowerCase())
@@ -26,7 +26,7 @@ public class ValidatePaymentHandler implements CommandHandler
         }
         else
         {
-            throw new WrongNumberOfArgumentException(Command.validatePayment);
+            throw new WrongNumberOfArgumentException(Command.VALIDATE_PAYMENT);
         }
     }
 }

@@ -18,11 +18,11 @@ public class ReadContractorHandler implements CommandHandler
     @Override
     public void handle(String[] params) throws WrongNumberOfArgumentException
     {
-        if (params.length == Command.readContractor.parameters)
+        if (params.length == Command.READ_CONTRACTOR.parameters)
         {
             this.contractorService.read();
         }
-        else if (params.length == Command.readContractor.parameters + 1) // Accepts an ID as an overloaded parameter
+        else if (params.length == Command.READ_CONTRACTOR.parameters + 1) // Accepts an ID as an overloaded parameter
         {
             this.contractorService.read(
                     Id.fromString(params[1].toLowerCase())
@@ -30,7 +30,7 @@ public class ReadContractorHandler implements CommandHandler
         }
         else
         {
-            throw new WrongNumberOfArgumentException(Command.readContractor);
+            throw new WrongNumberOfArgumentException(Command.READ_CONTRACTOR);
         }
     }
 }

@@ -18,11 +18,11 @@ public class ReadProjectHandler implements CommandHandler
     @Override
     public void handle(String[] params) throws WrongNumberOfArgumentException
     {
-        if (params.length == Command.readProject.parameters)
+        if (params.length == Command.READ_PROJECT.parameters)
         {
             this.projectService.read();
         }
-        else if (params.length == Command.readProject.parameters + 1) // Accepts an ID as an overloaded parameter
+        else if (params.length == Command.READ_PROJECT.parameters + 1) // Accepts an ID as an overloaded parameter
         {
             this.projectService.read(
                     Id.fromString(params[1].toLowerCase())
@@ -30,7 +30,7 @@ public class ReadProjectHandler implements CommandHandler
         }
         else
         {
-            throw new WrongNumberOfArgumentException(Command.readProject);
+            throw new WrongNumberOfArgumentException(Command.READ_PROJECT);
         }
     }
 }

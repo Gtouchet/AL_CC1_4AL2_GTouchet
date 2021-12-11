@@ -20,7 +20,7 @@ public class InterpreterEngine extends Thread
         System.out.println("\nType 'help' to see the list of commands\n");
 
         String command = "";
-        while (!command.trim().split(" ")[0].equalsIgnoreCase(Command.quit.keyword))
+        while (!command.trim().split(" ")[0].equalsIgnoreCase(Command.QUIT.keyword))
         {
             System.out.print("> ");
             command = this.scanner.nextLine();

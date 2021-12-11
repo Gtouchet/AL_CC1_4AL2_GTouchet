@@ -19,7 +19,7 @@ public class CreateContractorHandler implements CommandHandler
     @Override
     public void handle(String[] params) throws WrongNumberOfArgumentException
     {
-        if (params.length == Command.createContractor.parameters)
+        if (params.length == Command.CREATE_CONTRACTOR.parameters)
         {
             try {
                 this.contractorService.create(
@@ -34,7 +34,7 @@ public class CreateContractorHandler implements CommandHandler
         }
         else
         {
-            throw new WrongNumberOfArgumentException(Command.createContractor);
+            throw new WrongNumberOfArgumentException(Command.CREATE_CONTRACTOR);
         }
     }
 }

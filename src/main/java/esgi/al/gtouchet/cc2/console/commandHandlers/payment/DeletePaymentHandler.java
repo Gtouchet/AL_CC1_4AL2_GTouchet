@@ -18,7 +18,7 @@ public class DeletePaymentHandler implements CommandHandler
     @Override
     public void handle(String[] params) throws WrongNumberOfArgumentException
     {
-        if (params.length == Command.deletePayment.parameters)
+        if (params.length == Command.DELETE_PAYMENT.parameters)
         {
             this.paymentService.delete(
                     Id.fromString(params[1].toLowerCase())
@@ -26,7 +26,7 @@ public class DeletePaymentHandler implements CommandHandler
         }
         else
         {
-            throw new WrongNumberOfArgumentException(Command.deletePayment);
+            throw new WrongNumberOfArgumentException(Command.DELETE_PAYMENT);
         }
     }
 }

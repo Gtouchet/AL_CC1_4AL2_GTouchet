@@ -18,7 +18,7 @@ public class CreateProjectHandler implements CommandHandler
     @Override
     public void handle(String[] params) throws WrongNumberOfArgumentException
     {
-        if (params.length == Command.createProject.parameters)
+        if (params.length == Command.CREATE_PROJECT.parameters)
         {
             try {
                 this.projectService.create(
@@ -31,7 +31,7 @@ public class CreateProjectHandler implements CommandHandler
         }
         else
         {
-            throw new WrongNumberOfArgumentException(Command.createProject);
+            throw new WrongNumberOfArgumentException(Command.CREATE_PROJECT);
         }
     }
 }

@@ -48,28 +48,22 @@ public class WorkerServiceImpl implements WorkerService
 
         try {
             this.passwordValidator.validate(password);
-        } catch (PasswordFormatException e) {
-            System.out.println(e.getMessage());
-            return null;
-        }
 
-        Worker worker;
-
-        try {
-            worker = WorkerBuilder.init(Id.generate(), login, Date.now())
+            Worker worker = WorkerBuilder.init(Id.generate(), login, Date.now())
                     .setPassword(password)
                     .setName(name)
                     .setService(service)
                     .setDepartment(department)
                     .build();
 
-        } catch (NullPointerException e) {
+            this.workerRepository.create(worker);
+
+            return worker.getId();
+
+        } catch (PasswordFormatException | NullPointerException e) {
             System.out.println(e.getMessage());
             return null;
         }
-
-        this.workerRepository.create(worker);
-        return worker.getId();
     }
 
     @Override
@@ -100,23 +94,11 @@ public class WorkerServiceImpl implements WorkerService
     @Override
     public void update(Id id, Password password, String name, Service service, int department)
     {
-        Worker worker;
-
         try {
-            worker = this.workerRepository.read(id);
-        } catch (EntityNotFoundException e) {
-            System.out.println(e.getMessage());
-            return;
-        }
+            Worker worker = this.workerRepository.read(id);
 
-        try {
             this.passwordValidator.validate(password);
-        } catch (PasswordFormatException e) {
-            System.out.println(e.getMessage());
-            return;
-        }
 
-        try {
             worker = WorkerBuilder.init(worker)
                     .setPassword(password)
                     .setName(name)
@@ -124,14 +106,9 @@ public class WorkerServiceImpl implements WorkerService
                     .setDepartment(department)
                     .build();
 
-        } catch (NullPointerException e) {
-            System.out.println(e.getMessage());
-            return;
-        }
-
-        try {
             this.workerRepository.update(id, worker);
-        } catch (EntityNotFoundException e) {
+
+        } catch (EntityNotFoundException | PasswordFormatException | NullPointerException e) {
             System.out.println(e.getMessage());
         }
     }

@@ -20,7 +20,7 @@ public class UpdateWorkerHandler implements CommandHandler
     @Override
     public void handle(String[] params) throws WrongNumberOfArgumentException
     {
-        if (params.length == Command.updateWorker.parameters)
+        if (params.length == Command.UPDATE_WORKER.parameters)
         {
             try {
                 this.workerService.update(
@@ -38,7 +38,7 @@ public class UpdateWorkerHandler implements CommandHandler
         }
         else
         {
-            throw new WrongNumberOfArgumentException(Command.updateWorker);
+            throw new WrongNumberOfArgumentException(Command.UPDATE_WORKER);
         }
     }
 }

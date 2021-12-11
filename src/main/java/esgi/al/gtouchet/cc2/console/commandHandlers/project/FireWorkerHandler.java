@@ -18,7 +18,7 @@ public class FireWorkerHandler implements CommandHandler
     @Override
     public void handle(String[] params) throws WrongNumberOfArgumentException
     {
-        if (params.length == Command.fireWorker.parameters)
+        if (params.length == Command.FIRE_WORKER.parameters)
         {
             this.projectService.fireWorker(
                     Id.fromString(params[1].toLowerCase()),
@@ -27,7 +27,7 @@ public class FireWorkerHandler implements CommandHandler
         }
         else
         {
-            throw new WrongNumberOfArgumentException(Command.fireWorker);
+            throw new WrongNumberOfArgumentException(Command.FIRE_WORKER);
         }
     }
 }

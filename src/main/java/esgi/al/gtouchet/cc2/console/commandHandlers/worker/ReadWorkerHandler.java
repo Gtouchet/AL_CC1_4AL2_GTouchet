@@ -18,11 +18,11 @@ public class ReadWorkerHandler implements CommandHandler
     @Override
     public void handle(String[] params) throws WrongNumberOfArgumentException
     {
-        if (params.length == Command.readWorker.parameters)
+        if (params.length == Command.READ_WORKER.parameters)
         {
             this.workerService.read();
         }
-        else if (params.length == Command.readWorker.parameters + 1) // Accepts an ID as an overloaded parameter
+        else if (params.length == Command.READ_WORKER.parameters + 1) // Accepts an ID as an overloaded parameter
         {
             this.workerService.read(
                     Id.fromString(params[1].toLowerCase())
@@ -30,7 +30,7 @@ public class ReadWorkerHandler implements CommandHandler
         }
         else
         {
-            throw new WrongNumberOfArgumentException(Command.readWorker);
+            throw new WrongNumberOfArgumentException(Command.READ_WORKER);
         }
     }
 }

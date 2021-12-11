@@ -8,7 +8,7 @@ import esgi.al.gtouchet.cc2.domain.valueObjects.Password;
 
 import java.util.Objects;
 
-public class ContractorBuilder implements Builder<Contractor> // todo implements
+public class ContractorBuilder implements Builder<Contractor>
 {
     private final Id id;
     private final String login;

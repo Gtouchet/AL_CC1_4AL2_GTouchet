@@ -18,7 +18,7 @@ public class CreatePaymentHandler implements CommandHandler
     @Override
     public void handle(String[] params) throws WrongNumberOfArgumentException
     {
-        if (params.length == Command.createPayment.parameters)
+        if (params.length == Command.CREATE_PAYMENT.parameters)
         {
             try {
                 this.paymentService.create(
@@ -33,7 +33,7 @@ public class CreatePaymentHandler implements CommandHandler
         }
         else
         {
-            throw new WrongNumberOfArgumentException(Command.createPayment);
+            throw new WrongNumberOfArgumentException(Command.CREATE_PAYMENT);
         }
     }
 }

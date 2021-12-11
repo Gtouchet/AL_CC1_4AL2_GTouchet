@@ -37,21 +37,20 @@ public class ProjectServiceImpl implements ProjectService
             return null;
         }
 
-        Project project;
-
         try {
-            project = ProjectBuilder.init(Id.generate(), Date.now())
+            Project project = ProjectBuilder.init(Id.generate(), Date.now())
                     .setContractorId(contractorId)
                     .setDepartment(department)
                     .build();
+
+            this.projectRepository.create(project);
+
+            return project.getId();
 
         } catch (NullPointerException e) {
             System.out.println(e.getMessage());
             return null;
         }
-
-        this.projectRepository.create(project);
-        return project.getId();
     }
 
     @Override
@@ -82,35 +81,23 @@ public class ProjectServiceImpl implements ProjectService
     @Override
     public void update(Id id, Id contractorId, int department)
     {
-        Project project;
-
         try {
-            project = this.projectRepository.read(id);
-        } catch (EntityNotFoundException e) {
-            System.out.println(e.getMessage());
-            return;
-        }
+            Project project = this.projectRepository.read(id);
 
-        if(!this.contractorRepository.exists(contractorId))
-        {
-            System.out.println("Error: no Contractor registered with ID [" + contractorId + "]");
-            return;
-        }
+            if(!this.contractorRepository.exists(contractorId))
+            {
+                System.out.println("Error: no Contractor registered with ID [" + contractorId + "]");
+                return;
+            }
 
-        try {
             project = ProjectBuilder.init(project)
                     .setContractorId(contractorId)
                     .setDepartment(department)
                     .build();
 
-        } catch (NullPointerException e) {
-            System.out.println(e.getMessage());
-            return;
-        }
-
-        try {
             this.projectRepository.update(id, project);
-        } catch (EntityNotFoundException e) {
+
+        } catch (EntityNotFoundException | NullPointerException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -140,44 +127,32 @@ public class ProjectServiceImpl implements ProjectService
     @Override
     public void engageWorker(Id projectId, Id workerId)
     {
-        Project project;
-
         try {
-            project = this.projectRepository.read(projectId);
-        } catch (EntityNotFoundException e) {
-            System.out.println(e.getMessage());
-            return;
-        }
+            Project project = this.projectRepository.read(projectId);
 
-        if (!this.workerRepository.exists(workerId))
-        {
-            System.out.println("Error: no Worker registered with ID [" + workerId + "]");
-            return;
-        }
+            if (!this.workerRepository.exists(workerId))
+            {
+                System.out.println("Error: no Worker registered with ID [" + workerId + "]");
+                return;
+            }
 
-        List<Id> workersId = project.getWorkersId();
+            List<Id> workersId = project.getWorkersId();
 
-        if (project.getWorkersId().contains(workerId))
-        {
-            System.out.println("Error: Worker ID [" + workerId + "] is already working on project [" + projectId + "]");
-            return;
-        }
+            if (project.getWorkersId().contains(workerId))
+            {
+                System.out.println("Error: Worker ID [" + workerId + "] is already working on project [" + projectId + "]");
+                return;
+            }
 
-        workersId.add(workerId);
+            workersId.add(workerId);
 
-        try {
             project = ProjectBuilder.init(project)
                     .setWorkersId(workersId)
                     .build();
 
-        } catch (NullPointerException e) {
-            System.out.println(e.getMessage());
-            return;
-        }
-
-        try {
             this.projectRepository.update(projectId, project);
-        } catch (EntityNotFoundException e) {
+
+        } catch (EntityNotFoundException | NullPointerException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -185,42 +160,30 @@ public class ProjectServiceImpl implements ProjectService
     @Override
     public void fireWorker(Id projectId, Id workerId)
     {
-        Project project;
-
         try {
-            project = this.projectRepository.read(projectId);
-        } catch (EntityNotFoundException e) {
-            System.out.println(e.getMessage());
-            return;
-        }
+            Project project = this.projectRepository.read(projectId);
 
-        if (!this.workerRepository.exists(workerId))
-        {
-            System.out.println("Error: no Worker registered with ID [" + workerId + "]");
-            return;
-        }
+            if (!this.workerRepository.exists(workerId))
+            {
+                System.out.println("Error: no Worker registered with ID [" + workerId + "]");
+                return;
+            }
 
-        List<Id> workersId = project.getWorkersId();
+            List<Id> workersId = project.getWorkersId();
 
-        if (!workersId.remove(workerId))
-        {
-            System.out.println("Error: Worker ID [" + workerId + "] is not working on project [" + projectId + "]");
-            return;
-        }
+            if (!workersId.remove(workerId))
+            {
+                System.out.println("Error: Worker ID [" + workerId + "] is not working on project [" + projectId + "]");
+                return;
+            }
 
-        try {
             project = ProjectBuilder.init(project)
                     .setWorkersId(workersId)
                     .build();
 
-        } catch (NullPointerException e) {
-            System.out.println(e.getMessage());
-            return;
-        }
-
-        try {
             this.projectRepository.update(projectId, project);
-        } catch (EntityNotFoundException e) {
+
+        } catch (EntityNotFoundException | NullPointerException e) {
             System.out.println(e.getMessage());
         }
     }

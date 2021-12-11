@@ -18,7 +18,7 @@ public class DeleteWorkerHandler implements CommandHandler
     @Override
     public void handle(String[] params) throws WrongNumberOfArgumentException
     {
-        if (params.length == Command.deleteWorker.parameters)
+        if (params.length == Command.DELETE_WORKER.parameters)
         {
             this.workerService.delete(
                     Id.fromString(params[1].toLowerCase())
@@ -26,7 +26,7 @@ public class DeleteWorkerHandler implements CommandHandler
         }
         else
         {
-            throw new WrongNumberOfArgumentException(Command.deleteWorker);
+            throw new WrongNumberOfArgumentException(Command.DELETE_WORKER);
         }
     }
 }

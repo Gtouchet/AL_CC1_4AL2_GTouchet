@@ -25,7 +25,7 @@ public class CommandProcessor
     {
         String[] params = command.trim().split(" ");
 
-        if (params[0].equals("") || params[0].equalsIgnoreCase(Command.quit.keyword))
+        if (params[0].equals("") || params[0].equalsIgnoreCase(Command.QUIT.keyword))
         {
             return;
         }
@@ -34,33 +34,33 @@ public class CommandProcessor
             switch (Command.getCommand(params[0].toUpperCase()))
             {
                 // Contractor handlers
-                case createContractor: new CreateContractorHandler(this.servicesFactory.createContractorService()).handle(params); break;
-                case readContractor: new ReadContractorHandler(this.servicesFactory.createContractorService()).handle(params); break;
-                case updateContractor: new UpdateContractorHandler(this.servicesFactory.createContractorService()).handle(params); break;
-                case deleteContractor: new DeleteContractorHandler(this.servicesFactory.createContractorService()).handle(params); break;
-                case validatePayment: new ValidatePaymentHandler(this.servicesFactory.createContractorService()).handle(params); break;
+                case CREATE_CONTRACTOR: new CreateContractorHandler(this.servicesFactory.createContractorService()).handle(params); break;
+                case READ_CONTRACTOR: new ReadContractorHandler(this.servicesFactory.createContractorService()).handle(params); break;
+                case UPDATE_CONTRACTOR: new UpdateContractorHandler(this.servicesFactory.createContractorService()).handle(params); break;
+                case DELETE_CONTRACTOR: new DeleteContractorHandler(this.servicesFactory.createContractorService()).handle(params); break;
+                case VALIDATE_PAYMENT: new ValidatePaymentHandler(this.servicesFactory.createContractorService()).handle(params); break;
 
                 // Payment handlers
-                case createPayment: new CreatePaymentHandler(this.servicesFactory.createPaymentService()).handle(params); break;
-                case readPayment: new ReadPaymentHandler(this.servicesFactory.createPaymentService()).handle(params); break;
-                case deletePayment: new DeletePaymentHandler(this.servicesFactory.createPaymentService()).handle(params); break;
+                case CREATE_PAYMENT: new CreatePaymentHandler(this.servicesFactory.createPaymentService()).handle(params); break;
+                case READ_PAYMENT: new ReadPaymentHandler(this.servicesFactory.createPaymentService()).handle(params); break;
+                case DELETE_PAYMENT: new DeletePaymentHandler(this.servicesFactory.createPaymentService()).handle(params); break;
 
                 // Project handlers
-                case createProject: new CreateProjectHandler(this.servicesFactory.createProjectService()).handle(params); break;
-                case readProject: new ReadProjectHandler(this.servicesFactory.createProjectService()).handle(params); break;
-                case updateProject: new UpdateProjectHandler(this.servicesFactory.createProjectService()).handle(params); break;
-                case deleteProject: new DeleteProjectHandler(this.servicesFactory.createProjectService()).handle(params); break;
-                case engageWorker: new EngageWorkerHandler(this.servicesFactory.createProjectService()).handle(params); break;
-                case fireWorker: new FireWorkerHandler(this.servicesFactory.createProjectService()).handle(params); break;
+                case CREATE_PROJECT: new CreateProjectHandler(this.servicesFactory.createProjectService()).handle(params); break;
+                case READ_PROJECT: new ReadProjectHandler(this.servicesFactory.createProjectService()).handle(params); break;
+                case UPDATE_PROJECT: new UpdateProjectHandler(this.servicesFactory.createProjectService()).handle(params); break;
+                case DELETE_PROJECT: new DeleteProjectHandler(this.servicesFactory.createProjectService()).handle(params); break;
+                case ENGAGE_WORKER: new EngageWorkerHandler(this.servicesFactory.createProjectService()).handle(params); break;
+                case FIRE_WORKER: new FireWorkerHandler(this.servicesFactory.createProjectService()).handle(params); break;
 
                 // Worker handlers
-                case createWorker: new CreateWorkerHandler(this.servicesFactory.createWorkerService()).handle(params); break;
-                case readWorker: new ReadWorkerHandler(this.servicesFactory.createWorkerService()).handle(params); break;
-                case updateWorker: new UpdateWorkerHandler(this.servicesFactory.createWorkerService()).handle(params); break;
-                case deleteWorker: new DeleteWorkerHandler(this.servicesFactory.createWorkerService()).handle(params); break;
+                case CREATE_WORKER: new CreateWorkerHandler(this.servicesFactory.createWorkerService()).handle(params); break;
+                case READ_WORKER: new ReadWorkerHandler(this.servicesFactory.createWorkerService()).handle(params); break;
+                case UPDATE_WORKER: new UpdateWorkerHandler(this.servicesFactory.createWorkerService()).handle(params); break;
+                case DELETE_WORKER: new DeleteWorkerHandler(this.servicesFactory.createWorkerService()).handle(params); break;
 
                 // Help handler
-                case help: new HelpHandler().handle(params); break;
+                case HELP: new HelpHandler().handle(params); break;
 
                 // Unknown command
                 default: System.out.println("Unrecognized command [" + params[0].toUpperCase() + "]");

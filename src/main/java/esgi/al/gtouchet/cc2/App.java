@@ -12,7 +12,7 @@ public class App
         new InterpreterEngine(new ServicesFactory()).start();
 
         // Starts the API thread
-        // Todo: implements (spring boot ?)
+        // Todo: implements quarkus
         new ApiEngine().start();
     }
 }

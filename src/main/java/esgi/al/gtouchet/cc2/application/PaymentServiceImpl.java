@@ -31,34 +31,25 @@ public class PaymentServiceImpl implements PaymentService
     @Override
     public Id create(Id contractorId, Id workerId, double amount, String reason)
     {
-        Contractor contractor;
-
         try {
-            contractor = this.contractorRepository.read(contractorId);
-        } catch (EntityNotFoundException e) {
-            System.out.println(e.getMessage());
-            return null;
-        }
+            Contractor contractor = this.contractorRepository.read(contractorId);
 
-        if (!contractor.isPaymentValidated())
-        {
-            System.out.println(
-                    "Error: Contractor ID [" + contractorId + "] payment method is not validated yet, " +
-                            "please validate it before trying to make a payment."
-            );
-            return null;
-        }
+            if (!contractor.isPaymentValidated())
+            {
+                System.out.println(
+                        "Error: Contractor ID [" + contractorId + "] payment method is not validated yet, " +
+                        "please validate it before trying to make a payment."
+                );
+                return null;
+            }
 
-        if (!this.workerRepository.exists(workerId))
-        {
-            System.out.println("Error: no Worker registered with ID [" + workerId + "]");
-            return null;
-        }
+            if (!this.workerRepository.exists(workerId))
+            {
+                System.out.println("Error: no Worker registered with ID [" + workerId + "]");
+                return null;
+            }
 
-        Payment payment;
-
-        try {
-            payment = PaymentBuilder.init(Id.generate(), Date.now())
+            Payment payment = PaymentBuilder.init(Id.generate(), Date.now())
                     .setContractorId(contractorId)
                     .setWorkerId(workerId)
                     .setPaymentMethod(contractor.getPaymentMethod())
@@ -66,13 +57,14 @@ public class PaymentServiceImpl implements PaymentService
                     .setReason(reason)
                     .build();
 
-        } catch (NullPointerException e) {
+            this.paymentRepository.create(payment);
+
+            return payment.getId();
+
+        } catch (EntityNotFoundException | NullPointerException e) {
             System.out.println(e.getMessage());
             return null;
         }
-
-        this.paymentRepository.create(payment);
-        return payment.getId();
     }
 
     @Override

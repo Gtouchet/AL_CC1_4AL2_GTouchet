@@ -18,11 +18,11 @@ public class ReadPaymentHandler implements CommandHandler
     @Override
     public void handle(String[] params) throws WrongNumberOfArgumentException
     {
-        if (params.length == Command.readPayment.parameters)
+        if (params.length == Command.READ_PAYMENT.parameters)
         {
             this.paymentService.read();
         }
-        else if (params.length == Command.readPayment.parameters + 1) // Accepts an ID as an overloaded parameter
+        else if (params.length == Command.READ_PAYMENT.parameters + 1) // Accepts an ID as an overloaded parameter
         {
             this.paymentService.read(
                     Id.fromString(params[1].toLowerCase())
@@ -30,7 +30,7 @@ public class ReadPaymentHandler implements CommandHandler
         }
         else
         {
-            throw new WrongNumberOfArgumentException(Command.readPayment);
+            throw new WrongNumberOfArgumentException(Command.READ_PAYMENT);
         }
     }
 }

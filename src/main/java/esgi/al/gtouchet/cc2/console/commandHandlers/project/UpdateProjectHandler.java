@@ -18,7 +18,7 @@ public class UpdateProjectHandler implements CommandHandler
     @Override
     public void handle(String[] params) throws WrongNumberOfArgumentException
     {
-        if (params.length == Command.updateProject.parameters)
+        if (params.length == Command.UPDATE_PROJECT.parameters)
         {
             try {
                 this.projectService.update(
@@ -32,7 +32,7 @@ public class UpdateProjectHandler implements CommandHandler
         }
         else
         {
-            throw new WrongNumberOfArgumentException(Command.updateProject);
+            throw new WrongNumberOfArgumentException(Command.UPDATE_PROJECT);
         }
     }
 }

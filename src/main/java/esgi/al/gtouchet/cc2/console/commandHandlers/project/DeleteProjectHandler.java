@@ -18,7 +18,7 @@ public class DeleteProjectHandler implements CommandHandler
     @Override
     public void handle(String[] params) throws WrongNumberOfArgumentException
     {
-        if (params.length == Command.deleteProject.parameters)
+        if (params.length == Command.DELETE_PROJECT.parameters)
         {
             this.projectService.delete(
                     Id.fromString(params[1].toLowerCase())
@@ -26,7 +26,7 @@ public class DeleteProjectHandler implements CommandHandler
         }
         else
         {
-            throw new WrongNumberOfArgumentException(Command.deleteProject);
+            throw new WrongNumberOfArgumentException(Command.DELETE_PROJECT);
         }
     }
 }

@@ -19,7 +19,7 @@ public class CreateWorkerHandler implements CommandHandler
     @Override
     public void handle(String[] params) throws WrongNumberOfArgumentException
     {
-        if (params.length == Command.createWorker.parameters)
+        if (params.length == Command.CREATE_WORKER.parameters)
         {
             try {
                 this.workerService.create(
@@ -37,7 +37,7 @@ public class CreateWorkerHandler implements CommandHandler
         }
         else
         {
-            throw new WrongNumberOfArgumentException(Command.createWorker);
+            throw new WrongNumberOfArgumentException(Command.CREATE_WORKER);
         }
     }
 }

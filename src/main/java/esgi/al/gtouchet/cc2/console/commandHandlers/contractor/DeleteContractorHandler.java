@@ -18,7 +18,7 @@ public class DeleteContractorHandler implements CommandHandler
     @Override
     public void handle(String[] params) throws WrongNumberOfArgumentException
     {
-        if (params.length == Command.deleteContractor.parameters)
+        if (params.length == Command.DELETE_CONTRACTOR.parameters)
         {
             this.contractorService.delete(
                     Id.fromString(params[1].toLowerCase())
@@ -26,7 +26,7 @@ public class DeleteContractorHandler implements CommandHandler
         }
         else
         {
-            throw new WrongNumberOfArgumentException(Command.deleteContractor);
+            throw new WrongNumberOfArgumentException(Command.DELETE_CONTRACTOR);
         }
     }
 }

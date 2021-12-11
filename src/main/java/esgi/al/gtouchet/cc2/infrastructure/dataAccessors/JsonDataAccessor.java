@@ -1,4 +1,4 @@
-package esgi.al.gtouchet.cc2.infrastructure.utilitaries;
+package esgi.al.gtouchet.cc2.infrastructure.dataAccessors;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -11,7 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-public class JsonDataAccessor<T>
+public class JsonDataAccessor<T> implements DataAccessor<T>
 {
     private final Class<T> dataType;
     private final DateFormat dateFormatter;
@@ -28,7 +28,8 @@ public class JsonDataAccessor<T>
         this.backupFilePath = "./res/backups/" + this.dataType.getSimpleName().toLowerCase() + "s/";
     }
 
-    public T[] getDataFromFile()
+    @Override
+    public T[] getData()
     {
         try {
             JsonReader reader = new JsonReader(new FileReader(this.filePath));
@@ -42,7 +43,7 @@ public class JsonDataAccessor<T>
                 new File(this.filePath).createNewFile();
                 System.err.println("Empty file created to write data in.");
 
-                return this.getDataFromFile();
+                return this.getData();
 
             } catch (IOException e2) {
                 System.err.println("Error: could not create file to write data in.\n" + e2.getMessage());
@@ -51,7 +52,8 @@ public class JsonDataAccessor<T>
         return null;
     }
 
-    public void writeInFile(List<T> data)
+    @Override
+    public void write(List<T> data)
     {
         this.createBackupFile();
 
@@ -68,7 +70,7 @@ public class JsonDataAccessor<T>
                 new File(this.filePath).createNewFile();
                 System.err.println("Empty file created to write data in.");
 
-                this.writeInFile(data);
+                this.write(data);
 
             } catch (IOException e2) {
                 System.err.println("Error: could not create file to write data in.\n" + e2.getMessage());
@@ -84,8 +86,7 @@ public class JsonDataAccessor<T>
 
             byte[] buffer = new byte[1024];
             int length;
-            while ((length = in.read(buffer)) > 0)
-            {
+            while ((length = in.read(buffer)) > 0) {
                 out.write(buffer, 0, length);
             }
 

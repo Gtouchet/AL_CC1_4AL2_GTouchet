@@ -9,6 +9,7 @@ import esgi.al.gtouchet.cc2.domain.validators.PasswordValidator;
 import esgi.al.gtouchet.cc2.domain.valueObjects.Date;
 import esgi.al.gtouchet.cc2.domain.valueObjects.Id;
 import esgi.al.gtouchet.cc2.domain.valueObjects.Password;
+import esgi.al.gtouchet.cc2.infrastructure.apis.PaymentMethodValidationException;
 import esgi.al.gtouchet.cc2.infrastructure.apis.PaymentMethodValidatorApi;
 import esgi.al.gtouchet.cc2.infrastructure.repositories.EntityNotFoundException;
 import esgi.al.gtouchet.cc2.infrastructure.repositories.Repository;
@@ -47,27 +48,21 @@ public class ContractorServiceImpl implements ContractorService
 
         try {
             this.passwordValidator.validate(password);
-        } catch (PasswordFormatException e) {
-            System.out.println(e.getMessage());
-            return null;
-        }
 
-        Contractor contractor;
-
-        try {
-            contractor = ContractorBuilder.init(Id.generate(), login, Date.now())
+            Contractor contractor = ContractorBuilder.init(Id.generate(), login, Date.now())
                     .setPassword(password)
                     .setName(name)
                     .setPaymentMethod(paymentMethod)
                     .build();
 
-        } catch (NullPointerException e) {
+            this.contractorRepository.create(contractor);
+
+            return contractor.getId();
+
+        } catch (PasswordFormatException | NullPointerException e) {
             System.out.println(e.getMessage());
             return null;
         }
-
-        this.contractorRepository.create(contractor);
-        return contractor.getId();
     }
 
     @Override
@@ -98,37 +93,20 @@ public class ContractorServiceImpl implements ContractorService
     @Override
     public void update(Id id, Password password, String name, PaymentMethod paymentMethod)
     {
-        Contractor contractor;
-
         try {
-            contractor = this.contractorRepository.read(id);
-        } catch (EntityNotFoundException e) {
-            System.out.println(e.getMessage());
-            return;
-        }
+            Contractor contractor = this.contractorRepository.read(id);
 
-        try {
             this.passwordValidator.validate(password);
-        } catch (PasswordFormatException e) {
-            System.out.println(e.getMessage());
-            return;
-        }
 
-        try {
             contractor = ContractorBuilder.init(contractor)
                     .setPassword(password)
                     .setName(name)
                     .setPaymentMethod(paymentMethod)
                     .build();
 
-        } catch (NullPointerException e) {
-            System.out.println(e.getMessage());
-            return;
-        }
-
-        try {
             this.contractorRepository.update(id, contractor);
-        } catch (EntityNotFoundException e) {
+
+        } catch (EntityNotFoundException | PasswordFormatException | NullPointerException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -158,41 +136,24 @@ public class ContractorServiceImpl implements ContractorService
     @Override
     public void validatePayment(Id id)
     {
-        Contractor contractor;
-
         try {
-            contractor = this.contractorRepository.read(id);
-        } catch (EntityNotFoundException e) {
-            System.out.println(e.getMessage());
-            return;
-        }
+            Contractor contractor = this.contractorRepository.read(id);
 
-        if (contractor.isPaymentValidated())
-        {
-            System.out.println("Error: payment method already validated for Contractor ID [" + id + "]");
-            return;
-        }
+            if (contractor.isPaymentValidated())
+            {
+                System.out.println("Error: payment method already validated for Contractor ID [" + id + "]");
+                return;
+            }
 
-        try {
             this.paymentMethodValidatorApi.validate(contractor.getPaymentMethod());
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return;
-        }
 
-        try {
             contractor = ContractorBuilder.init(contractor)
                     .setIsPaymentValidated(true)
                     .build();
 
-        } catch (NullPointerException e) {
-            System.out.println(e.getMessage());
-            return;
-        }
-
-        try {
             this.contractorRepository.update(id, contractor);
-        } catch (EntityNotFoundException e) {
+
+        } catch (EntityNotFoundException | PaymentMethodValidationException e) {
             System.out.println(e.getMessage());
         }
     }

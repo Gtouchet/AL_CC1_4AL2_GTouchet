@@ -20,7 +20,7 @@ public class UpdateContractorHandler implements CommandHandler
     @Override
     public void handle(String[] params) throws WrongNumberOfArgumentException
     {
-        if (params.length == Command.updateContractor.parameters)
+        if (params.length == Command.UPDATE_CONTRACTOR.parameters)
         {
             try {
                 this.contractorService.update(
@@ -35,7 +35,7 @@ public class UpdateContractorHandler implements CommandHandler
         }
         else
         {
-            throw new WrongNumberOfArgumentException(Command.updateContractor);
+            throw new WrongNumberOfArgumentException(Command.UPDATE_CONTRACTOR);
         }
     }
 }
