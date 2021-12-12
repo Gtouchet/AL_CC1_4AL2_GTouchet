@@ -4,21 +4,25 @@ import esgi.al.gtouchet.cc2.domain.models.PaymentMethod;
 
 public class PaymentMethodValidatorApi
 {
+    //private final Logger logger = Logger.getLogger(getClass().getSimpleName());
+
     public void validate(PaymentMethod paymentMethod) throws PaymentMethodValidationException
     {
         switch (paymentMethod)
         {
             case paypal:
-                System.out.println("Calling Paypal's validation service...\nValidated");
+                System.out.println("Calling Paypal's validation service... Validated");
+                //this.logger.log(Level.INFO, this.logger.getName() + " Calling Paypal's validation service... Validated");
                 break;
             case card:
-                System.out.println("Checking card's credentials...\nValidated");
+                System.out.println("Checking card's credentials... Validated");
+                //this.logger.log(Level.INFO, this.logger.getName() + " Checking card's credentials... Validated");
                 break;
             case transfer:
-                System.out.println("Calling the contractor's bank API...\nValidated");
+                System.out.println("Calling the contractor's bank API... Validated");
+                //this.logger.log(Level.INFO, this.logger.getName() + " Calling the contractor's bank API... Validated");
                 break;
             default:
-                System.out.println("Error: impossible to validate the payment method");
                 throw new PaymentMethodValidationException(paymentMethod);
         }
     }
