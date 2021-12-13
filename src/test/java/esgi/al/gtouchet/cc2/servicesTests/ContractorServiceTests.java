@@ -1,10 +1,10 @@
 package esgi.al.gtouchet.cc2.servicesTests;
 
-import esgi.al.gtouchet.cc2.ServicesAndRepositoriesManager;
+import esgi.al.gtouchet.cc2.TestsManager;
+import esgi.al.gtouchet.cc2.application.contractorServices.create.CreateContractorDto;
+import esgi.al.gtouchet.cc2.application.contractorServices.update.UpdateContractorDto;
 import esgi.al.gtouchet.cc2.domain.models.Contractor;
 import esgi.al.gtouchet.cc2.domain.models.PaymentMethod;
-import esgi.al.gtouchet.cc2.domain.models.Service;
-import esgi.al.gtouchet.cc2.domain.valueObjects.Id;
 import esgi.al.gtouchet.cc2.domain.valueObjects.Password;
 import esgi.al.gtouchet.cc2.infrastructure.repositories.EntityNotFoundException;
 import org.junit.Before;
@@ -19,94 +19,92 @@ public class ContractorServiceTests
     @Rule
     public final ExpectedException exception = ExpectedException.none();
 
-    private ServicesAndRepositoriesManager manager;
+    private TestsManager testsManager;
 
     @Before
     public void setup()
     {
-        this.manager = new ServicesAndRepositoriesManager();
+        this.testsManager = new TestsManager();
     }
 
     @Test
     public void createContractor()
     {
-        long contractorRepoSize = this.manager.contractorService.getRepositorySize();
+        long contractorRepoSize = this.testsManager.contractorIMR.read().count();
 
         assertEquals(0, contractorRepoSize);
 
-        Id contractorId = this.manager.contractorService.create(
+        Contractor contractor = this.testsManager.createContractorHandler.handle(new CreateContractorDto(
                 "GTouchet",
                 Password.of("ABcd1234!"),
                 "Guillaume",
                 PaymentMethod.card
-        );
+        ));
 
-        contractorRepoSize = this.manager.contractorService.getRepositorySize();
+        contractorRepoSize = this.testsManager.contractorIMR.read().count();
 
         assertEquals(1, contractorRepoSize);
-        assertTrue(this.manager.contractorService.exists(contractorId));
+        assertTrue(this.testsManager.contractorIMR.exists(contractor.getId()));
     }
 
     @Test
     public void deleteContractor()
     {
-        Id contractorId = this.manager.contractorService.create(
+        Contractor contractor = this.testsManager.createContractorHandler.handle(new CreateContractorDto(
                 "GTouchet",
                 Password.of("ABcd1234!"),
                 "Guillaume",
                 PaymentMethod.card
-        );
+        ));
 
-        this.manager.contractorService.delete(contractorId);
+        this.testsManager.deleteContractorHandler.handle(contractor.getId());
 
-        long contractorRepoSize = this.manager.contractorService.getRepositorySize();
+        long contractorRepoSize = this.testsManager.contractorIMR.read().count();
 
         assertEquals(0, contractorRepoSize);
-        assertFalse(this.manager.contractorService.exists(contractorId));
+        assertFalse(this.testsManager.contractorIMR.exists(contractor.getId()));
     }
 
     @Test
     public void createTwoContractors_sameLogin()
     {
-        final String login = "GTouchet";
-        long contractorRepoSize;
+        final String sameLogin = "GTouchet";
 
-        Id contractorId1 = this.manager.contractorService.create(
-                login,
+        Contractor contractor1 = this.testsManager.createContractorHandler.handle(new CreateContractorDto(
+                sameLogin,
                 Password.of("ABcd1234!"),
                 "Guillaume",
                 PaymentMethod.card
-        );
+        ));
 
-        Id contractorId2 = this.manager.contractorService.create(
-                login,
+        Contractor contractor2 = this.testsManager.createContractorHandler.handle(new CreateContractorDto(
+                sameLogin,
                 Password.of("ABcd1234!"),
                 "Guillaume",
                 PaymentMethod.card
-        );
+        ));
 
-        contractorRepoSize = this.manager.contractorService.getRepositorySize();
+        long contractorRepoSize = this.testsManager.contractorIMR.read().count();
 
         assertEquals(1, contractorRepoSize);
-        assertTrue(this.manager.contractorService.exists(contractorId1));
-        assertFalse(this.manager.contractorService.exists(contractorId2));
+        assertTrue(this.testsManager.contractorIMR.exists(contractor1.getId()));
     }
-
-    @Test
+/*
+    @Test // TODO quand t'auras implémenté les handlers des workers
     public void createContractorAndWorker_sameLogin()
     {
-        final String login = "GTouchet";
+        final String sameLogin = "GTouchet";
         long contractorAndWorkerReposSize;
 
-        Id contractorId = this.manager.contractorService.create(
-                login,
+        Contractor contractor = this.testsManager.createContractorHandler.handle(new CreateContractorDto(
+                sameLogin,
                 Password.of("ABcd1234!"),
                 "Touchet",
                 PaymentMethod.card
-        );
+        ));
 
-        Id workerId = this.manager.workerService.create(
-                login,
+        Worker worker = this.testsManager.FAIL.handle(
+                sameLogin,
                 Password.of("ABcd1234!"),
                 "Guillaume",
                 Service.builder,
@@ -121,54 +119,51 @@ public class ContractorServiceTests
         assertTrue(this.manager.contractorService.exists(contractorId));
         assertFalse(this.manager.workerService.exists(workerId));
     }
-
+*/
     @Test
     public void updateContractor() throws EntityNotFoundException
     {
-        Id contractorId = this.manager.contractorService.create(
+        Contractor contractor = this.testsManager.createContractorHandler.handle(new CreateContractorDto(
                 "GTouchet",
                 Password.of("ABcd1234!"),
                 "Guillaume",
                 PaymentMethod.card
-        );
-
-        Contractor originalContractor = this.manager.contractorIMR.read(contractorId);
+        ));
 
         Password newPassword = Password.of("newPass123??");
         String newName = "Robert";
         PaymentMethod newPaymentMethod = PaymentMethod.paypal;
 
-        this.manager.contractorService.update(contractorId,
+        Contractor updatedContractor = this.testsManager.updateContractorHandler.handle(new UpdateContractorDto(
+                contractor.getId(),
                 newPassword,
                 newName,
                 newPaymentMethod
-        );
+        ));
 
-        Contractor updatedContractor = this.manager.contractorIMR.read(contractorId);
-
-        assertNotSame(originalContractor, updatedContractor);
-        assertEquals(originalContractor.getId(), updatedContractor.getId());
+        assertNotSame(contractor, updatedContractor);
+        assertEquals(contractor.getId(), updatedContractor.getId());
         assertEquals(updatedContractor.getPassword(), newPassword);
         assertEquals(updatedContractor.getName(), newName);
         assertEquals(updatedContractor.getPaymentMethod(), newPaymentMethod);
     }
 
     @Test
-    public void validatePaymentMethod() throws EntityNotFoundException
+    public void validatePaymentMethod()
     {
-        Id contractorId = this.manager.contractorService.create(
+        Contractor contractor = this.testsManager.createContractorHandler.handle(new CreateContractorDto(
                 "GTouchet",
                 Password.of("ABcd1234!"),
                 "Guillaume",
                 PaymentMethod.card
-        );
+        ));
 
-        Contractor contractor = this.manager.contractorIMR.read(contractorId);
         assertFalse(contractor.isPaymentValidated());
 
-        this.manager.contractorService.validatePayment(contractorId);
+        assertTrue(this.testsManager.validatePaymentHandler.handle(contractor.getId()));
 
-        contractor = this.manager.contractorIMR.read(contractorId);
+        contractor = this.testsManager.readContractorHandler.handle(contractor.getId()).get(0);
+
         assertTrue(contractor.isPaymentValidated());
     }
 
@@ -177,11 +172,11 @@ public class ContractorServiceTests
     {
         exception.expect(IllegalArgumentException.class);
 
-        this.manager.contractorService.create(
+        this.testsManager.createContractorHandler.handle(new CreateContractorDto(
                 "GTouchet",
                 Password.of("ABcd1234!"),
                 "Guillaume",
-                PaymentMethod.valueOf("CA$H")
-        );
+                PaymentMethod.valueOf("€4$H")
+        ));
     }
 }

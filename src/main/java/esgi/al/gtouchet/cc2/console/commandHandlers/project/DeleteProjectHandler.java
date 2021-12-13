@@ -1,6 +1,6 @@
 package esgi.al.gtouchet.cc2.console.commandHandlers.project;
 
-import esgi.al.gtouchet.cc2.application.ProjectService;
+import esgi.al.gtouchet.cc2.application.projectService.ProjectService;
 import esgi.al.gtouchet.cc2.console.commandHandlers.CommandHandler;
 import esgi.al.gtouchet.cc2.console.engine.Command;
 import esgi.al.gtouchet.cc2.console.engine.WrongNumberOfArgumentException;

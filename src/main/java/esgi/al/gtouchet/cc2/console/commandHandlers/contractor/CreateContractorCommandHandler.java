@@ -1,19 +1,21 @@
 package esgi.al.gtouchet.cc2.console.commandHandlers.contractor;
 
-import esgi.al.gtouchet.cc2.application.ContractorService;
+import esgi.al.gtouchet.cc2.application.ServiceHandler;
+import esgi.al.gtouchet.cc2.application.contractorServices.create.CreateContractorDto;
 import esgi.al.gtouchet.cc2.console.commandHandlers.CommandHandler;
 import esgi.al.gtouchet.cc2.console.engine.Command;
 import esgi.al.gtouchet.cc2.console.engine.WrongNumberOfArgumentException;
+import esgi.al.gtouchet.cc2.domain.models.Contractor;
 import esgi.al.gtouchet.cc2.domain.models.PaymentMethod;
 import esgi.al.gtouchet.cc2.domain.valueObjects.Password;
 
-public class CreateContractorHandler implements CommandHandler
+public class CreateContractorCommandHandler implements CommandHandler
 {
-    private final ContractorService contractorService;
+    private final ServiceHandler<Contractor, CreateContractorDto> serviceHandler;
 
-    public CreateContractorHandler(ContractorService contractorService)
+    public CreateContractorCommandHandler(ServiceHandler<Contractor, CreateContractorDto> serviceHandler)
     {
-        this.contractorService = contractorService;
+        this.serviceHandler = serviceHandler;
     }
 
     @Override
@@ -22,12 +24,16 @@ public class CreateContractorHandler implements CommandHandler
         if (params.length == Command.CREATE_CONTRACTOR.parameters)
         {
             try {
-                this.contractorService.create(
+                Contractor contractor = this.serviceHandler.handle(new CreateContractorDto(
                         params[1],
                         Password.of(params[2]),
                         params[3],
                         PaymentMethod.valueOf(params[4].toLowerCase())
-                );
+                ));
+                if (contractor != null)
+                {
+                    System.out.println(contractor);
+                }
             } catch (IllegalArgumentException e) {
                 System.out.println("Error: unknown payment method [" + params[4] + "]");
             }

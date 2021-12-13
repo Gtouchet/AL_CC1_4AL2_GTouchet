@@ -1,6 +1,6 @@
 package esgi.al.gtouchet.cc2.servicesTests;
 
-import esgi.al.gtouchet.cc2.ServicesAndRepositoriesManager;
+import esgi.al.gtouchet.cc2.application.contractorServices.create.CreateContractorDto;
 import esgi.al.gtouchet.cc2.domain.models.PaymentMethod;
 import esgi.al.gtouchet.cc2.domain.models.Service;
 import esgi.al.gtouchet.cc2.domain.models.Worker;
@@ -19,7 +19,7 @@ public class WorkerServiceTests
 {
     @Rule
     public final ExpectedException exception = ExpectedException.none();
-
+/*
     private ServicesAndRepositoriesManager manager;
 
     @Before
@@ -111,12 +111,12 @@ public class WorkerServiceTests
                 91
         );
 
-        Id contractorId = this.manager.contractorService.create(
+        Id contractorId = this.manager.contractorService.create(new CreateContractorDto(
                 login,
                 Password.of("ABcd1234!"),
                 "Touchet",
                 PaymentMethod.card
-        );
+        ));
 
         workerAndContractorReposSize =
                 this.manager.workerService.getRepositorySize() +
@@ -188,5 +188,5 @@ public class WorkerServiceTests
                 Service.builder,
                 Integer.parseInt("ninety one")
         );
-    }
+    }*/
 }

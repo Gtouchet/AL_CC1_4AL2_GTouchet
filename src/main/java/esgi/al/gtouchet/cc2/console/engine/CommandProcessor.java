@@ -1,6 +1,7 @@
 package esgi.al.gtouchet.cc2.console.engine;
 
 import esgi.al.gtouchet.cc2.application.ServicesFactory;
+import esgi.al.gtouchet.cc2.application.contractorServices.ContractorServicesFactory;
 import esgi.al.gtouchet.cc2.console.commandHandlers.contractor.*;
 import esgi.al.gtouchet.cc2.console.commandHandlers.miscellaneous.HelpHandler;
 import esgi.al.gtouchet.cc2.console.commandHandlers.payment.CreatePaymentHandler;
@@ -14,11 +15,11 @@ import esgi.al.gtouchet.cc2.console.commandHandlers.worker.UpdateWorkerHandler;
 
 public class CommandProcessor
 {
-    private final ServicesFactory servicesFactory;
+    private final ContractorServicesFactory contractorServicesFactory;
 
     public CommandProcessor(ServicesFactory servicesFactory)
     {
-        this.servicesFactory = servicesFactory;
+        this.contractorServicesFactory = servicesFactory.createContractorServicesFactory();
     }
 
     public void process(String command)
@@ -34,12 +35,12 @@ public class CommandProcessor
             switch (Command.getCommand(params[0].toUpperCase()))
             {
                 // Contractor handlers
-                case CREATE_CONTRACTOR: new CreateContractorHandler(this.servicesFactory.createContractorService()).handle(params); break;
-                case READ_CONTRACTOR: new ReadContractorHandler(this.servicesFactory.createContractorService()).handle(params); break;
-                case UPDATE_CONTRACTOR: new UpdateContractorHandler(this.servicesFactory.createContractorService()).handle(params); break;
-                case DELETE_CONTRACTOR: new DeleteContractorHandler(this.servicesFactory.createContractorService()).handle(params); break;
-                case VALIDATE_PAYMENT: new ValidatePaymentHandler(this.servicesFactory.createContractorService()).handle(params); break;
-
+                case CREATE_CONTRACTOR: new CreateContractorCommandHandler(this.contractorServicesFactory.createContractorHandler()).handle(params); break;
+                case READ_CONTRACTOR: new ReadContractorCommandHandler(this.contractorServicesFactory.readContractorHandler()).handle(params); break;
+                case UPDATE_CONTRACTOR: new UpdateContractorCommandHandler(this.contractorServicesFactory.updateContractorHandler()).handle(params); break;
+                case DELETE_CONTRACTOR: new DeleteContractorCommandHandler(this.contractorServicesFactory.deleteContractorService()).handle(params); break;
+                case VALIDATE_PAYMENT: new ValidatePaymentCommandHandler(this.contractorServicesFactory.validatePaymentService()).handle(params); break;
+/*
                 // Payment handlers
                 case CREATE_PAYMENT: new CreatePaymentHandler(this.servicesFactory.createPaymentService()).handle(params); break;
                 case READ_PAYMENT: new ReadPaymentHandler(this.servicesFactory.createPaymentService()).handle(params); break;
@@ -64,6 +65,7 @@ public class CommandProcessor
 
                 // Unknown command
                 default: System.out.println("Unrecognized command [" + params[0].toUpperCase() + "]");
+                */
             }
         } catch (WrongNumberOfArgumentException e) {
             System.out.println(e.getMessage());

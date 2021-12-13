@@ -17,7 +17,7 @@ public class InterpreterEngine extends Thread
 
     public void run()
     {
-        System.out.println("\nType 'help' to see the list of commands\n");
+        System.out.println("\nType 'help' to see the list of commands");
 
         String command = "";
         while (!command.trim().split(" ")[0].equalsIgnoreCase(Command.QUIT.keyword))

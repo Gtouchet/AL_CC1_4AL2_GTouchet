@@ -1,4 +1,4 @@
-package esgi.al.gtouchet.cc2.application;
+package esgi.al.gtouchet.cc2.application.projectService;
 
 import esgi.al.gtouchet.cc2.domain.builders.ProjectBuilder;
 import esgi.al.gtouchet.cc2.domain.models.Contractor;

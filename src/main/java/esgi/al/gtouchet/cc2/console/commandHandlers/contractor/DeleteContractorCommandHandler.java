@@ -1,18 +1,18 @@
 package esgi.al.gtouchet.cc2.console.commandHandlers.contractor;
 
-import esgi.al.gtouchet.cc2.application.ContractorService;
+import esgi.al.gtouchet.cc2.application.ServiceHandler;
 import esgi.al.gtouchet.cc2.console.commandHandlers.CommandHandler;
 import esgi.al.gtouchet.cc2.console.engine.Command;
 import esgi.al.gtouchet.cc2.console.engine.WrongNumberOfArgumentException;
 import esgi.al.gtouchet.cc2.domain.valueObjects.Id;
 
-public class DeleteContractorHandler implements CommandHandler
+public class DeleteContractorCommandHandler implements CommandHandler
 {
-    private final ContractorService contractorService;
+    private final ServiceHandler<Boolean, Id> serviceHandler;
 
-    public DeleteContractorHandler(ContractorService contractorService)
+    public DeleteContractorCommandHandler(ServiceHandler<Boolean, Id> serviceHandler)
     {
-        this.contractorService = contractorService;
+        this.serviceHandler = serviceHandler;
     }
 
     @Override
@@ -20,9 +20,13 @@ public class DeleteContractorHandler implements CommandHandler
     {
         if (params.length == Command.DELETE_CONTRACTOR.parameters)
         {
-            this.contractorService.delete(
+            boolean success = this.serviceHandler.handle(
                     Id.fromString(params[1].toLowerCase())
             );
+            if (success)
+            {
+                System.out.println("Contractor ID " + params[1].toLowerCase() + " deleted");
+            }
         }
         else
         {

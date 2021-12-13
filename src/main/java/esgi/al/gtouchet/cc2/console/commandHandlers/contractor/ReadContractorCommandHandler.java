@@ -1,18 +1,22 @@
 package esgi.al.gtouchet.cc2.console.commandHandlers.contractor;
 
-import esgi.al.gtouchet.cc2.application.ContractorService;
+import esgi.al.gtouchet.cc2.application.ServiceHandler;
+import esgi.al.gtouchet.cc2.application.contractorServices.create.CreateContractorDto;
 import esgi.al.gtouchet.cc2.console.commandHandlers.CommandHandler;
 import esgi.al.gtouchet.cc2.console.engine.Command;
 import esgi.al.gtouchet.cc2.console.engine.WrongNumberOfArgumentException;
+import esgi.al.gtouchet.cc2.domain.models.Contractor;
 import esgi.al.gtouchet.cc2.domain.valueObjects.Id;
 
-public class ReadContractorHandler implements CommandHandler
-{
-    private final ContractorService contractorService;
+import java.util.List;
 
-    public ReadContractorHandler(ContractorService contractorService)
+public class ReadContractorCommandHandler implements CommandHandler
+{
+    private final ServiceHandler<List<Contractor>, Id> serviceHandler;
+
+    public ReadContractorCommandHandler(ServiceHandler<List<Contractor>, Id> serviceHandler)
     {
-        this.contractorService = contractorService;
+        this.serviceHandler = serviceHandler;
     }
 
     @Override
@@ -20,13 +24,13 @@ public class ReadContractorHandler implements CommandHandler
     {
         if (params.length == Command.READ_CONTRACTOR.parameters)
         {
-            this.contractorService.read();
+            this.serviceHandler.handle(null).forEach(System.out::println);
         }
         else if (params.length == Command.READ_CONTRACTOR.parameters + 1) // Accepts an ID as an overloaded parameter
         {
-            this.contractorService.read(
+            System.out.println(this.serviceHandler.handle(
                     Id.fromString(params[1].toLowerCase())
-            );
+            ));
         }
         else
         {

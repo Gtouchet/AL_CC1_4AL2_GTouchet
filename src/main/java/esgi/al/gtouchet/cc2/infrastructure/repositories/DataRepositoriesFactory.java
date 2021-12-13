@@ -6,7 +6,7 @@ import esgi.al.gtouchet.cc2.domain.models.Project;
 import esgi.al.gtouchet.cc2.domain.models.Worker;
 import esgi.al.gtouchet.cc2.infrastructure.dataAccessors.JsonDataAccessor;
 
-public class RepositoriesFactory
+public class DataRepositoriesFactory
 {
     public Repository<Contractor> createContractorRepository()
     {
