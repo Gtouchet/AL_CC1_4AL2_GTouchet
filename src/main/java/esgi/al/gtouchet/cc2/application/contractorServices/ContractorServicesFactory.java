@@ -4,7 +4,8 @@ import esgi.al.gtouchet.cc2.application.ServiceHandler;
 import esgi.al.gtouchet.cc2.application.contractorServices.create.CreateContractorDto;
 import esgi.al.gtouchet.cc2.application.contractorServices.create.CreateContractorServiceHandler;
 import esgi.al.gtouchet.cc2.application.contractorServices.delete.DeleteContractorServiceHandler;
-import esgi.al.gtouchet.cc2.application.contractorServices.read.ReadContractorServiceHandler;
+import esgi.al.gtouchet.cc2.application.contractorServices.read.ReadAllContractorServiceHandler;
+import esgi.al.gtouchet.cc2.application.contractorServices.read.ReadIdContractorServiceHandler;
 import esgi.al.gtouchet.cc2.application.contractorServices.update.UpdateContractorDto;
 import esgi.al.gtouchet.cc2.application.contractorServices.update.UpdateContractorServiceHandler;
 import esgi.al.gtouchet.cc2.application.contractorServices.validatePayment.ValidatePaymentServiceHandler;
@@ -18,7 +19,7 @@ import java.util.List;
 
 public class ContractorServicesFactory
 {
-    public ServiceHandler<Contractor, CreateContractorDto> createContractorHandler()
+    public ServiceHandler<Contractor, CreateContractorDto> getCreateContractorHandler()
     {
         return new CreateContractorServiceHandler(
                 new DataRepositoriesFactory().createContractorRepository(),
@@ -27,14 +28,21 @@ public class ContractorServicesFactory
         );
     }
 
-    public ServiceHandler<List<Contractor>, Id> readContractorHandler()
+    public ServiceHandler<List<Contractor>, Void> getReadAllContractorHandler()
     {
-        return new ReadContractorServiceHandler(
+        return new ReadAllContractorServiceHandler(
                 new DataRepositoriesFactory().createContractorRepository()
         );
     }
 
-    public ServiceHandler<Contractor, UpdateContractorDto> updateContractorHandler()
+    public ServiceHandler<Contractor, Id> getReadIdContractorHandler()
+    {
+        return new ReadIdContractorServiceHandler(
+                new DataRepositoriesFactory().createContractorRepository()
+        );
+    }
+
+    public ServiceHandler<Contractor, UpdateContractorDto> getUpdateContractorHandler()
     {
         return new UpdateContractorServiceHandler(
                 new DataRepositoriesFactory().createContractorRepository(),
@@ -42,14 +50,14 @@ public class ContractorServicesFactory
         );
     }
 
-    public ServiceHandler<Boolean, Id> deleteContractorService()
+    public ServiceHandler<Boolean, Id> getDeleteContractorService()
     {
         return new DeleteContractorServiceHandler(
                 new DataRepositoriesFactory().createContractorRepository()
         );
     }
 
-    public ServiceHandler<Boolean, Id> validatePaymentService()
+    public ServiceHandler<Boolean, Id> getValidatePaymentService()
     {
         return new ValidatePaymentServiceHandler(
                 new DataRepositoriesFactory().createContractorRepository(),

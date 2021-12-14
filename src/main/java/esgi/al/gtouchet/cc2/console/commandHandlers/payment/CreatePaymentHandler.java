@@ -1,18 +1,20 @@
 package esgi.al.gtouchet.cc2.console.commandHandlers.payment;
 
-import esgi.al.gtouchet.cc2.application.paymentService.PaymentService;
+import esgi.al.gtouchet.cc2.application.ServiceHandler;
+import esgi.al.gtouchet.cc2.application.paymentServices.create.CreatePaymentDto;
 import esgi.al.gtouchet.cc2.console.commandHandlers.CommandHandler;
 import esgi.al.gtouchet.cc2.console.engine.Command;
 import esgi.al.gtouchet.cc2.console.engine.WrongNumberOfArgumentException;
+import esgi.al.gtouchet.cc2.domain.models.Payment;
 import esgi.al.gtouchet.cc2.domain.valueObjects.Id;
 
 public class CreatePaymentHandler implements CommandHandler
 {
-    private final PaymentService paymentService;
+    private final ServiceHandler<Payment, CreatePaymentDto> serviceHandler;
 
-    public CreatePaymentHandler(PaymentService paymentService)
+    public CreatePaymentHandler(ServiceHandler<Payment, CreatePaymentDto> serviceHandler)
     {
-        this.paymentService = paymentService;
+        this.serviceHandler = serviceHandler;
     }
 
     @Override
@@ -21,12 +23,16 @@ public class CreatePaymentHandler implements CommandHandler
         if (params.length == Command.CREATE_PAYMENT.parameters)
         {
             try {
-                this.paymentService.create(
+                Payment payment = this.serviceHandler.handle(new CreatePaymentDto(
                         Id.fromString(params[1].toLowerCase()),
                         Id.fromString(params[2].toLowerCase()),
                         Double.parseDouble(params[3]),
                         params[4]
-                );
+                ));
+                if (payment != null)
+                {
+                    System.out.println(payment);
+                }
             } catch (NumberFormatException e) {
                 System.out.println("Error: could not parse [" + params[3] + "] as an amount");
             }

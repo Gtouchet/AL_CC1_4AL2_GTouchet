@@ -19,7 +19,7 @@ public class WorkerServiceTests
 {
     @Rule
     public final ExpectedException exception = ExpectedException.none();
-/*
+/* // TODO
     private ServicesAndRepositoriesManager manager;
 
     @Before

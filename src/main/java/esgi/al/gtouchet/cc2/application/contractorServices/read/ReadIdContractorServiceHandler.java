@@ -6,31 +6,23 @@ import esgi.al.gtouchet.cc2.domain.valueObjects.Id;
 import esgi.al.gtouchet.cc2.infrastructure.repositories.EntityNotFoundException;
 import esgi.al.gtouchet.cc2.infrastructure.repositories.Repository;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
-
-public class ReadContractorServiceHandler implements ServiceHandler<List<Contractor>, Id>
+public class ReadIdContractorServiceHandler implements ServiceHandler<Contractor, Id>
 {
     private final Repository<Contractor> contractorRepository;
 
-    public ReadContractorServiceHandler(Repository<Contractor> contractorRepository)
+    public ReadIdContractorServiceHandler(Repository<Contractor> contractorRepository)
     {
         this.contractorRepository = contractorRepository;
     }
 
     @Override
-    public List<Contractor> handle(Id command)
+    public Contractor handle(Id command)
     {
         try {
-            return command != null ?
-                    Collections.singletonList(this.contractorRepository.read(command)) :
-                    this.contractorRepository.read().collect(Collectors.toList());
-
+            return this.contractorRepository.read(command);
         } catch (EntityNotFoundException e) {
             System.out.println(e.getMessage());
-            return new ArrayList<>();
+            return null;
         }
     }
 }

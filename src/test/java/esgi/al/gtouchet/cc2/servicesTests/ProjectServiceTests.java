@@ -18,7 +18,7 @@ public class ProjectServiceTests
 {
     @Rule
     public final ExpectedException exception = ExpectedException.none();
-/*
+/* // TODO
     private ServicesAndRepositoriesManager manager;
     private Id contractorId;
     private Id workerId;

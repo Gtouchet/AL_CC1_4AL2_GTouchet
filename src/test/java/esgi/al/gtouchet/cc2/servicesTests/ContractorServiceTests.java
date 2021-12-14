@@ -162,8 +162,7 @@ public class ContractorServiceTests
 
         assertTrue(this.testsManager.validatePaymentHandler.handle(contractor.getId()));
 
-        contractor = this.testsManager.readContractorHandler.handle(contractor.getId()).get(0);
-
+        contractor = this.testsManager.readIdContractorHandler.handle(contractor.getId());
         assertTrue(contractor.isPaymentValidated());
     }
 

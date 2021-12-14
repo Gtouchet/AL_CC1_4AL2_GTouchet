@@ -4,7 +4,8 @@ import esgi.al.gtouchet.cc2.application.ServiceHandler;
 import esgi.al.gtouchet.cc2.application.contractorServices.create.CreateContractorDto;
 import esgi.al.gtouchet.cc2.application.contractorServices.create.CreateContractorServiceHandler;
 import esgi.al.gtouchet.cc2.application.contractorServices.delete.DeleteContractorServiceHandler;
-import esgi.al.gtouchet.cc2.application.contractorServices.read.ReadContractorServiceHandler;
+import esgi.al.gtouchet.cc2.application.contractorServices.read.ReadAllContractorServiceHandler;
+import esgi.al.gtouchet.cc2.application.contractorServices.read.ReadIdContractorServiceHandler;
 import esgi.al.gtouchet.cc2.application.contractorServices.update.UpdateContractorDto;
 import esgi.al.gtouchet.cc2.application.contractorServices.update.UpdateContractorServiceHandler;
 import esgi.al.gtouchet.cc2.application.contractorServices.validatePayment.ValidatePaymentServiceHandler;
@@ -22,7 +23,8 @@ import java.util.List;
 public class TestsManager
 {
     public final ServiceHandler<Contractor, CreateContractorDto> createContractorHandler;
-    public final ServiceHandler<List<Contractor>, Id> readContractorHandler;
+    public final ServiceHandler<List<Contractor>, Void> readAllContractorHandler;
+    public final ServiceHandler<Contractor, Id> readIdContractorHandler;
     public final ServiceHandler<Contractor, UpdateContractorDto> updateContractorHandler;
     public final ServiceHandler<Boolean, Id> deleteContractorHandler;
     public final ServiceHandler<Boolean, Id> validatePaymentHandler;
@@ -45,7 +47,11 @@ public class TestsManager
                 new PasswordValidator()
         );
 
-        this.readContractorHandler = new ReadContractorServiceHandler(
+        this.readAllContractorHandler = new ReadAllContractorServiceHandler(
+                this.contractorIMR
+        );
+
+        this.readIdContractorHandler = new ReadIdContractorServiceHandler(
                 this.contractorIMR
         );
 

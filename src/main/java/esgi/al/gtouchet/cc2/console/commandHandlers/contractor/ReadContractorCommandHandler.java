@@ -1,7 +1,6 @@
 package esgi.al.gtouchet.cc2.console.commandHandlers.contractor;
 
 import esgi.al.gtouchet.cc2.application.ServiceHandler;
-import esgi.al.gtouchet.cc2.application.contractorServices.create.CreateContractorDto;
 import esgi.al.gtouchet.cc2.console.commandHandlers.CommandHandler;
 import esgi.al.gtouchet.cc2.console.engine.Command;
 import esgi.al.gtouchet.cc2.console.engine.WrongNumberOfArgumentException;
@@ -12,11 +11,15 @@ import java.util.List;
 
 public class ReadContractorCommandHandler implements CommandHandler
 {
-    private final ServiceHandler<List<Contractor>, Id> serviceHandler;
+    private final ServiceHandler<List<Contractor>, Void> serviceHandlerAll;
+    private final ServiceHandler<Contractor, Id> serviceHandlerId;
 
-    public ReadContractorCommandHandler(ServiceHandler<List<Contractor>, Id> serviceHandler)
+    public ReadContractorCommandHandler(
+            ServiceHandler<List<Contractor>, Void> serviceHandlerAll,
+            ServiceHandler<Contractor, Id> serviceHandlerId)
     {
-        this.serviceHandler = serviceHandler;
+        this.serviceHandlerAll = serviceHandlerAll;
+        this.serviceHandlerId = serviceHandlerId;
     }
 
     @Override
@@ -24,13 +27,23 @@ public class ReadContractorCommandHandler implements CommandHandler
     {
         if (params.length == Command.READ_CONTRACTOR.parameters)
         {
-            this.serviceHandler.handle(null).forEach(System.out::println);
+            List<Contractor> contractors = this.serviceHandlerAll.handle(null);
+            if (contractors.size() > 0)
+            {
+                contractors.forEach(System.out::println);
+            }
+            else
+            {
+                System.out.println("No Contractor registered yet");
+            }
         }
         else if (params.length == Command.READ_CONTRACTOR.parameters + 1) // Accepts an ID as an overloaded parameter
         {
-            System.out.println(this.serviceHandler.handle(
-                    Id.fromString(params[1].toLowerCase())
-            ));
+            Contractor contractor = this.serviceHandlerId.handle(Id.fromString(params[1].toLowerCase()));
+            if (contractor != null)
+            {
+                System.out.println(contractor);
+            }
         }
         else
         {

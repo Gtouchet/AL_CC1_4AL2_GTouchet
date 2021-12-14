@@ -1,4 +1,4 @@
-package esgi.al.gtouchet.cc2.application.workerService;
+package esgi.al.gtouchet.cc2.application.workerServices;
 
 import esgi.al.gtouchet.cc2.domain.models.Service;
 import esgi.al.gtouchet.cc2.domain.valueObjects.Id;
