@@ -1,6 +1,6 @@
 package esgi.al.gtouchet.cc2.console.commandHandlers.worker;
 
-import esgi.al.gtouchet.cc2.application.workerServices.WorkerService;
+import esgi.al.gtouchet.cc2.application.ServiceHandler;
 import esgi.al.gtouchet.cc2.console.commandHandlers.CommandHandler;
 import esgi.al.gtouchet.cc2.console.engine.Command;
 import esgi.al.gtouchet.cc2.console.engine.WrongNumberOfArgumentException;
@@ -8,11 +8,11 @@ import esgi.al.gtouchet.cc2.domain.valueObjects.Id;
 
 public class DeleteWorkerHandler implements CommandHandler
 {
-    private final WorkerService workerService;
+    private final ServiceHandler<Boolean, Id> serviceHandler;
 
-    public DeleteWorkerHandler(WorkerService workerService)
+    public DeleteWorkerHandler(ServiceHandler<Boolean, Id> serviceHandler)
     {
-        this.workerService = workerService;
+        this.serviceHandler = serviceHandler;
     }
 
     @Override
@@ -20,9 +20,13 @@ public class DeleteWorkerHandler implements CommandHandler
     {
         if (params.length == Command.DELETE_WORKER.parameters)
         {
-            this.workerService.delete(
+            boolean success = this.serviceHandler.handle(
                     Id.fromString(params[1].toLowerCase())
             );
+            if (success)
+            {
+                System.out.println("Worker ID " + params[1].toLowerCase() + " deleted");
+            }
         }
         else
         {

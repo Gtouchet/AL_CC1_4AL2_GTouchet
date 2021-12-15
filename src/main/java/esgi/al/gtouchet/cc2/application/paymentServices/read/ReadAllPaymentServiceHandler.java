@@ -19,6 +19,6 @@ public class ReadAllPaymentServiceHandler implements ServiceHandler<List<Payment
     @Override
     public List<Payment> handle(Void command)
     {
-        return this.paymentRepository.read().collect(Collectors.toUnmodifiableList());
+        return this.paymentRepository.read().collect(Collectors.toList());
     }
 }

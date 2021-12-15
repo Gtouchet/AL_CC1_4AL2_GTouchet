@@ -1,18 +1,26 @@
 package esgi.al.gtouchet.cc2.console.commandHandlers.project;
 
-import esgi.al.gtouchet.cc2.application.projectServices.ProjectService;
+import esgi.al.gtouchet.cc2.application.ServiceHandler;
 import esgi.al.gtouchet.cc2.console.commandHandlers.CommandHandler;
 import esgi.al.gtouchet.cc2.console.engine.Command;
 import esgi.al.gtouchet.cc2.console.engine.WrongNumberOfArgumentException;
+import esgi.al.gtouchet.cc2.domain.models.Payment;
+import esgi.al.gtouchet.cc2.domain.models.Project;
 import esgi.al.gtouchet.cc2.domain.valueObjects.Id;
+
+import java.util.List;
 
 public class ReadProjectHandler implements CommandHandler
 {
-    private final ProjectService projectService;
+    private final ServiceHandler<List<Project>, Void> serviceHandlerAll;
+    private final ServiceHandler<Project, Id> serviceHandlerId;
 
-    public ReadProjectHandler(ProjectService projectService)
+    public ReadProjectHandler(
+            ServiceHandler<List<Project>, Void> serviceHandlerAll,
+            ServiceHandler<Project, Id> serviceHandlerId)
     {
-        this.projectService = projectService;
+        this.serviceHandlerAll = serviceHandlerAll;
+        this.serviceHandlerId = serviceHandlerId;
     }
 
     @Override
@@ -20,13 +28,23 @@ public class ReadProjectHandler implements CommandHandler
     {
         if (params.length == Command.READ_PROJECT.parameters)
         {
-            this.projectService.read();
+            List<Project> projects = this.serviceHandlerAll.handle(null);
+            if (projects.size() > 0)
+            {
+                projects.forEach(System.out::println);
+            }
+            else
+            {
+                System.out.println("No Project registered yet");
+            }
         }
         else if (params.length == Command.READ_PROJECT.parameters + 1) // Accepts an ID as an overloaded parameter
         {
-            this.projectService.read(
-                    Id.fromString(params[1].toLowerCase())
-            );
+            Project project = this.serviceHandlerId.handle(Id.fromString(params[1].toLowerCase()));
+            if (project != null)
+            {
+                System.out.println(project);
+            }
         }
         else
         {

@@ -14,7 +14,7 @@ import org.junit.rules.ExpectedException;
 
 import static org.junit.Assert.*;
 
-public class ContractorServiceTests
+public class ContractorServicesTests
 {
     @Rule
     public final ExpectedException exception = ExpectedException.none();

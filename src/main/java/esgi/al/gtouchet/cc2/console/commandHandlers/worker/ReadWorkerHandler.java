@@ -1,18 +1,26 @@
 package esgi.al.gtouchet.cc2.console.commandHandlers.worker;
 
-import esgi.al.gtouchet.cc2.application.workerServices.WorkerService;
+import esgi.al.gtouchet.cc2.application.ServiceHandler;
 import esgi.al.gtouchet.cc2.console.commandHandlers.CommandHandler;
 import esgi.al.gtouchet.cc2.console.engine.Command;
 import esgi.al.gtouchet.cc2.console.engine.WrongNumberOfArgumentException;
+import esgi.al.gtouchet.cc2.domain.models.Project;
+import esgi.al.gtouchet.cc2.domain.models.Worker;
 import esgi.al.gtouchet.cc2.domain.valueObjects.Id;
+
+import java.util.List;
 
 public class ReadWorkerHandler implements CommandHandler
 {
-    private final WorkerService workerService;
+    private final ServiceHandler<List<Worker>, Void> serviceHandlerAll;
+    private final ServiceHandler<Worker, Id> serviceHandlerId;
 
-    public ReadWorkerHandler(WorkerService workerService)
+    public ReadWorkerHandler(
+            ServiceHandler<List<Worker>, Void> serviceHandlerAll,
+            ServiceHandler<Worker, Id> serviceHandlerId)
     {
-        this.workerService = workerService;
+        this.serviceHandlerAll = serviceHandlerAll;
+        this.serviceHandlerId = serviceHandlerId;
     }
 
     @Override
@@ -20,13 +28,23 @@ public class ReadWorkerHandler implements CommandHandler
     {
         if (params.length == Command.READ_WORKER.parameters)
         {
-            this.workerService.read();
+            List<Worker> workers = this.serviceHandlerAll.handle(null);
+            if (workers.size() > 0)
+            {
+                workers.forEach(System.out::println);
+            }
+            else
+            {
+                System.out.println("No Worker registered yet");
+            }
         }
         else if (params.length == Command.READ_WORKER.parameters + 1) // Accepts an ID as an overloaded parameter
         {
-            this.workerService.read(
-                    Id.fromString(params[1].toLowerCase())
-            );
+            Worker worker = this.serviceHandlerId.handle(Id.fromString(params[1].toLowerCase()));
+            if (worker != null)
+            {
+                System.out.println(worker);
+            }
         }
         else
         {

@@ -19,11 +19,18 @@ import java.util.List;
 
 public class ContractorServicesFactory
 {
+    private final DataRepositoriesFactory dataRepositoriesFactory;
+
+    public ContractorServicesFactory(DataRepositoriesFactory dataRepositoriesFactory)
+    {
+        this.dataRepositoriesFactory = dataRepositoriesFactory;
+    }
+
     public ServiceHandler<Contractor, CreateContractorDto> getCreateContractorHandler()
     {
         return new CreateContractorServiceHandler(
-                new DataRepositoriesFactory().createContractorRepository(),
-                new DataRepositoriesFactory().createWorkerRepository(),
+                this.dataRepositoriesFactory.createContractorRepository(),
+                this.dataRepositoriesFactory.createWorkerRepository(),
                 new PasswordValidator()
         );
     }
@@ -31,21 +38,21 @@ public class ContractorServicesFactory
     public ServiceHandler<List<Contractor>, Void> getReadAllContractorHandler()
     {
         return new ReadAllContractorServiceHandler(
-                new DataRepositoriesFactory().createContractorRepository()
+                this.dataRepositoriesFactory.createContractorRepository()
         );
     }
 
     public ServiceHandler<Contractor, Id> getReadIdContractorHandler()
     {
         return new ReadIdContractorServiceHandler(
-                new DataRepositoriesFactory().createContractorRepository()
+                this.dataRepositoriesFactory.createContractorRepository()
         );
     }
 
     public ServiceHandler<Contractor, UpdateContractorDto> getUpdateContractorHandler()
     {
         return new UpdateContractorServiceHandler(
-                new DataRepositoriesFactory().createContractorRepository(),
+                this.dataRepositoriesFactory.createContractorRepository(),
                 new PasswordValidator()
         );
     }
@@ -53,14 +60,14 @@ public class ContractorServicesFactory
     public ServiceHandler<Boolean, Id> getDeleteContractorService()
     {
         return new DeleteContractorServiceHandler(
-                new DataRepositoriesFactory().createContractorRepository()
+                this.dataRepositoriesFactory.createContractorRepository()
         );
     }
 
     public ServiceHandler<Boolean, Id> getValidatePaymentService()
     {
         return new ValidatePaymentServiceHandler(
-                new DataRepositoriesFactory().createContractorRepository(),
+                this.dataRepositoriesFactory.createContractorRepository(),
                 new PaymentMethodValidatorApi()
         );
     }

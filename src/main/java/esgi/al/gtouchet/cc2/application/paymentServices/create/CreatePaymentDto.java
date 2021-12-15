@@ -9,7 +9,11 @@ public class CreatePaymentDto
     public final double amount;
     public final String reason;
 
-    public CreatePaymentDto(Id contractorId, Id workerId, double amount, String reason)
+    public CreatePaymentDto(
+            Id contractorId,
+            Id workerId,
+            double amount,
+            String reason)
     {
         this.contractorId = contractorId;
         this.workerId = workerId;

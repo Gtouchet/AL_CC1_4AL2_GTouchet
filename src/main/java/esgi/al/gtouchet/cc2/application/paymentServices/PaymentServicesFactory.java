@@ -14,33 +14,40 @@ import java.util.List;
 
 public class PaymentServicesFactory
 {
+    private final DataRepositoriesFactory dataRepositoriesFactory;
+
+    public PaymentServicesFactory(DataRepositoriesFactory dataRepositoriesFactory)
+    {
+        this.dataRepositoriesFactory = dataRepositoriesFactory;
+    }
+
     public ServiceHandler<Payment, CreatePaymentDto> getCreatePaymentHandler()
     {
         return new CreatePaymentServiceHandler(
-                new DataRepositoriesFactory().createPaymentRepository(),
-                new DataRepositoriesFactory().createContractorRepository(),
-                new DataRepositoriesFactory().createWorkerRepository()
+                this.dataRepositoriesFactory.createPaymentRepository(),
+                this.dataRepositoriesFactory.createContractorRepository(),
+                this.dataRepositoriesFactory.createWorkerRepository()
         );
     }
 
     public ServiceHandler<List<Payment>, Void> getReadAllPaymentHandler()
     {
         return new ReadAllPaymentServiceHandler(
-                new DataRepositoriesFactory().createPaymentRepository()
+                this.dataRepositoriesFactory.createPaymentRepository()
         );
     }
 
     public ServiceHandler<Payment, Id> getReadIdPaymentHandler()
     {
         return new ReadIdPaymentServiceHandler(
-                new DataRepositoriesFactory().createPaymentRepository()
+                this.dataRepositoriesFactory.createPaymentRepository()
         );
     }
 
     public ServiceHandler<Boolean, Id> getDeletePaymentHandler()
     {
         return new DeletePaymentServiceHandler(
-                new DataRepositoriesFactory().createPaymentRepository()
+                this.dataRepositoriesFactory.createPaymentRepository()
         );
     }
 }

@@ -1,18 +1,20 @@
 package esgi.al.gtouchet.cc2.console.commandHandlers.project;
 
-import esgi.al.gtouchet.cc2.application.projectServices.ProjectService;
+import esgi.al.gtouchet.cc2.application.ServiceHandler;
+import esgi.al.gtouchet.cc2.application.projectServices.update.UpdateProjectDto;
 import esgi.al.gtouchet.cc2.console.commandHandlers.CommandHandler;
 import esgi.al.gtouchet.cc2.console.engine.Command;
 import esgi.al.gtouchet.cc2.console.engine.WrongNumberOfArgumentException;
+import esgi.al.gtouchet.cc2.domain.models.Project;
 import esgi.al.gtouchet.cc2.domain.valueObjects.Id;
 
 public class UpdateProjectHandler implements CommandHandler
 {
-    private final ProjectService projectService;
+    private final ServiceHandler<Project, UpdateProjectDto> serviceHandler;
 
-    public UpdateProjectHandler(ProjectService projectService)
+    public UpdateProjectHandler(ServiceHandler<Project, UpdateProjectDto> serviceHandler)
     {
-        this.projectService = projectService;
+        this.serviceHandler = serviceHandler;
     }
 
     @Override
@@ -21,11 +23,15 @@ public class UpdateProjectHandler implements CommandHandler
         if (params.length == Command.UPDATE_PROJECT.parameters)
         {
             try {
-                this.projectService.update(
+                Project project = this.serviceHandler.handle(new UpdateProjectDto(
                         Id.fromString(params[1].toLowerCase()),
                         Id.fromString(params[2].toLowerCase()),
                         Integer.parseInt(params[3])
-                );
+                ));
+                if (project != null)
+                {
+                    System.out.println(project);
+                }
             } catch (NumberFormatException e) {
                 System.out.println("Error: could not parse [" + params[3] + "] as a department");
             }

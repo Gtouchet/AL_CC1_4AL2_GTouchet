@@ -1,18 +1,20 @@
 package esgi.al.gtouchet.cc2.console.commandHandlers.project;
 
-import esgi.al.gtouchet.cc2.application.projectServices.ProjectService;
+import esgi.al.gtouchet.cc2.application.ServiceHandler;
+import esgi.al.gtouchet.cc2.application.projectServices.engageWorker.EngageWorkerDto;
 import esgi.al.gtouchet.cc2.console.commandHandlers.CommandHandler;
 import esgi.al.gtouchet.cc2.console.engine.Command;
 import esgi.al.gtouchet.cc2.console.engine.WrongNumberOfArgumentException;
+import esgi.al.gtouchet.cc2.domain.models.Project;
 import esgi.al.gtouchet.cc2.domain.valueObjects.Id;
 
 public class EngageWorkerHandler implements CommandHandler
 {
-    private final ProjectService projectService;
+    private final ServiceHandler<Project, EngageWorkerDto> serviceHandler;
 
-    public EngageWorkerHandler(ProjectService projectService)
+    public EngageWorkerHandler(ServiceHandler<Project, EngageWorkerDto> serviceHandler)
     {
-        this.projectService = projectService;
+        this.serviceHandler = serviceHandler;
     }
 
     @Override
@@ -20,10 +22,14 @@ public class EngageWorkerHandler implements CommandHandler
     {
         if (params.length == Command.ENGAGE_WORKER.parameters)
         {
-            this.projectService.engageWorker(
+            Project project = this.serviceHandler.handle(new EngageWorkerDto(
                     Id.fromString(params[1].toLowerCase()),
                     Id.fromString(params[2].toLowerCase())
-            );
+            ));
+            if (project != null)
+            {
+                System.out.println(project);
+            }
         }
         else
         {

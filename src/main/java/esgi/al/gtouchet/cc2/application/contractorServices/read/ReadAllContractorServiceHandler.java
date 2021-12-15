@@ -19,6 +19,6 @@ public class ReadAllContractorServiceHandler implements ServiceHandler<List<Cont
     @Override
     public List<Contractor> handle(Void ignore)
     {
-        return this.contractorRepository.read().collect(Collectors.toUnmodifiableList());
+        return this.contractorRepository.read().collect(Collectors.toList());
     }
 }

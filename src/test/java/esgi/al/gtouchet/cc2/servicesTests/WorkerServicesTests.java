@@ -1,21 +1,9 @@
 package esgi.al.gtouchet.cc2.servicesTests;
 
-import esgi.al.gtouchet.cc2.application.contractorServices.create.CreateContractorDto;
-import esgi.al.gtouchet.cc2.domain.models.PaymentMethod;
-import esgi.al.gtouchet.cc2.domain.models.Service;
-import esgi.al.gtouchet.cc2.domain.models.Worker;
-import esgi.al.gtouchet.cc2.domain.valueObjects.Id;
-import esgi.al.gtouchet.cc2.domain.valueObjects.Password;
-import esgi.al.gtouchet.cc2.infrastructure.repositories.EntityNotFoundException;
-import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Rule;
-import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import static org.junit.Assert.*;
-
-public class WorkerServiceTests
+public class WorkerServicesTests
 {
     @Rule
     public final ExpectedException exception = ExpectedException.none();
