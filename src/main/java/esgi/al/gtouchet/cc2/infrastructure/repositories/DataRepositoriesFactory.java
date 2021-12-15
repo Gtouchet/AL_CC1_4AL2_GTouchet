@@ -6,23 +6,27 @@ import esgi.al.gtouchet.cc2.domain.models.Project;
 import esgi.al.gtouchet.cc2.domain.models.Worker;
 import esgi.al.gtouchet.cc2.infrastructure.dataAccessors.JsonDataAccessor;
 
-public class DataRepositoriesFactory
+public class DataRepositoriesFactory implements RepositoriesFactory
 {
+    @Override
     public Repository<Contractor> createContractorRepository()
     {
         return new DataRepository<>(new JsonDataAccessor<>(Contractor.class));
     }
 
+    @Override
     public Repository<Payment> createPaymentRepository()
     {
         return new DataRepository<>(new JsonDataAccessor<>(Payment.class));
     }
 
+    @Override
     public Repository<Project> createProjectRepository()
     {
         return new DataRepository<>(new JsonDataAccessor<>(Project.class));
     }
 
+    @Override
     public Repository<Worker> createWorkerRepository()
     {
         return new DataRepository<>(new JsonDataAccessor<>(Worker.class));

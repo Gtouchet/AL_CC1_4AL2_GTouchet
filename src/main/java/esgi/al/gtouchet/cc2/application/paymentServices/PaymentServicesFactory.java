@@ -8,46 +8,46 @@ import esgi.al.gtouchet.cc2.application.paymentServices.read.ReadAllPaymentServi
 import esgi.al.gtouchet.cc2.application.paymentServices.read.ReadIdPaymentServiceHandler;
 import esgi.al.gtouchet.cc2.domain.models.Payment;
 import esgi.al.gtouchet.cc2.domain.valueObjects.Id;
-import esgi.al.gtouchet.cc2.infrastructure.repositories.DataRepositoriesFactory;
+import esgi.al.gtouchet.cc2.infrastructure.repositories.RepositoriesFactory;
 
 import java.util.List;
 
 public class PaymentServicesFactory
 {
-    private final DataRepositoriesFactory dataRepositoriesFactory;
+    private final RepositoriesFactory repositoriesFactory;
 
-    public PaymentServicesFactory(DataRepositoriesFactory dataRepositoriesFactory)
+    public PaymentServicesFactory(RepositoriesFactory repositoriesFactory)
     {
-        this.dataRepositoriesFactory = dataRepositoriesFactory;
+        this.repositoriesFactory = repositoriesFactory;
     }
 
     public ServiceHandler<Payment, CreatePaymentDto> getCreatePaymentHandler()
     {
         return new CreatePaymentServiceHandler(
-                this.dataRepositoriesFactory.createPaymentRepository(),
-                this.dataRepositoriesFactory.createContractorRepository(),
-                this.dataRepositoriesFactory.createWorkerRepository()
+                this.repositoriesFactory.createPaymentRepository(),
+                this.repositoriesFactory.createContractorRepository(),
+                this.repositoriesFactory.createWorkerRepository()
         );
     }
 
     public ServiceHandler<List<Payment>, Void> getReadAllPaymentHandler()
     {
         return new ReadAllPaymentServiceHandler(
-                this.dataRepositoriesFactory.createPaymentRepository()
+                this.repositoriesFactory.createPaymentRepository()
         );
     }
 
     public ServiceHandler<Payment, Id> getReadIdPaymentHandler()
     {
         return new ReadIdPaymentServiceHandler(
-                this.dataRepositoriesFactory.createPaymentRepository()
+                this.repositoriesFactory.createPaymentRepository()
         );
     }
 
     public ServiceHandler<Boolean, Id> getDeletePaymentHandler()
     {
         return new DeletePaymentServiceHandler(
-                this.dataRepositoriesFactory.createPaymentRepository()
+                this.repositoriesFactory.createPaymentRepository()
         );
     }
 }

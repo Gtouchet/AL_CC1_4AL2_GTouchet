@@ -13,24 +13,24 @@ import esgi.al.gtouchet.cc2.domain.models.Contractor;
 import esgi.al.gtouchet.cc2.domain.validators.PasswordValidator;
 import esgi.al.gtouchet.cc2.domain.valueObjects.Id;
 import esgi.al.gtouchet.cc2.infrastructure.apis.PaymentMethodValidatorApi;
-import esgi.al.gtouchet.cc2.infrastructure.repositories.DataRepositoriesFactory;
+import esgi.al.gtouchet.cc2.infrastructure.repositories.RepositoriesFactory;
 
 import java.util.List;
 
 public class ContractorServicesFactory
 {
-    private final DataRepositoriesFactory dataRepositoriesFactory;
+    private final RepositoriesFactory repositoriesFactory;
 
-    public ContractorServicesFactory(DataRepositoriesFactory dataRepositoriesFactory)
+    public ContractorServicesFactory(RepositoriesFactory repositoriesFactory)
     {
-        this.dataRepositoriesFactory = dataRepositoriesFactory;
+        this.repositoriesFactory = repositoriesFactory;
     }
 
     public ServiceHandler<Contractor, CreateContractorDto> getCreateContractorHandler()
     {
         return new CreateContractorServiceHandler(
-                this.dataRepositoriesFactory.createContractorRepository(),
-                this.dataRepositoriesFactory.createWorkerRepository(),
+                this.repositoriesFactory.createContractorRepository(),
+                this.repositoriesFactory.createWorkerRepository(),
                 new PasswordValidator()
         );
     }
@@ -38,21 +38,21 @@ public class ContractorServicesFactory
     public ServiceHandler<List<Contractor>, Void> getReadAllContractorHandler()
     {
         return new ReadAllContractorServiceHandler(
-                this.dataRepositoriesFactory.createContractorRepository()
+                this.repositoriesFactory.createContractorRepository()
         );
     }
 
     public ServiceHandler<Contractor, Id> getReadIdContractorHandler()
     {
         return new ReadIdContractorServiceHandler(
-                this.dataRepositoriesFactory.createContractorRepository()
+                this.repositoriesFactory.createContractorRepository()
         );
     }
 
     public ServiceHandler<Contractor, UpdateContractorDto> getUpdateContractorHandler()
     {
         return new UpdateContractorServiceHandler(
-                this.dataRepositoriesFactory.createContractorRepository(),
+                this.repositoriesFactory.createContractorRepository(),
                 new PasswordValidator()
         );
     }
@@ -60,14 +60,14 @@ public class ContractorServicesFactory
     public ServiceHandler<Boolean, Id> getDeleteContractorService()
     {
         return new DeleteContractorServiceHandler(
-                this.dataRepositoriesFactory.createContractorRepository()
+                this.repositoriesFactory.createContractorRepository()
         );
     }
 
     public ServiceHandler<Boolean, Id> getValidatePaymentService()
     {
         return new ValidatePaymentServiceHandler(
-                this.dataRepositoriesFactory.createContractorRepository(),
+                this.repositoriesFactory.createContractorRepository(),
                 new PaymentMethodValidatorApi()
         );
     }

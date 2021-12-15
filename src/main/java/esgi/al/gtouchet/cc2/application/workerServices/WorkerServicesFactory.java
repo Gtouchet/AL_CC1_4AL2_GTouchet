@@ -11,24 +11,24 @@ import esgi.al.gtouchet.cc2.application.workerServices.update.UpdateWorkerServic
 import esgi.al.gtouchet.cc2.domain.models.Worker;
 import esgi.al.gtouchet.cc2.domain.validators.PasswordValidator;
 import esgi.al.gtouchet.cc2.domain.valueObjects.Id;
-import esgi.al.gtouchet.cc2.infrastructure.repositories.DataRepositoriesFactory;
+import esgi.al.gtouchet.cc2.infrastructure.repositories.RepositoriesFactory;
 
 import java.util.List;
 
 public class WorkerServicesFactory
 {
-    private final DataRepositoriesFactory dataRepositoriesFactory;
+    private final RepositoriesFactory repositoriesFactory;
 
-    public WorkerServicesFactory(DataRepositoriesFactory dataRepositoriesFactory)
+    public WorkerServicesFactory(RepositoriesFactory repositoriesFactory)
     {
-        this.dataRepositoriesFactory = dataRepositoriesFactory;
+        this.repositoriesFactory = repositoriesFactory;
     }
 
     public ServiceHandler<Worker, CreateWorkerDto> getCreateWorkerHandler()
     {
         return new CreateWorkerServiceHandler(
-                this.dataRepositoriesFactory.createWorkerRepository(),
-                this.dataRepositoriesFactory.createContractorRepository(),
+                this.repositoriesFactory.createWorkerRepository(),
+                this.repositoriesFactory.createContractorRepository(),
                 new PasswordValidator()
         );
     }
@@ -36,21 +36,21 @@ public class WorkerServicesFactory
     public ServiceHandler<List<Worker>, Void> getReadAllWorkerHandler()
     {
         return new ReadAllWorkerServiceHandler(
-                this.dataRepositoriesFactory.createWorkerRepository()
+                this.repositoriesFactory.createWorkerRepository()
         );
     }
 
     public ServiceHandler<Worker, Id> getReadIdWorkerHandler()
     {
         return new ReadIdWorkerServiceHandler(
-                this.dataRepositoriesFactory.createWorkerRepository()
+                this.repositoriesFactory.createWorkerRepository()
         );
     }
 
     public ServiceHandler<Worker, UpdateWorkerDto> getUpdateWorkerHandler()
     {
         return new UpdateWorkerServiceHandler(
-                this.dataRepositoriesFactory.createWorkerRepository(),
+                this.repositoriesFactory.createWorkerRepository(),
                 new PasswordValidator()
         );
     }
@@ -58,8 +58,8 @@ public class WorkerServicesFactory
     public ServiceHandler<Boolean, Id> getDeleteWorkerHandler()
     {
         return new DeleteWorkerServiceHandler(
-                this.dataRepositoriesFactory.createWorkerRepository(),
-                this.dataRepositoriesFactory.createProjectRepository()
+                this.repositoriesFactory.createWorkerRepository(),
+                this.repositoriesFactory.createProjectRepository()
         );
     }
 }
