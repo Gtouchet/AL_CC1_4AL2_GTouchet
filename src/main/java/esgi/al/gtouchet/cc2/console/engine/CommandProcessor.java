@@ -1,10 +1,10 @@
 package esgi.al.gtouchet.cc2.console.engine;
 
 import esgi.al.gtouchet.cc2.application.services.factories.ServicesFactory;
-import esgi.al.gtouchet.cc2.application.services.contractor.ContractorServicesFactory;
-import esgi.al.gtouchet.cc2.application.services.payment.PaymentServicesFactory;
-import esgi.al.gtouchet.cc2.application.services.project.ProjectServicesFactory;
-import esgi.al.gtouchet.cc2.application.services.worker.WorkerServicesFactory;
+import esgi.al.gtouchet.cc2.application.services.factories.ContractorServicesFactory;
+import esgi.al.gtouchet.cc2.application.services.factories.PaymentServicesFactory;
+import esgi.al.gtouchet.cc2.application.services.factories.ProjectServicesFactory;
+import esgi.al.gtouchet.cc2.application.services.factories.WorkerServicesFactory;
 import esgi.al.gtouchet.cc2.console.commandHandlers.contractor.*;
 import esgi.al.gtouchet.cc2.console.commandHandlers.miscellaneous.HelpHandler;
 import esgi.al.gtouchet.cc2.console.commandHandlers.payment.*;

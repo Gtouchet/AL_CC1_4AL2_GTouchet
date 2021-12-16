@@ -1,13 +1,12 @@
 package esgi.al.gtouchet.cc2.servicesTests;
 
-import esgi.al.gtouchet.cc2.application.services.contractor.ContractorServicesFactory;
-import esgi.al.gtouchet.cc2.application.services.contractor.create.CreateContractorDto;
-import esgi.al.gtouchet.cc2.application.services.factories.MemoryServicesFactory;
 import esgi.al.gtouchet.cc2.application.services.factories.ServicesFactory;
-import esgi.al.gtouchet.cc2.application.services.payment.PaymentServicesFactory;
-import esgi.al.gtouchet.cc2.application.services.payment.create.CreatePaymentDto;
-import esgi.al.gtouchet.cc2.application.services.worker.WorkerServicesFactory;
-import esgi.al.gtouchet.cc2.application.services.worker.create.CreateWorkerDto;
+import esgi.al.gtouchet.cc2.application.services.factories.ContractorServicesFactory;
+import esgi.al.gtouchet.cc2.application.services.contractor.dtos.CreateContractorDto;
+import esgi.al.gtouchet.cc2.application.services.factories.PaymentServicesFactory;
+import esgi.al.gtouchet.cc2.application.services.payment.dtos.CreatePaymentDto;
+import esgi.al.gtouchet.cc2.application.services.factories.WorkerServicesFactory;
+import esgi.al.gtouchet.cc2.application.services.worker.dtos.CreateWorkerDto;
 import esgi.al.gtouchet.cc2.domain.models.*;
 import esgi.al.gtouchet.cc2.domain.valueObjects.Password;
 import esgi.al.gtouchet.cc2.infrastructure.repositories.factories.MemoryRepositoriesRetainer;
@@ -24,7 +23,7 @@ public class PaymentServicesTests
     @Rule
     public final ExpectedException exception = ExpectedException.none();
 
-    private RepositoriesFactory repositoriesFactory;
+    private RepositoriesFactory repositoriesRetainer;
 
     private ContractorServicesFactory contractorServicesFactory;
     private PaymentServicesFactory paymentServicesFactory;
@@ -35,9 +34,9 @@ public class PaymentServicesTests
     @Before
     public void setup()
     {
-        this.repositoriesFactory = new MemoryRepositoriesRetainer();
+        this.repositoriesRetainer = new MemoryRepositoriesRetainer();
 
-        ServicesFactory servicesFactory = new MemoryServicesFactory(this.repositoriesFactory);
+        ServicesFactory servicesFactory = new ServicesFactory(this.repositoriesRetainer);
         this.contractorServicesFactory = servicesFactory.createContractorServicesFactory();
         this.paymentServicesFactory = servicesFactory.createPaymentServicesFactory();
         WorkerServicesFactory workerServicesFactory = servicesFactory.createWorkerServicesFactory();
@@ -62,7 +61,7 @@ public class PaymentServicesTests
     @Test
     public void createPayment()
     {
-        long paymentRepoSize = this.repositoriesFactory.createPaymentRepository().read().count();
+        long paymentRepoSize = this.repositoriesRetainer.createPaymentRepository().read().count();
 
         assertEquals(0, paymentRepoSize);
 
@@ -73,10 +72,10 @@ public class PaymentServicesTests
                 "Coffee"
         ));
 
-        paymentRepoSize = this.repositoriesFactory.createPaymentRepository().read().count();
+        paymentRepoSize = this.repositoriesRetainer.createPaymentRepository().read().count();
 
         assertEquals(1, paymentRepoSize);
-        assertTrue(this.repositoriesFactory.createPaymentRepository().exists(payment.getId()));
+        assertTrue(this.repositoriesRetainer.createPaymentRepository().exists(payment.getId()));
     }
 
     @Test
@@ -91,16 +90,16 @@ public class PaymentServicesTests
 
         this.paymentServicesFactory.getDeletePaymentHandler().handle(payment.getId());
 
-        long paymentRepoSize = this.repositoriesFactory.createPaymentRepository().read().count();
+        long paymentRepoSize = this.repositoriesRetainer.createPaymentRepository().read().count();
 
         assertEquals(0, paymentRepoSize);
-        assertFalse(this.repositoriesFactory.createPaymentRepository().exists(payment.getId()));
+        assertFalse(this.repositoriesRetainer.createPaymentRepository().exists(payment.getId()));
     }
 
     @Test
     public void createPayment_unvalidatedPaymentMethod()
     {
-        long paymentRepoSize = this.repositoriesFactory.createPaymentRepository().read().count();
+        long paymentRepoSize = this.repositoriesRetainer.createPaymentRepository().read().count();
 
         assertEquals(0, paymentRepoSize);
 
@@ -119,7 +118,7 @@ public class PaymentServicesTests
                 "Lunch"
         ));
 
-        paymentRepoSize = this.repositoriesFactory.createPaymentRepository().read().count();
+        paymentRepoSize = this.repositoriesRetainer.createPaymentRepository().read().count();
 
         assertEquals(0, paymentRepoSize);
         assertNull(payment);

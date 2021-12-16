@@ -1,12 +1,11 @@
 package esgi.al.gtouchet.cc2.servicesTests;
 
-import esgi.al.gtouchet.cc2.application.services.factories.MemoryServicesFactory;
 import esgi.al.gtouchet.cc2.application.services.factories.ServicesFactory;
-import esgi.al.gtouchet.cc2.application.services.contractor.ContractorServicesFactory;
-import esgi.al.gtouchet.cc2.application.services.contractor.create.CreateContractorDto;
-import esgi.al.gtouchet.cc2.application.services.contractor.update.UpdateContractorDto;
-import esgi.al.gtouchet.cc2.application.services.worker.WorkerServicesFactory;
-import esgi.al.gtouchet.cc2.application.services.worker.create.CreateWorkerDto;
+import esgi.al.gtouchet.cc2.application.services.factories.ContractorServicesFactory;
+import esgi.al.gtouchet.cc2.application.services.contractor.dtos.CreateContractorDto;
+import esgi.al.gtouchet.cc2.application.services.contractor.dtos.UpdateContractorDto;
+import esgi.al.gtouchet.cc2.application.services.factories.WorkerServicesFactory;
+import esgi.al.gtouchet.cc2.application.services.worker.dtos.CreateWorkerDto;
 import esgi.al.gtouchet.cc2.domain.models.Contractor;
 import esgi.al.gtouchet.cc2.domain.models.PaymentMethod;
 import esgi.al.gtouchet.cc2.domain.models.Service;
@@ -27,7 +26,7 @@ public class ContractorServicesTests
     @Rule
     public final ExpectedException exception = ExpectedException.none();
 
-    private RepositoriesFactory repositoriesFactory;
+    private RepositoriesFactory repositoriesRetainer;
 
     private ContractorServicesFactory contractorServicesFactory;
     private WorkerServicesFactory workerServicesFactory;
@@ -35,9 +34,9 @@ public class ContractorServicesTests
     @Before
     public void setup()
     {
-        this.repositoriesFactory = new MemoryRepositoriesRetainer();
+        this.repositoriesRetainer = new MemoryRepositoriesRetainer();
 
-        ServicesFactory servicesFactory = new MemoryServicesFactory(this.repositoriesFactory);
+        ServicesFactory servicesFactory = new ServicesFactory(this.repositoriesRetainer);
         this.contractorServicesFactory = servicesFactory.createContractorServicesFactory();
         this.workerServicesFactory = servicesFactory.createWorkerServicesFactory();
     }
@@ -45,7 +44,7 @@ public class ContractorServicesTests
     @Test
     public void createContractor()
     {
-        long contractorRepoSize = this.repositoriesFactory.createContractorRepository().read().count();
+        long contractorRepoSize = this.repositoriesRetainer.createContractorRepository().read().count();
 
         assertEquals(0, contractorRepoSize);
 
@@ -56,10 +55,10 @@ public class ContractorServicesTests
                 PaymentMethod.card
         ));
 
-        contractorRepoSize = this.repositoriesFactory.createContractorRepository().read().count();
+        contractorRepoSize = this.repositoriesRetainer.createContractorRepository().read().count();
 
         assertEquals(1, contractorRepoSize);
-        assertTrue(this.repositoriesFactory.createContractorRepository().exists(contractor.getId()));
+        assertTrue(this.repositoriesRetainer.createContractorRepository().exists(contractor.getId()));
     }
 
     @Test
@@ -74,10 +73,10 @@ public class ContractorServicesTests
 
         this.contractorServicesFactory.getDeleteContractorService().handle(contractor.getId());
 
-        long contractorRepoSize = this.repositoriesFactory.createContractorRepository().read().count();
+        long contractorRepoSize = this.repositoriesRetainer.createContractorRepository().read().count();
 
         assertEquals(0, contractorRepoSize);
-        assertFalse(this.repositoriesFactory.createContractorRepository().exists(contractor.getId()));
+        assertFalse(this.repositoriesRetainer.createContractorRepository().exists(contractor.getId()));
     }
 
     @Test
@@ -99,10 +98,10 @@ public class ContractorServicesTests
                 PaymentMethod.card
         ));
 
-        long contractorRepoSize = this.repositoriesFactory.createContractorRepository().read().count();
+        long contractorRepoSize = this.repositoriesRetainer.createContractorRepository().read().count();
 
         assertEquals(1, contractorRepoSize);
-        assertTrue(this.repositoriesFactory.createContractorRepository().exists(contractor1.getId()));
+        assertTrue(this.repositoriesRetainer.createContractorRepository().exists(contractor1.getId()));
     }
 
     @Test
@@ -127,11 +126,11 @@ public class ContractorServicesTests
         ));
 
         contractorAndWorkerReposSize =
-                this.repositoriesFactory.createContractorRepository().read().count() +
-                this.repositoriesFactory.createWorkerRepository().read().count();
+                this.repositoriesRetainer.createContractorRepository().read().count() +
+                this.repositoriesRetainer.createWorkerRepository().read().count();
 
         assertEquals(1, contractorAndWorkerReposSize);
-        assertTrue(this.repositoriesFactory.createContractorRepository().exists(contractor.getId()));
+        assertTrue(this.repositoriesRetainer.createContractorRepository().exists(contractor.getId()));
         assertNull(worker);
     }
 

@@ -1,7 +1,7 @@
 package esgi.al.gtouchet.cc2.console.commandHandlers.payment;
 
 import esgi.al.gtouchet.cc2.application.services.ServiceHandler;
-import esgi.al.gtouchet.cc2.application.services.payment.create.CreatePaymentDto;
+import esgi.al.gtouchet.cc2.application.services.payment.dtos.CreatePaymentDto;
 import esgi.al.gtouchet.cc2.console.commandHandlers.CommandHandler;
 import esgi.al.gtouchet.cc2.console.engine.Command;
 import esgi.al.gtouchet.cc2.console.engine.WrongNumberOfArgumentException;

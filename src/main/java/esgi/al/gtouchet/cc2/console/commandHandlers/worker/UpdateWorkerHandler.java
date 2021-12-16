@@ -1,7 +1,7 @@
 package esgi.al.gtouchet.cc2.console.commandHandlers.worker;
 
 import esgi.al.gtouchet.cc2.application.services.ServiceHandler;
-import esgi.al.gtouchet.cc2.application.services.worker.update.UpdateWorkerDto;
+import esgi.al.gtouchet.cc2.application.services.worker.dtos.UpdateWorkerDto;
 import esgi.al.gtouchet.cc2.console.commandHandlers.CommandHandler;
 import esgi.al.gtouchet.cc2.console.engine.Command;
 import esgi.al.gtouchet.cc2.console.engine.WrongNumberOfArgumentException;
