@@ -1,6 +1,6 @@
 package esgi.al.gtouchet.cc2.console.engine;
 
-import esgi.al.gtouchet.cc2.application.ServicesFactory;
+import esgi.al.gtouchet.cc2.application.services.factories.ServicesFactory;
 
 import java.util.Scanner;
 

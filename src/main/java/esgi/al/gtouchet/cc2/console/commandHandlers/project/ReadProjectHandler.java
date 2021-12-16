@@ -1,10 +1,9 @@
 package esgi.al.gtouchet.cc2.console.commandHandlers.project;
 
-import esgi.al.gtouchet.cc2.application.ServiceHandler;
+import esgi.al.gtouchet.cc2.application.services.ServiceHandler;
 import esgi.al.gtouchet.cc2.console.commandHandlers.CommandHandler;
 import esgi.al.gtouchet.cc2.console.engine.Command;
 import esgi.al.gtouchet.cc2.console.engine.WrongNumberOfArgumentException;
-import esgi.al.gtouchet.cc2.domain.models.Payment;
 import esgi.al.gtouchet.cc2.domain.models.Project;
 import esgi.al.gtouchet.cc2.domain.valueObjects.Id;
 
