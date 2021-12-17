@@ -2,14 +2,22 @@ package esgi.al.gtouchet.cc2.console.engine;
 
 import esgi.al.gtouchet.cc2.application.services.ServicesContainer;
 import esgi.al.gtouchet.cc2.application.services.contractor.*;
-import esgi.al.gtouchet.cc2.application.services.payment.*;
+import esgi.al.gtouchet.cc2.application.services.payment.CreatePaymentServiceHandler;
+import esgi.al.gtouchet.cc2.application.services.payment.DeletePaymentServiceHandler;
+import esgi.al.gtouchet.cc2.application.services.payment.ReadAllPaymentServiceHandler;
+import esgi.al.gtouchet.cc2.application.services.payment.ReadIdPaymentServiceHandler;
 import esgi.al.gtouchet.cc2.application.services.project.*;
 import esgi.al.gtouchet.cc2.application.services.worker.*;
 import esgi.al.gtouchet.cc2.console.commandHandlers.contractor.*;
 import esgi.al.gtouchet.cc2.console.commandHandlers.miscellaneous.HelpHandler;
-import esgi.al.gtouchet.cc2.console.commandHandlers.payment.*;
+import esgi.al.gtouchet.cc2.console.commandHandlers.payment.CreatePaymentHandler;
+import esgi.al.gtouchet.cc2.console.commandHandlers.payment.DeletePaymentHandler;
+import esgi.al.gtouchet.cc2.console.commandHandlers.payment.ReadPaymentHandler;
 import esgi.al.gtouchet.cc2.console.commandHandlers.project.*;
-import esgi.al.gtouchet.cc2.console.commandHandlers.worker.*;
+import esgi.al.gtouchet.cc2.console.commandHandlers.worker.CreateWorkerHandler;
+import esgi.al.gtouchet.cc2.console.commandHandlers.worker.DeleteWorkerHandler;
+import esgi.al.gtouchet.cc2.console.commandHandlers.worker.ReadWorkerHandler;
+import esgi.al.gtouchet.cc2.console.commandHandlers.worker.UpdateWorkerHandler;
 
 public class CommandProcessor
 {

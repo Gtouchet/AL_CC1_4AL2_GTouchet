@@ -22,7 +22,7 @@ import org.junit.rules.ExpectedException;
 
 import static org.junit.Assert.*;
 
-public class ContractorServicesContainerTests
+public class ContractorServicesTests
 {
     @Rule
     public final ExpectedException exception = ExpectedException.none();

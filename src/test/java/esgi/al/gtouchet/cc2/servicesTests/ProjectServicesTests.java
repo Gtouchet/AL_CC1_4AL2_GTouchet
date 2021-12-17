@@ -17,17 +17,12 @@ import esgi.al.gtouchet.cc2.infrastructure.apis.PaymentMethodValidatorApi;
 import esgi.al.gtouchet.cc2.infrastructure.repositories.factories.MemoryRepositoriesRetainer;
 import esgi.al.gtouchet.cc2.infrastructure.repositories.factories.RepositoriesFactory;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import static org.junit.Assert.*;
 
 public class ProjectServicesTests
 {
-    @Rule
-    public final ExpectedException exception = ExpectedException.none();
-
     private RepositoriesFactory repositoriesFactory;
     private ServicesContainer servicesContainer;
 

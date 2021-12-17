@@ -1,8 +1,15 @@
 package esgi.al.gtouchet.cc2.servicesTests;
 
 import esgi.al.gtouchet.cc2.application.services.ServicesContainer;
+import esgi.al.gtouchet.cc2.application.services.contractor.CreateContractorServiceHandler;
+import esgi.al.gtouchet.cc2.application.services.contractor.dtos.CreateContractorDto;
 import esgi.al.gtouchet.cc2.application.services.worker.CreateWorkerServiceHandler;
+import esgi.al.gtouchet.cc2.application.services.worker.DeleteWorkerServiceHandler;
+import esgi.al.gtouchet.cc2.application.services.worker.UpdateWorkerServiceHandler;
 import esgi.al.gtouchet.cc2.application.services.worker.dtos.CreateWorkerDto;
+import esgi.al.gtouchet.cc2.application.services.worker.dtos.UpdateWorkerDto;
+import esgi.al.gtouchet.cc2.domain.models.Contractor;
+import esgi.al.gtouchet.cc2.domain.models.PaymentMethod;
 import esgi.al.gtouchet.cc2.domain.models.Service;
 import esgi.al.gtouchet.cc2.domain.models.Worker;
 import esgi.al.gtouchet.cc2.domain.validators.PasswordValidator;
@@ -15,8 +22,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class WorkerServicesTests
 {
@@ -57,53 +63,52 @@ public class WorkerServicesTests
         assertEquals(1, workerRepoSize);
         assertTrue(this.repositoriesFactory.createWorkerRepository().exists(worker.getId()));
     }
-/* // TODO
+
     @Test
     public void deleteWorker()
     {
-        Id workerId = this.manager.workerService.create(
+        Worker worker = (Worker) this.servicesContainer.retrieve(CreateWorkerServiceHandler.class).handle(new CreateWorkerDto(
                 "GTouchet",
                 Password.of("ABcd1234!"),
                 "Guillaume",
                 Service.builder,
                 91
-        );
+        ));
 
-        this.manager.workerService.delete(workerId);
+        assertTrue((boolean) this.servicesContainer.retrieve(DeleteWorkerServiceHandler.class).handle(worker.getId()));
 
-        long workerRepoSize = this.manager.workerService.getRepositorySize();
+        long workerRepoSize = this.repositoriesFactory.createWorkerRepository().read().count();
 
         assertEquals(0, workerRepoSize);
-        assertFalse(this.manager.workerService.exists(workerId));
+        assertFalse(this.repositoriesFactory.createWorkerRepository().exists(worker.getId()));
     }
 
     @Test
     public void createTwoWorkers_sameLogin()
     {
         String login = "GTouchet";
-        long workerRepoSize;
 
-        Id workerId1 = this.manager.workerService.create(
+        Worker worker1 = (Worker) this.servicesContainer.retrieve(CreateWorkerServiceHandler.class).handle(new CreateWorkerDto(
                 login,
                 Password.of("ABcd1234!"),
                 "Guillaume",
                 Service.builder,
                 91
-        );
+        ));
 
-        Id workerId2 = this.manager.workerService.create(
+        Worker worker2 = (Worker) this.servicesContainer.retrieve(CreateWorkerServiceHandler.class).handle(new CreateWorkerDto(
                 login,
                 Password.of("ABcd1234!"),
                 "Guillaume",
                 Service.builder,
                 91
-        );
+        ));
 
-        workerRepoSize = this.manager.workerService.getRepositorySize();
+        long workerRepoSize = this.repositoriesFactory.createWorkerRepository().read().count();
 
         assertEquals(1, workerRepoSize);
-        assertTrue(this.manager.workerService.exists(workerId1));
-        assertFalse(this.manager.workerService.exists(workerId2));
+        assertTrue(this.repositoriesFactory.createWorkerRepository().exists(worker1.getId()));
+        assertNull(worker2);
     }
 
     @Test
@@ -112,15 +117,15 @@ public class WorkerServicesTests
         String login = "GTouchet";
         long workerAndContractorReposSize;
 
-        Id workerId = this.manager.workerService.create(
+        Worker worker = (Worker) this.servicesContainer.retrieve(CreateWorkerServiceHandler.class).handle(new CreateWorkerDto(
                 login,
                 Password.of("ABcd1234!"),
                 "Guillaume",
                 Service.builder,
                 91
-        );
+        ));
 
-        Id contractorId = this.manager.contractorService.create(new CreateContractorDto(
+        Contractor contractor = (Contractor) this.servicesContainer.retrieve(CreateContractorServiceHandler.class).handle(new CreateContractorDto(
                 login,
                 Password.of("ABcd1234!"),
                 "Touchet",
@@ -128,44 +133,41 @@ public class WorkerServicesTests
         ));
 
         workerAndContractorReposSize =
-                this.manager.workerService.getRepositorySize() +
-                this.manager.contractorService.getRepositorySize();
+                this.repositoriesFactory.createWorkerRepository().read().count() +
+                this.repositoriesFactory.createContractorRepository().read().count();
 
         assertEquals(1, workerAndContractorReposSize);
-        assertTrue(this.manager.workerService.exists(workerId));
-        assertFalse(this.manager.contractorService.exists(contractorId));
+        assertTrue(this.repositoriesFactory.createWorkerRepository().exists(worker.getId()));
+        assertNull(contractor);
     }
 
     @Test
     public void updateWorker()
     {
-        Id workerId = this.manager.workerService.create(
+        Worker originalWorker = (Worker) this.servicesContainer.retrieve(CreateWorkerServiceHandler.class).handle(new CreateWorkerDto(
                 "GTouchet",
                 Password.of("ABcd1234!"),
                 "Guillaume",
                 Service.builder,
                 91
-        );
-
-        Worker originalWorker = this.manager.workerIMR.read(workerId);
+        ));
 
         Password newPassword = Password.of("newPass123??");
         String newName = "Robert";
         Service newService = Service.electrician;
         int newDepartment = 75;
 
-        this.manager.workerService.update(workerId,
+        Worker updatedWorker = (Worker) this.servicesContainer.retrieve(UpdateWorkerServiceHandler.class).handle(new UpdateWorkerDto(
+                originalWorker.getId(),
                 newPassword,
                 newName,
                 newService,
                 newDepartment
-        );
-
-        Worker updatedWorker = this.manager.workerIMR.read(workerId);
+        ));
 
         assertNotSame(originalWorker, updatedWorker);
-        Assert.assertEquals(originalWorker.getId(), updatedWorker.getId());
-        Assert.assertEquals(updatedWorker.getPassword(), newPassword);
+        assertEquals(originalWorker.getId(), updatedWorker.getId());
+        assertEquals(updatedWorker.getPassword(), newPassword);
         assertEquals(updatedWorker.getName(), newName);
         assertEquals(updatedWorker.getService(), newService);
         assertEquals(updatedWorker.getDepartment(), newDepartment);
@@ -176,13 +178,13 @@ public class WorkerServicesTests
     {
         this.exception.expect(IllegalArgumentException.class);
 
-        this.manager.workerService.create(
+        this.servicesContainer.retrieve(CreateWorkerServiceHandler.class).handle(new CreateWorkerDto(
                 "GTouchet",
                 Password.of("ABcd1234!"),
                 "Guillaume",
                 Service.valueOf("developer"),
                 91
-        );
+        ));
     }
 
     @Test
@@ -190,13 +192,12 @@ public class WorkerServicesTests
     {
         this.exception.expect(NumberFormatException.class);
 
-        this.manager.workerService.create(
+        this.servicesContainer.retrieve(CreateWorkerServiceHandler.class).handle(new CreateWorkerDto(
                 "GTouchet",
                 Password.of("ABcd1234!"),
                 "Guillaume",
                 Service.builder,
                 Integer.parseInt("ninety one")
-        );
+        ));
     }
-    */
 }

@@ -1,7 +1,10 @@
 package esgi.al.gtouchet.cc2.application.services;
 
 import esgi.al.gtouchet.cc2.application.services.contractor.*;
-import esgi.al.gtouchet.cc2.application.services.payment.*;
+import esgi.al.gtouchet.cc2.application.services.payment.CreatePaymentServiceHandler;
+import esgi.al.gtouchet.cc2.application.services.payment.DeletePaymentServiceHandler;
+import esgi.al.gtouchet.cc2.application.services.payment.ReadAllPaymentServiceHandler;
+import esgi.al.gtouchet.cc2.application.services.payment.ReadIdPaymentServiceHandler;
 import esgi.al.gtouchet.cc2.application.services.project.*;
 import esgi.al.gtouchet.cc2.application.services.worker.*;
 import esgi.al.gtouchet.cc2.domain.models.Contractor;
