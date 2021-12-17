@@ -8,13 +8,15 @@ import esgi.al.gtouchet.cc2.console.engine.WrongNumberOfArgumentException;
 import esgi.al.gtouchet.cc2.domain.models.Project;
 import esgi.al.gtouchet.cc2.domain.valueObjects.Id;
 
+import java.util.Objects;
+
 public class UpdateProjectHandler implements CommandHandler
 {
     private final ServiceHandler<Project, UpdateProjectDto> serviceHandler;
 
-    public UpdateProjectHandler(ServiceHandler<Project, UpdateProjectDto> serviceHandler)
+    public UpdateProjectHandler(ServiceHandler<Project, UpdateProjectDto> serviceHandler) throws NullPointerException
     {
-        this.serviceHandler = serviceHandler;
+        this.serviceHandler = Objects.requireNonNull(serviceHandler);
     }
 
     @Override

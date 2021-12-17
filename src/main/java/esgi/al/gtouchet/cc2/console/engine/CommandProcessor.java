@@ -1,10 +1,10 @@
 package esgi.al.gtouchet.cc2.console.engine;
 
-import esgi.al.gtouchet.cc2.application.services.factories.ServicesFactory;
-import esgi.al.gtouchet.cc2.application.services.factories.ContractorServicesFactory;
-import esgi.al.gtouchet.cc2.application.services.factories.PaymentServicesFactory;
-import esgi.al.gtouchet.cc2.application.services.factories.ProjectServicesFactory;
-import esgi.al.gtouchet.cc2.application.services.factories.WorkerServicesFactory;
+import esgi.al.gtouchet.cc2.application.services.Services;
+import esgi.al.gtouchet.cc2.application.services.contractor.*;
+import esgi.al.gtouchet.cc2.application.services.payment.*;
+import esgi.al.gtouchet.cc2.application.services.project.*;
+import esgi.al.gtouchet.cc2.application.services.worker.*;
 import esgi.al.gtouchet.cc2.console.commandHandlers.contractor.*;
 import esgi.al.gtouchet.cc2.console.commandHandlers.miscellaneous.HelpHandler;
 import esgi.al.gtouchet.cc2.console.commandHandlers.payment.*;
@@ -13,17 +13,11 @@ import esgi.al.gtouchet.cc2.console.commandHandlers.worker.*;
 
 public class CommandProcessor
 {
-    private final ContractorServicesFactory contractorServicesFactory;
-    private final PaymentServicesFactory paymentServicesFactory;
-    private final ProjectServicesFactory projectServicesFactory;
-    private final WorkerServicesFactory workerServicesFactory;
+    private final Services services;
 
-    public CommandProcessor(ServicesFactory servicesFactory)
+    public CommandProcessor(Services services)
     {
-        this.contractorServicesFactory = servicesFactory.createContractorServicesFactory();
-        this.paymentServicesFactory = servicesFactory.createPaymentServicesFactory();
-        this.projectServicesFactory = servicesFactory.createProjectServicesFactory();
-        this.workerServicesFactory = servicesFactory.createWorkerServicesFactory();
+        this.services = services;
     }
 
     public void process(String command)
@@ -40,72 +34,72 @@ public class CommandProcessor
             {
                 // Contractor handlers
                 case CREATE_CONTRACTOR:
-                    new CreateContractorCommandHandler(this.contractorServicesFactory.getCreateContractorHandler()).handle(params);
+                    new CreateContractorCommandHandler(this.services.retrieve(CreateContractorServiceHandler.class)).handle(params);
                     break;
                 case READ_CONTRACTOR:
                     new ReadContractorCommandHandler(
-                            this.contractorServicesFactory.getReadAllContractorHandler(),
-                            this.contractorServicesFactory.getReadIdContractorHandler()).handle(params);
+                            this.services.retrieve(ReadAllContractorServiceHandler.class),
+                            this.services.retrieve(ReadIdContractorServiceHandler.class)).handle(params);
                     break;
                 case UPDATE_CONTRACTOR:
-                    new UpdateContractorCommandHandler(this.contractorServicesFactory.getUpdateContractorHandler()).handle(params);
+                    new UpdateContractorCommandHandler(this.services.retrieve(UpdateContractorServiceHandler.class)).handle(params);
                     break;
                 case DELETE_CONTRACTOR:
-                    new DeleteContractorCommandHandler(this.contractorServicesFactory.getDeleteContractorService()).handle(params);
+                    new DeleteContractorCommandHandler(this.services.retrieve(DeleteContractorServiceHandler.class)).handle(params);
                     break;
                 case VALIDATE_PAYMENT:
-                    new ValidatePaymentCommandHandler(this.contractorServicesFactory.getValidatePaymentService()).handle(params);
+                    new ValidatePaymentCommandHandler(this.services.retrieve(ValidatePaymentServiceHandler.class)).handle(params);
                     break;
 
                 // Payment handlers
                 case CREATE_PAYMENT:
-                    new CreatePaymentHandler(this.paymentServicesFactory.getCreatePaymentHandler()).handle(params);
+                    new CreatePaymentHandler(this.services.retrieve(CreatePaymentServiceHandler.class)).handle(params);
                     break;
                 case READ_PAYMENT:
                     new ReadPaymentHandler(
-                            this.paymentServicesFactory.getReadAllPaymentHandler(),
-                            this.paymentServicesFactory.getReadIdPaymentHandler()).handle(params);
+                            this.services.retrieve(ReadAllPaymentServiceHandler.class),
+                            this.services.retrieve(ReadIdPaymentServiceHandler.class)).handle(params);
                     break;
                 case DELETE_PAYMENT:
-                    new DeletePaymentHandler(this.paymentServicesFactory.getDeletePaymentHandler()).handle(params);
+                    new DeletePaymentHandler(this.services.retrieve(DeletePaymentServiceHandler.class)).handle(params);
                     break;
 
                 // Project handlers
                 case CREATE_PROJECT:
-                    new CreateProjectHandler(this.projectServicesFactory.getCreateProjectHandler()).handle(params);
+                    new CreateProjectHandler(this.services.retrieve(CreateProjectServiceHandler.class)).handle(params);
                     break;
                 case READ_PROJECT:
                     new ReadProjectHandler(
-                            this.projectServicesFactory.getReadAllProjectHandler(),
-                            this.projectServicesFactory.getReadIdProjectHandle()).handle(params);
+                            this.services.retrieve(ReadAllProjectServiceHandler.class),
+                            this.services.retrieve(ReadIdProjectServiceHandler.class)).handle(params);
                     break;
                 case UPDATE_PROJECT:
-                    new UpdateProjectHandler(this.projectServicesFactory.getUpdateProjectHandler()).handle(params);
+                    new UpdateProjectHandler(this.services.retrieve(UpdateProjectServiceHandler.class)).handle(params);
                     break;
                 case DELETE_PROJECT:
-                    new DeleteProjectHandler(this.projectServicesFactory.getDeleteProjectHandler()).handle(params);
+                    new DeleteProjectHandler(this.services.retrieve(DeleteProjectServiceHandler.class)).handle(params);
                     break;
                 case ENGAGE_WORKER:
-                    new EngageWorkerHandler(this.projectServicesFactory.getEngageProjectHandler()).handle(params);
+                    new EngageWorkerHandler(this.services.retrieve(EngageWorkerServiceHandler.class)).handle(params);
                         break;
                 case FIRE_WORKER:
-                    new FireWorkerHandler(this.projectServicesFactory.getFireProjectHandler()).handle(params);
+                    new FireWorkerHandler(this.services.retrieve(FireWorkerServiceHandler.class)).handle(params);
                     break;
 
                 // Worker handlers
                 case CREATE_WORKER:
-                    new CreateWorkerHandler(this.workerServicesFactory.getCreateWorkerHandler()).handle(params);
+                    new CreateWorkerHandler(this.services.retrieve(CreateWorkerServiceHandler.class)).handle(params);
                     break;
                 case READ_WORKER:
                     new ReadWorkerHandler(
-                            this.workerServicesFactory.getReadAllWorkerHandler(),
-                            this.workerServicesFactory.getReadIdWorkerHandler()).handle(params);
+                            this.services.retrieve(ReadAllWorkerServiceHandler.class),
+                            this.services.retrieve(ReadIdWorkerServiceHandler.class)).handle(params);
                     break;
                 case UPDATE_WORKER:
-                    new UpdateWorkerHandler(this.workerServicesFactory.getUpdateWorkerHandler()).handle(params);
+                    new UpdateWorkerHandler(this.services.retrieve(UpdateWorkerServiceHandler.class)).handle(params);
                     break;
                 case DELETE_WORKER:
-                    new DeleteWorkerHandler(this.workerServicesFactory.getDeleteWorkerHandler()).handle(params);
+                    new DeleteWorkerHandler(this.services.retrieve(DeleteWorkerServiceHandler.class)).handle(params);
                     break;
 
                 // Help handler
@@ -116,6 +110,8 @@ public class CommandProcessor
             }
         } catch (WrongNumberOfArgumentException e) {
             System.out.println(e.getMessage());
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
     }
 }

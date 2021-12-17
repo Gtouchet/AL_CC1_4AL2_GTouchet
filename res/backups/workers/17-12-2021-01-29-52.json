@@ -1,0 +1,20 @@
+[
+  {
+    "service": "plumber",
+    "department": 75,
+    "login": "gt",
+    "password": {
+      "value": "Pass123,;"
+    },
+    "name": "guillaume",
+    "id": {
+      "value": "4d7b2b92-47bd-43be-b250-c0c8d27b4bc7"
+    },
+    "creationDate": {
+      "value": "17-12-2021-01-29-15"
+    },
+    "updateDate": {
+      "value": "17-12-2021-01-29-15"
+    }
+  }
+]

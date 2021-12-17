@@ -9,13 +9,15 @@ import esgi.al.gtouchet.cc2.domain.models.Contractor;
 import esgi.al.gtouchet.cc2.domain.models.PaymentMethod;
 import esgi.al.gtouchet.cc2.domain.valueObjects.Password;
 
+import java.util.Objects;
+
 public class CreateContractorCommandHandler implements CommandHandler
 {
     private final ServiceHandler<Contractor, CreateContractorDto> serviceHandler;
 
-    public CreateContractorCommandHandler(ServiceHandler<Contractor, CreateContractorDto> serviceHandler)
+    public CreateContractorCommandHandler(ServiceHandler<Contractor, CreateContractorDto> serviceHandler) throws NullPointerException
     {
-        this.serviceHandler = serviceHandler;
+        this.serviceHandler = Objects.requireNonNull(serviceHandler);
     }
 
     @Override

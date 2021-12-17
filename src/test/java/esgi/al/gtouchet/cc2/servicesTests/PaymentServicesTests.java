@@ -1,22 +1,8 @@
 package esgi.al.gtouchet.cc2.servicesTests;
 
-import esgi.al.gtouchet.cc2.application.services.factories.ServicesFactory;
-import esgi.al.gtouchet.cc2.application.services.factories.ContractorServicesFactory;
-import esgi.al.gtouchet.cc2.application.services.contractor.dtos.CreateContractorDto;
-import esgi.al.gtouchet.cc2.application.services.factories.PaymentServicesFactory;
-import esgi.al.gtouchet.cc2.application.services.payment.dtos.CreatePaymentDto;
-import esgi.al.gtouchet.cc2.application.services.factories.WorkerServicesFactory;
-import esgi.al.gtouchet.cc2.application.services.worker.dtos.CreateWorkerDto;
-import esgi.al.gtouchet.cc2.domain.models.*;
-import esgi.al.gtouchet.cc2.domain.valueObjects.Password;
-import esgi.al.gtouchet.cc2.infrastructure.repositories.factories.MemoryRepositoriesRetainer;
 import esgi.al.gtouchet.cc2.infrastructure.repositories.factories.RepositoriesFactory;
-import org.junit.Before;
 import org.junit.Rule;
-import org.junit.Test;
 import org.junit.rules.ExpectedException;
-
-import static org.junit.Assert.*;
 
 public class PaymentServicesTests
 {
@@ -24,7 +10,7 @@ public class PaymentServicesTests
     public final ExpectedException exception = ExpectedException.none();
 
     private RepositoriesFactory repositoriesRetainer;
-
+/*
     private ContractorServicesFactory contractorServicesFactory;
     private PaymentServicesFactory paymentServicesFactory;
 
@@ -123,4 +109,6 @@ public class PaymentServicesTests
         assertEquals(0, paymentRepoSize);
         assertNull(payment);
     }
+
+ */
 }

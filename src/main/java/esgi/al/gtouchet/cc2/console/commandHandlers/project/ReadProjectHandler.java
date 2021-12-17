@@ -8,6 +8,7 @@ import esgi.al.gtouchet.cc2.domain.models.Project;
 import esgi.al.gtouchet.cc2.domain.valueObjects.Id;
 
 import java.util.List;
+import java.util.Objects;
 
 public class ReadProjectHandler implements CommandHandler
 {
@@ -16,10 +17,10 @@ public class ReadProjectHandler implements CommandHandler
 
     public ReadProjectHandler(
             ServiceHandler<List<Project>, Void> serviceHandlerAll,
-            ServiceHandler<Project, Id> serviceHandlerId)
+            ServiceHandler<Project, Id> serviceHandlerId) throws NullPointerException
     {
-        this.serviceHandlerAll = serviceHandlerAll;
-        this.serviceHandlerId = serviceHandlerId;
+        this.serviceHandlerAll = Objects.requireNonNull(serviceHandlerAll);
+        this.serviceHandlerId = Objects.requireNonNull(serviceHandlerId);
     }
 
     @Override

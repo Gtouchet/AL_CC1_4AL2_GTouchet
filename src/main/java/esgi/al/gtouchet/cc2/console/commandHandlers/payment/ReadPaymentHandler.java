@@ -8,6 +8,7 @@ import esgi.al.gtouchet.cc2.domain.models.Payment;
 import esgi.al.gtouchet.cc2.domain.valueObjects.Id;
 
 import java.util.List;
+import java.util.Objects;
 
 public class ReadPaymentHandler implements CommandHandler
 {
@@ -16,10 +17,10 @@ public class ReadPaymentHandler implements CommandHandler
 
     public ReadPaymentHandler(
             ServiceHandler<List<Payment>, Void> serviceHandlerAll,
-            ServiceHandler<Payment, Id> serviceHandlerId)
+            ServiceHandler<Payment, Id> serviceHandlerId) throws NullPointerException
     {
-        this.serviceHandlerAll = serviceHandlerAll;
-        this.serviceHandlerId = serviceHandlerId;
+        this.serviceHandlerAll = Objects.requireNonNull(serviceHandlerAll);
+        this.serviceHandlerId = Objects.requireNonNull(serviceHandlerId);
     }
 
     @Override

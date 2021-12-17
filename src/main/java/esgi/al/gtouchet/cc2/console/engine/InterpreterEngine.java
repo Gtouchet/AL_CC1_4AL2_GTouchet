@@ -1,17 +1,15 @@
 package esgi.al.gtouchet.cc2.console.engine;
 
-import esgi.al.gtouchet.cc2.application.services.factories.ServicesFactory;
-
 import java.util.Scanner;
 
 public class InterpreterEngine extends Thread
 {
-    private final ServicesFactory servicesFactory;
+    private final CommandProcessor commandProcessor;
     private final Scanner scanner;
 
-    public InterpreterEngine(ServicesFactory servicesFactory)
+    public InterpreterEngine(CommandProcessor commandProcessor)
     {
-        this.servicesFactory = servicesFactory;
+        this.commandProcessor = commandProcessor;
         this.scanner = new Scanner(System.in);
     }
 
@@ -24,7 +22,7 @@ public class InterpreterEngine extends Thread
         {
             System.out.print("> ");
             command = this.scanner.nextLine();
-            new CommandProcessor(this.servicesFactory).process(command);
+            this.commandProcessor.process(command);
         }
 
         System.out.println("See ya !");

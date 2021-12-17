@@ -1,17 +1,17 @@
 package esgi.al.gtouchet.cc2.servicesTests;
 
-import esgi.al.gtouchet.cc2.application.services.factories.ServicesFactory;
-import esgi.al.gtouchet.cc2.application.services.factories.ContractorServicesFactory;
+import esgi.al.gtouchet.cc2.application.services.Services;
+import esgi.al.gtouchet.cc2.application.services.ServicesInitializer;
+import esgi.al.gtouchet.cc2.application.services.contractor.*;
 import esgi.al.gtouchet.cc2.application.services.contractor.dtos.CreateContractorDto;
 import esgi.al.gtouchet.cc2.application.services.contractor.dtos.UpdateContractorDto;
-import esgi.al.gtouchet.cc2.application.services.factories.WorkerServicesFactory;
+import esgi.al.gtouchet.cc2.application.services.worker.CreateWorkerServiceHandler;
 import esgi.al.gtouchet.cc2.application.services.worker.dtos.CreateWorkerDto;
 import esgi.al.gtouchet.cc2.domain.models.Contractor;
 import esgi.al.gtouchet.cc2.domain.models.PaymentMethod;
 import esgi.al.gtouchet.cc2.domain.models.Service;
 import esgi.al.gtouchet.cc2.domain.models.Worker;
 import esgi.al.gtouchet.cc2.domain.valueObjects.Password;
-import esgi.al.gtouchet.cc2.infrastructure.repositories.EntityNotFoundException;
 import esgi.al.gtouchet.cc2.infrastructure.repositories.factories.MemoryRepositoriesRetainer;
 import esgi.al.gtouchet.cc2.infrastructure.repositories.factories.RepositoriesFactory;
 import org.junit.Before;
@@ -26,57 +26,52 @@ public class ContractorServicesTests
     @Rule
     public final ExpectedException exception = ExpectedException.none();
 
-    private RepositoriesFactory repositoriesRetainer;
-
-    private ContractorServicesFactory contractorServicesFactory;
-    private WorkerServicesFactory workerServicesFactory;
+    private RepositoriesFactory repositoriesFactory;
+    private Services services;
 
     @Before
     public void setup()
     {
-        this.repositoriesRetainer = new MemoryRepositoriesRetainer();
-
-        ServicesFactory servicesFactory = new ServicesFactory(this.repositoriesRetainer);
-        this.contractorServicesFactory = servicesFactory.createContractorServicesFactory();
-        this.workerServicesFactory = servicesFactory.createWorkerServicesFactory();
+        this.repositoriesFactory = new MemoryRepositoriesRetainer();
+        this.services = ServicesInitializer.initialize(this.repositoriesFactory);
     }
 
     @Test
     public void createContractor()
     {
-        long contractorRepoSize = this.repositoriesRetainer.createContractorRepository().read().count();
+        long contractorRepoSize = this.repositoriesFactory.createContractorRepository().read().count();
 
         assertEquals(0, contractorRepoSize);
 
-        Contractor contractor = this.contractorServicesFactory.getCreateContractorHandler().handle(new CreateContractorDto(
+        Contractor contractor = (Contractor) this.services.retrieve(CreateContractorServiceHandler.class).handle(new CreateContractorDto(
                 "GTouchet",
                 Password.of("ABcd1234!"),
                 "Guillaume",
                 PaymentMethod.card
         ));
 
-        contractorRepoSize = this.repositoriesRetainer.createContractorRepository().read().count();
+        contractorRepoSize = this.repositoriesFactory.createContractorRepository().read().count();
 
         assertEquals(1, contractorRepoSize);
-        assertTrue(this.repositoriesRetainer.createContractorRepository().exists(contractor.getId()));
+        assertTrue(this.repositoriesFactory.createContractorRepository().exists(contractor.getId()));
     }
 
     @Test
     public void deleteContractor()
     {
-        Contractor contractor = this.contractorServicesFactory.getCreateContractorHandler().handle(new CreateContractorDto(
+        Contractor contractor = (Contractor) this.services.retrieve(CreateContractorServiceHandler.class).handle(new CreateContractorDto(
                 "GTouchet",
                 Password.of("ABcd1234!"),
                 "Guillaume",
                 PaymentMethod.card
         ));
 
-        this.contractorServicesFactory.getDeleteContractorService().handle(contractor.getId());
+        assertTrue((boolean) this.services.retrieve(DeleteContractorServiceHandler.class).handle(contractor.getId()));
 
-        long contractorRepoSize = this.repositoriesRetainer.createContractorRepository().read().count();
+        long contractorRepoSize = this.repositoriesFactory.createContractorRepository().read().count();
 
         assertEquals(0, contractorRepoSize);
-        assertFalse(this.repositoriesRetainer.createContractorRepository().exists(contractor.getId()));
+        assertFalse(this.repositoriesFactory.createContractorRepository().exists(contractor.getId()));
     }
 
     @Test
@@ -84,40 +79,40 @@ public class ContractorServicesTests
     {
         final String sameLogin = "GTouchet";
 
-        Contractor contractor1 = this.contractorServicesFactory.getCreateContractorHandler().handle(new CreateContractorDto(
+        Contractor contractor1 = (Contractor) this.services.retrieve(CreateContractorServiceHandler.class).handle(new CreateContractorDto(
                 sameLogin,
                 Password.of("ABcd1234!"),
                 "Guillaume",
                 PaymentMethod.card
         ));
 
-        Contractor contractor2 = this.contractorServicesFactory.getCreateContractorHandler().handle(new CreateContractorDto(
+        Contractor contractor2 = (Contractor) this.services.retrieve(CreateContractorServiceHandler.class).handle(new CreateContractorDto(
                 sameLogin,
                 Password.of("ABcd1234!"),
                 "Guillaume",
                 PaymentMethod.card
         ));
 
-        long contractorRepoSize = this.repositoriesRetainer.createContractorRepository().read().count();
+        long contractorRepoSize = this.repositoriesFactory.createContractorRepository().read().count();
 
         assertEquals(1, contractorRepoSize);
-        assertTrue(this.repositoriesRetainer.createContractorRepository().exists(contractor1.getId()));
+        assertTrue(this.repositoriesFactory.createContractorRepository().exists(contractor1.getId()));
+        assertNull(contractor2);
     }
 
     @Test
     public void createContractorAndWorker_sameLogin()
     {
         final String sameLogin = "GTouchet";
-        long contractorAndWorkerReposSize;
 
-        Contractor contractor = this.contractorServicesFactory.getCreateContractorHandler().handle(new CreateContractorDto(
+        Contractor contractor = (Contractor) this.services.retrieve(CreateContractorServiceHandler.class).handle(new CreateContractorDto(
                 sameLogin,
                 Password.of("ABcd1234!"),
                 "Touchet",
                 PaymentMethod.card
         ));
 
-        Worker worker = this.workerServicesFactory.getCreateWorkerHandler().handle(new CreateWorkerDto(
+        Worker worker = (Worker) this.services.retrieve(CreateWorkerServiceHandler.class).handle(new CreateWorkerDto(
                 sameLogin,
                 Password.of("ABcd1234!"),
                 "Guillaume",
@@ -125,19 +120,19 @@ public class ContractorServicesTests
                 91
         ));
 
-        contractorAndWorkerReposSize =
-                this.repositoriesRetainer.createContractorRepository().read().count() +
-                this.repositoriesRetainer.createWorkerRepository().read().count();
+        long contractorAndWorkerReposSize =
+                this.repositoriesFactory.createContractorRepository().read().count() +
+                this.repositoriesFactory.createWorkerRepository().read().count();
 
         assertEquals(1, contractorAndWorkerReposSize);
-        assertTrue(this.repositoriesRetainer.createContractorRepository().exists(contractor.getId()));
+        assertTrue(this.repositoriesFactory.createContractorRepository().exists(contractor.getId()));
         assertNull(worker);
     }
 
     @Test
-    public void updateContractor() throws EntityNotFoundException
+    public void updateContractor()
     {
-        Contractor contractor = this.contractorServicesFactory.getCreateContractorHandler().handle(new CreateContractorDto(
+        Contractor contractor = (Contractor) this.services.retrieve(CreateContractorServiceHandler.class).handle(new CreateContractorDto(
                 "GTouchet",
                 Password.of("ABcd1234!"),
                 "Guillaume",
@@ -148,7 +143,7 @@ public class ContractorServicesTests
         String newName = "Robert";
         PaymentMethod newPaymentMethod = PaymentMethod.paypal;
 
-        Contractor updatedContractor = this.contractorServicesFactory.getUpdateContractorHandler().handle(new UpdateContractorDto(
+        Contractor updatedContractor = (Contractor) this.services.retrieve(UpdateContractorServiceHandler.class).handle(new UpdateContractorDto(
                 contractor.getId(),
                 newPassword,
                 newName,
@@ -165,7 +160,7 @@ public class ContractorServicesTests
     @Test
     public void validatePaymentMethod()
     {
-        Contractor contractor = this.contractorServicesFactory.getCreateContractorHandler().handle(new CreateContractorDto(
+        Contractor contractor = (Contractor) this.services.retrieve(CreateContractorServiceHandler.class).handle(new CreateContractorDto(
                 "GTouchet",
                 Password.of("ABcd1234!"),
                 "Guillaume",
@@ -174,9 +169,9 @@ public class ContractorServicesTests
 
         assertFalse(contractor.isPaymentValidated());
 
-        assertTrue(this.contractorServicesFactory.getValidatePaymentService().handle(contractor.getId()));
+        assertTrue((boolean) this.services.retrieve(ValidatePaymentServiceHandler.class).handle(contractor.getId()));
 
-        contractor = this.contractorServicesFactory.getReadIdContractorHandler().handle(contractor.getId());
+        contractor = (Contractor) this.services.retrieve(ReadIdContractorServiceHandler.class).handle(contractor.getId());
         assertTrue(contractor.isPaymentValidated());
     }
 
@@ -185,7 +180,7 @@ public class ContractorServicesTests
     {
         exception.expect(IllegalArgumentException.class);
 
-        this.contractorServicesFactory.getCreateContractorHandler().handle(new CreateContractorDto(
+        this.services.retrieve(CreateContractorServiceHandler.class).handle(new CreateContractorDto(
                 "GTouchet",
                 Password.of("ABcd1234!"),
                 "Guillaume",

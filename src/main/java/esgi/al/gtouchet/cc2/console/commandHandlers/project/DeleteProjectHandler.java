@@ -6,13 +6,15 @@ import esgi.al.gtouchet.cc2.console.engine.Command;
 import esgi.al.gtouchet.cc2.console.engine.WrongNumberOfArgumentException;
 import esgi.al.gtouchet.cc2.domain.valueObjects.Id;
 
+import java.util.Objects;
+
 public class DeleteProjectHandler implements CommandHandler
 {
     private final ServiceHandler<Boolean, Id> serviceHandler;
 
-    public DeleteProjectHandler(ServiceHandler<Boolean, Id> serviceHandler)
+    public DeleteProjectHandler(ServiceHandler<Boolean, Id> serviceHandler) throws NullPointerException
     {
-        this.serviceHandler = serviceHandler;
+        this.serviceHandler = Objects.requireNonNull(serviceHandler);
     }
 
     @Override

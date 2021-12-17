@@ -9,13 +9,15 @@ import esgi.al.gtouchet.cc2.domain.models.Service;
 import esgi.al.gtouchet.cc2.domain.models.Worker;
 import esgi.al.gtouchet.cc2.domain.valueObjects.Password;
 
+import java.util.Objects;
+
 public class CreateWorkerHandler implements CommandHandler
 {
     private final ServiceHandler<Worker, CreateWorkerDto> serviceHandler;
 
-    public CreateWorkerHandler(ServiceHandler<Worker, CreateWorkerDto> serviceHandler)
+    public CreateWorkerHandler(ServiceHandler<Worker, CreateWorkerDto> serviceHandler) throws NullPointerException
     {
-        this.serviceHandler = serviceHandler;
+        this.serviceHandler = Objects.requireNonNull(serviceHandler);
     }
 
     @Override

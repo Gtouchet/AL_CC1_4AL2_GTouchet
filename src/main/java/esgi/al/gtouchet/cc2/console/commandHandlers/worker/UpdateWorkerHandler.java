@@ -10,13 +10,15 @@ import esgi.al.gtouchet.cc2.domain.models.Worker;
 import esgi.al.gtouchet.cc2.domain.valueObjects.Id;
 import esgi.al.gtouchet.cc2.domain.valueObjects.Password;
 
+import java.util.Objects;
+
 public class UpdateWorkerHandler implements CommandHandler
 {
     private final ServiceHandler<Worker, UpdateWorkerDto> serviceHandler;
 
-    public UpdateWorkerHandler(ServiceHandler<Worker, UpdateWorkerDto> serviceHandler)
+    public UpdateWorkerHandler(ServiceHandler<Worker, UpdateWorkerDto> serviceHandler) throws NullPointerException
     {
-        this.serviceHandler = serviceHandler;
+        this.serviceHandler = Objects.requireNonNull(serviceHandler);
     }
 
     @Override

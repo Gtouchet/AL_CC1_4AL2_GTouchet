@@ -8,13 +8,15 @@ import esgi.al.gtouchet.cc2.console.engine.WrongNumberOfArgumentException;
 import esgi.al.gtouchet.cc2.domain.models.Payment;
 import esgi.al.gtouchet.cc2.domain.valueObjects.Id;
 
+import java.util.Objects;
+
 public class CreatePaymentHandler implements CommandHandler
 {
     private final ServiceHandler<Payment, CreatePaymentDto> serviceHandler;
 
-    public CreatePaymentHandler(ServiceHandler<Payment, CreatePaymentDto> serviceHandler)
+    public CreatePaymentHandler(ServiceHandler<Payment, CreatePaymentDto> serviceHandler) throws NullPointerException
     {
-        this.serviceHandler = serviceHandler;
+        this.serviceHandler = Objects.requireNonNull(serviceHandler);
     }
 
     @Override
