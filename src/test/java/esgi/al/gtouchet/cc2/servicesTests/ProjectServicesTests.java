@@ -1,161 +1,208 @@
 package esgi.al.gtouchet.cc2.servicesTests;
 
+import esgi.al.gtouchet.cc2.application.services.ServicesContainer;
+import esgi.al.gtouchet.cc2.application.services.contractor.CreateContractorServiceHandler;
+import esgi.al.gtouchet.cc2.application.services.contractor.dtos.CreateContractorDto;
+import esgi.al.gtouchet.cc2.application.services.project.*;
+import esgi.al.gtouchet.cc2.application.services.project.dtos.CreateProjectDto;
+import esgi.al.gtouchet.cc2.application.services.project.dtos.EngageFireWorkerDto;
+import esgi.al.gtouchet.cc2.application.services.project.dtos.UpdateProjectDto;
+import esgi.al.gtouchet.cc2.application.services.worker.CreateWorkerServiceHandler;
+import esgi.al.gtouchet.cc2.application.services.worker.DeleteWorkerServiceHandler;
+import esgi.al.gtouchet.cc2.application.services.worker.dtos.CreateWorkerDto;
+import esgi.al.gtouchet.cc2.domain.models.*;
+import esgi.al.gtouchet.cc2.domain.validators.PasswordValidator;
+import esgi.al.gtouchet.cc2.domain.valueObjects.Password;
+import esgi.al.gtouchet.cc2.infrastructure.apis.PaymentMethodValidatorApi;
+import esgi.al.gtouchet.cc2.infrastructure.repositories.factories.MemoryRepositoriesRetainer;
+import esgi.al.gtouchet.cc2.infrastructure.repositories.factories.RepositoriesFactory;
+import org.junit.Before;
 import org.junit.Rule;
+import org.junit.Test;
 import org.junit.rules.ExpectedException;
+
+import static org.junit.Assert.*;
 
 public class ProjectServicesTests
 {
     @Rule
     public final ExpectedException exception = ExpectedException.none();
-/* // TODO
-    private ServicesAndRepositoriesManager manager;
-    private Id contractorId;
-    private Id workerId;
+
+    private RepositoriesFactory repositoriesFactory;
+    private ServicesContainer servicesContainer;
+
+    private Contractor contractor;
+    private Worker worker;
 
     @Before
     public void setup()
     {
-        this.manager = new ServicesAndRepositoriesManager();
+        this.repositoriesFactory = new MemoryRepositoriesRetainer();
+        this.servicesContainer = ServicesContainer.initialize(
+                this.repositoriesFactory,
+                new PasswordValidator(),
+                new PaymentMethodValidatorApi()
+        );
 
-        this.contractorId = this.manager.contractorService.create(new CreateContractorDto(
+        this.contractor = (Contractor) this.servicesContainer.retrieve(CreateContractorServiceHandler.class).handle(new CreateContractorDto(
                 "GTouchet1",
                 Password.of("ABcd1234!"),
                 "Guillaume",
                 PaymentMethod.card
         ));
 
-        this.workerId = this.manager.workerService.create(
+        this.worker = (Worker) this.servicesContainer.retrieve(CreateWorkerServiceHandler.class).handle(new CreateWorkerDto(
                 "GTouchet2",
                 Password.of("ABcd1234!"),
                 "Guillaume",
                 Service.builder,
                 91
-        );
+        ));
     }
 
     @Test
     public void createProject()
     {
-        long projectRepoSize = this.manager.projectService.getRepositorySize();
+        long projectRepoSize = this.repositoriesFactory.createProjectRepository().read().count();
 
         assertEquals(0, projectRepoSize);
 
-        Id projectId = this.manager.projectService.create(
-                this.contractorId,
+        Project project = (Project) this.servicesContainer.retrieve(CreateProjectServiceHandler.class).handle(new CreateProjectDto(
+                this.contractor.getId(),
                 75
-        );
+        ));
 
-        projectRepoSize = this.manager.projectService.getRepositorySize();
+        projectRepoSize = this.repositoriesFactory.createProjectRepository().read().count();
+
         assertEquals(1, projectRepoSize);
-        assertTrue(this.manager.projectService.exists(projectId));
+        assertTrue(this.repositoriesFactory.createProjectRepository().exists(project.getId()));
     }
 
     @Test
     public void deleteProject()
     {
-        Id projectId = this.manager.projectService.create(
-                this.contractorId,
+        Project project = (Project) this.servicesContainer.retrieve(CreateProjectServiceHandler.class).handle(new CreateProjectDto(
+                this.contractor.getId(),
                 75
-        );
+        ));
 
-        this.manager.projectService.delete(projectId);
+        assertTrue((boolean) this.servicesContainer.retrieve(DeleteProjectServiceHandler.class).handle(project.getId()));
 
-        long projectRepoSize = this.manager.projectService.getRepositorySize();
+        long projectRepoSize = this.repositoriesFactory.createProjectRepository().read().count();
 
         assertEquals(0, projectRepoSize);
-        assertFalse(this.manager.projectService.exists(projectId));
+        assertFalse(this.repositoriesFactory.createProjectRepository().exists(project.getId()));
     }
 
     @Test
-    public void updateProject() throws EntityNotFoundException
+    public void updateProject()
     {
-        Id projectId = this.manager.projectService.create(
-                this.contractorId,
+        Project originalProject = (Project) this.servicesContainer.retrieve(CreateProjectServiceHandler.class).handle(new CreateProjectDto(
+                this.contractor.getId(),
                 75
-        );
+        ));
 
-        Project originalProject = this.manager.projectIMR.read(projectId);
-
-        Id newContractorId = this.manager.contractorService.create(new CreateContractorDto(
-                "GTouchetContractor",
+        Contractor newContractor = (Contractor) this.servicesContainer.retrieve(CreateContractorServiceHandler.class).handle(new CreateContractorDto(
+                "GTouchet3",
                 Password.of("ABcd1234!"),
                 "Guillaume",
                 PaymentMethod.card
         ));
         int newDepartment = 91;
 
-        this.manager.projectService.update(projectId,
-                newContractorId,
+        Project updatedProject = (Project) this.servicesContainer.retrieve(UpdateProjectServiceHandler.class).handle(new UpdateProjectDto(
+                originalProject.getId(),
+                newContractor.getId(),
                 newDepartment
-        );
-
-        Project updatedProject = this.manager.projectIMR.read(projectId);
+        ));
 
         assertNotSame(originalProject, updatedProject);
         assertEquals(originalProject.getId(), updatedProject.getId());
-        assertEquals(updatedProject.getContractorId(), newContractorId);
+        assertEquals(updatedProject.getContractorId(), newContractor.getId());
         assertEquals(updatedProject.getDepartment(), newDepartment);
     }
 
     @Test
-    public void engageWorker() throws EntityNotFoundException
+    public void engageWorker()
     {
-        Id projectId = this.manager.projectService.create(
-                this.contractorId,
+        Project project = (Project) this.servicesContainer.retrieve(CreateProjectServiceHandler.class).handle(new CreateProjectDto(
+                this.contractor.getId(),
                 75
-        );
+        ));
 
-        this.manager.projectService.engageWorker(projectId, this.workerId);
-
-        Project project = this.manager.projectIMR.read(projectId);
+        project = (Project) this.servicesContainer.retrieve(EngageWorkerServiceHandler.class).handle(new EngageFireWorkerDto(
+                project.getId(),
+                this.worker.getId()
+        ));
 
         assertEquals(1, project.getWorkersId().size());
-        assertTrue(project.getWorkersId().contains(this.workerId));
+        assertTrue(project.getWorkersId().contains(this.worker.getId()));
     }
 
     @Test
-    public void fireWorker() throws EntityNotFoundException
+    public void fireWorker()
     {
-        Id projectId = this.manager.projectService.create(
-                this.contractorId,
+        Project project = (Project) this.servicesContainer.retrieve(CreateProjectServiceHandler.class).handle(new CreateProjectDto(
+                this.contractor.getId(),
                 75
-        );
+        ));
 
-        this.manager.projectService.engageWorker(projectId, this.workerId);
-
-        Project project = this.manager.projectIMR.read(projectId);
+        project = (Project) this.servicesContainer.retrieve(EngageWorkerServiceHandler.class).handle(new EngageFireWorkerDto(
+                project.getId(),
+                this.worker.getId()
+        ));
 
         assertEquals(1, project.getWorkersId().size());
-        assertTrue(project.getWorkersId().contains(this.workerId));
+        assertTrue(project.getWorkersId().contains(this.worker.getId()));
 
-        this.manager.projectService.fireWorker(projectId, this.workerId);
-
-        project = this.manager.projectIMR.read(projectId);
+        project = (Project) this.servicesContainer.retrieve(FireWorkerServiceHandler.class).handle(new EngageFireWorkerDto(
+                project.getId(),
+                this.worker.getId()
+        ));
 
         assertEquals(0, project.getWorkersId().size());
-        assertFalse(project.getWorkersId().contains(this.workerId));
+        assertFalse(project.getWorkersId().contains(this.worker.getId()));
     }
 
     @Test
-    public void hardDeletingEngagedWorker() throws EntityNotFoundException
+    public void engageWorker_workerDoesNotExist()
     {
-        Id projectId = this.manager.projectService.create(
-                this.contractorId,
+        // TODO
+    }
+
+    @Test
+    public void engageWorker_workerAlreadyWorksOnProject()
+    {
+        // TODO
+    }
+
+    @Test
+    public void fireWorker_workerDoesNotWorkOnProject()
+    {
+        // TODO
+    }
+
+    @Test
+    public void hardDeletingEngagedWorker()
+    {
+        Project project = (Project) this.servicesContainer.retrieve(CreateProjectServiceHandler.class).handle(new CreateProjectDto(
+                this.contractor.getId(),
                 75
-        );
+        ));
 
-        this.manager.projectService.engageWorker(projectId, this.workerId);
-
-        Project project = this.manager.projectIMR.read(projectId);
+        project = (Project) this.servicesContainer.retrieve(EngageWorkerServiceHandler.class).handle(new EngageFireWorkerDto(
+                project.getId(),
+                this.worker.getId()
+        ));
 
         assertEquals(1, project.getWorkersId().size());
-        assertTrue(project.getWorkersId().contains(this.workerId));
+        assertTrue(project.getWorkersId().contains(this.worker.getId()));
 
-        this.manager.workerService.delete(workerId);
+        assertTrue((boolean) this.servicesContainer.retrieve(DeleteWorkerServiceHandler.class).handle(this.worker.getId()));
 
-        project = this.manager.projectIMR.read(projectId);
+        project = (Project) this.servicesContainer.retrieve(ReadIdProjectServiceHandler.class).handle(project.getId());
 
         assertEquals(0, project.getWorkersId().size());
-        assertFalse(project.getWorkersId().contains(this.workerId));
-    }*/
+        assertFalse(project.getWorkersId().contains(this.worker.getId()));
+    }
 }

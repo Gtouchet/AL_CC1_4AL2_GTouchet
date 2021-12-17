@@ -1,42 +1,63 @@
 package esgi.al.gtouchet.cc2.servicesTests;
 
+import esgi.al.gtouchet.cc2.application.services.ServicesContainer;
+import esgi.al.gtouchet.cc2.application.services.worker.CreateWorkerServiceHandler;
+import esgi.al.gtouchet.cc2.application.services.worker.dtos.CreateWorkerDto;
+import esgi.al.gtouchet.cc2.domain.models.Service;
+import esgi.al.gtouchet.cc2.domain.models.Worker;
+import esgi.al.gtouchet.cc2.domain.validators.PasswordValidator;
+import esgi.al.gtouchet.cc2.domain.valueObjects.Password;
+import esgi.al.gtouchet.cc2.infrastructure.apis.PaymentMethodValidatorApi;
+import esgi.al.gtouchet.cc2.infrastructure.repositories.factories.MemoryRepositoriesRetainer;
+import esgi.al.gtouchet.cc2.infrastructure.repositories.factories.RepositoriesFactory;
+import org.junit.Before;
 import org.junit.Rule;
+import org.junit.Test;
 import org.junit.rules.ExpectedException;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class WorkerServicesTests
 {
     @Rule
     public final ExpectedException exception = ExpectedException.none();
-/* // TODO
-    private ServicesAndRepositoriesManager manager;
+
+    private RepositoriesFactory repositoriesFactory;
+    private ServicesContainer servicesContainer;
 
     @Before
     public void setup()
     {
-        this.manager = new ServicesAndRepositoriesManager();
+        this.repositoriesFactory = new MemoryRepositoriesRetainer();
+        this.servicesContainer = ServicesContainer.initialize(
+                this.repositoriesFactory,
+                new PasswordValidator(),
+                new PaymentMethodValidatorApi()
+        );
     }
 
     @Test
     public void createWorker()
     {
-        long workerRepoSize = this.manager.workerService.getRepositorySize();
+        long workerRepoSize = this.repositoriesFactory.createWorkerRepository().read().count();
 
         assertEquals(0, workerRepoSize);
 
-        Id workerId = this.manager.workerService.create(
+        Worker worker = (Worker) this.servicesContainer.retrieve(CreateWorkerServiceHandler.class).handle(new CreateWorkerDto(
                 "GTouchet",
                 Password.of("ABcd1234!"),
                 "Guillaume",
                 Service.builder,
                 91
-        );
+        ));
 
-        workerRepoSize = this.manager.workerService.getRepositorySize();
+        workerRepoSize = this.repositoriesFactory.createWorkerRepository().read().count();
 
         assertEquals(1, workerRepoSize);
-        assertTrue(this.manager.workerService.exists(workerId));
+        assertTrue(this.repositoriesFactory.createWorkerRepository().exists(worker.getId()));
     }
-
+/* // TODO
     @Test
     public void deleteWorker()
     {
@@ -116,7 +137,7 @@ public class WorkerServicesTests
     }
 
     @Test
-    public void updateWorker() throws EntityNotFoundException
+    public void updateWorker()
     {
         Id workerId = this.manager.workerService.create(
                 "GTouchet",
@@ -176,5 +197,6 @@ public class WorkerServicesTests
                 Service.builder,
                 Integer.parseInt("ninety one")
         );
-    }*/
+    }
+    */
 }

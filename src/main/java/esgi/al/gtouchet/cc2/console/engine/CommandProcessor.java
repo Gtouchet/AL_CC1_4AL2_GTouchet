@@ -1,6 +1,6 @@
 package esgi.al.gtouchet.cc2.console.engine;
 
-import esgi.al.gtouchet.cc2.application.services.Services;
+import esgi.al.gtouchet.cc2.application.services.ServicesContainer;
 import esgi.al.gtouchet.cc2.application.services.contractor.*;
 import esgi.al.gtouchet.cc2.application.services.payment.*;
 import esgi.al.gtouchet.cc2.application.services.project.*;
@@ -13,11 +13,11 @@ import esgi.al.gtouchet.cc2.console.commandHandlers.worker.*;
 
 public class CommandProcessor
 {
-    private final Services services;
+    private final ServicesContainer servicesContainer;
 
-    public CommandProcessor(Services services)
+    public CommandProcessor(ServicesContainer servicesContainer)
     {
-        this.services = services;
+        this.servicesContainer = servicesContainer;
     }
 
     public void process(String command)
@@ -34,72 +34,72 @@ public class CommandProcessor
             {
                 // Contractor handlers
                 case CREATE_CONTRACTOR:
-                    new CreateContractorCommandHandler(this.services.retrieve(CreateContractorServiceHandler.class)).handle(params);
+                    new CreateContractorCommandHandler(this.servicesContainer.retrieve(CreateContractorServiceHandler.class)).handle(params);
                     break;
                 case READ_CONTRACTOR:
                     new ReadContractorCommandHandler(
-                            this.services.retrieve(ReadAllContractorServiceHandler.class),
-                            this.services.retrieve(ReadIdContractorServiceHandler.class)).handle(params);
+                            this.servicesContainer.retrieve(ReadAllContractorServiceHandler.class),
+                            this.servicesContainer.retrieve(ReadIdContractorServiceHandler.class)).handle(params);
                     break;
                 case UPDATE_CONTRACTOR:
-                    new UpdateContractorCommandHandler(this.services.retrieve(UpdateContractorServiceHandler.class)).handle(params);
+                    new UpdateContractorCommandHandler(this.servicesContainer.retrieve(UpdateContractorServiceHandler.class)).handle(params);
                     break;
                 case DELETE_CONTRACTOR:
-                    new DeleteContractorCommandHandler(this.services.retrieve(DeleteContractorServiceHandler.class)).handle(params);
+                    new DeleteContractorCommandHandler(this.servicesContainer.retrieve(DeleteContractorServiceHandler.class)).handle(params);
                     break;
                 case VALIDATE_PAYMENT:
-                    new ValidatePaymentCommandHandler(this.services.retrieve(ValidatePaymentServiceHandler.class)).handle(params);
+                    new ValidatePaymentCommandHandler(this.servicesContainer.retrieve(ValidatePaymentServiceHandler.class)).handle(params);
                     break;
 
                 // Payment handlers
                 case CREATE_PAYMENT:
-                    new CreatePaymentHandler(this.services.retrieve(CreatePaymentServiceHandler.class)).handle(params);
+                    new CreatePaymentHandler(this.servicesContainer.retrieve(CreatePaymentServiceHandler.class)).handle(params);
                     break;
                 case READ_PAYMENT:
                     new ReadPaymentHandler(
-                            this.services.retrieve(ReadAllPaymentServiceHandler.class),
-                            this.services.retrieve(ReadIdPaymentServiceHandler.class)).handle(params);
+                            this.servicesContainer.retrieve(ReadAllPaymentServiceHandler.class),
+                            this.servicesContainer.retrieve(ReadIdPaymentServiceHandler.class)).handle(params);
                     break;
                 case DELETE_PAYMENT:
-                    new DeletePaymentHandler(this.services.retrieve(DeletePaymentServiceHandler.class)).handle(params);
+                    new DeletePaymentHandler(this.servicesContainer.retrieve(DeletePaymentServiceHandler.class)).handle(params);
                     break;
 
                 // Project handlers
                 case CREATE_PROJECT:
-                    new CreateProjectHandler(this.services.retrieve(CreateProjectServiceHandler.class)).handle(params);
+                    new CreateProjectHandler(this.servicesContainer.retrieve(CreateProjectServiceHandler.class)).handle(params);
                     break;
                 case READ_PROJECT:
                     new ReadProjectHandler(
-                            this.services.retrieve(ReadAllProjectServiceHandler.class),
-                            this.services.retrieve(ReadIdProjectServiceHandler.class)).handle(params);
+                            this.servicesContainer.retrieve(ReadAllProjectServiceHandler.class),
+                            this.servicesContainer.retrieve(ReadIdProjectServiceHandler.class)).handle(params);
                     break;
                 case UPDATE_PROJECT:
-                    new UpdateProjectHandler(this.services.retrieve(UpdateProjectServiceHandler.class)).handle(params);
+                    new UpdateProjectHandler(this.servicesContainer.retrieve(UpdateProjectServiceHandler.class)).handle(params);
                     break;
                 case DELETE_PROJECT:
-                    new DeleteProjectHandler(this.services.retrieve(DeleteProjectServiceHandler.class)).handle(params);
+                    new DeleteProjectHandler(this.servicesContainer.retrieve(DeleteProjectServiceHandler.class)).handle(params);
                     break;
                 case ENGAGE_WORKER:
-                    new EngageWorkerHandler(this.services.retrieve(EngageWorkerServiceHandler.class)).handle(params);
+                    new EngageWorkerHandler(this.servicesContainer.retrieve(EngageWorkerServiceHandler.class)).handle(params);
                         break;
                 case FIRE_WORKER:
-                    new FireWorkerHandler(this.services.retrieve(FireWorkerServiceHandler.class)).handle(params);
+                    new FireWorkerHandler(this.servicesContainer.retrieve(FireWorkerServiceHandler.class)).handle(params);
                     break;
 
                 // Worker handlers
                 case CREATE_WORKER:
-                    new CreateWorkerHandler(this.services.retrieve(CreateWorkerServiceHandler.class)).handle(params);
+                    new CreateWorkerHandler(this.servicesContainer.retrieve(CreateWorkerServiceHandler.class)).handle(params);
                     break;
                 case READ_WORKER:
                     new ReadWorkerHandler(
-                            this.services.retrieve(ReadAllWorkerServiceHandler.class),
-                            this.services.retrieve(ReadIdWorkerServiceHandler.class)).handle(params);
+                            this.servicesContainer.retrieve(ReadAllWorkerServiceHandler.class),
+                            this.servicesContainer.retrieve(ReadIdWorkerServiceHandler.class)).handle(params);
                     break;
                 case UPDATE_WORKER:
-                    new UpdateWorkerHandler(this.services.retrieve(UpdateWorkerServiceHandler.class)).handle(params);
+                    new UpdateWorkerHandler(this.servicesContainer.retrieve(UpdateWorkerServiceHandler.class)).handle(params);
                     break;
                 case DELETE_WORKER:
-                    new DeleteWorkerHandler(this.services.retrieve(DeleteWorkerServiceHandler.class)).handle(params);
+                    new DeleteWorkerHandler(this.servicesContainer.retrieve(DeleteWorkerServiceHandler.class)).handle(params);
                     break;
 
                 // Help handler
