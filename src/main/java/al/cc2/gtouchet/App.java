@@ -18,7 +18,7 @@ public class App
                 new PaymentMethodValidatorApi()
         );
 
-        // Starts the console application thread
-        new InterpreterEngine(new CommandProcessor(servicesContainer)).start();
+        // Starts the console application
+        new InterpreterEngine(new CommandProcessor(servicesContainer)).run();
     }
 }

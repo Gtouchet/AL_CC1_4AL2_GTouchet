@@ -2,7 +2,7 @@ package al.cc2.gtouchet.console.engine;
 
 import java.util.Scanner;
 
-public class InterpreterEngine extends Thread
+public class InterpreterEngine
 {
     private final CommandProcessor commandProcessor;
     private final Scanner scanner;
