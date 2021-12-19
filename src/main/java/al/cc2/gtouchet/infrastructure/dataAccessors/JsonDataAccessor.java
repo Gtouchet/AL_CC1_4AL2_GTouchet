@@ -2,18 +2,18 @@ package al.cc2.gtouchet.infrastructure.dataAccessors;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 
 import java.io.*;
-import java.lang.reflect.Array;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class JsonDataAccessor<T> implements DataAccessor<T>
 {
-    private final Class<T> dataType;
     private final DateFormat dateFormatter;
 
     private final String filePath;
@@ -21,20 +21,20 @@ public class JsonDataAccessor<T> implements DataAccessor<T>
 
     public JsonDataAccessor(Class<T> dataType)
     {
-        this.dataType = dataType;
         this.dateFormatter = new SimpleDateFormat("dd-MM-yyyy-HH-mm-ss");
 
-        this.filePath = "./res/" + this.dataType.getSimpleName().toLowerCase() + "s.json";
-        this.backupFilePath = "./res/backups/" + this.dataType.getSimpleName().toLowerCase() + "s/";
+        this.filePath = "./res/" + dataType.getSimpleName().toLowerCase() + "s.json";
+        this.backupFilePath = "./res/backups/" + dataType.getSimpleName().toLowerCase() + "s/";
     }
 
     @Override
-    public T[] getData()
+    public List<T> getData()
     {
         try {
             JsonReader reader = new JsonReader(new FileReader(this.filePath));
-            T[] data = new Gson().fromJson(reader, this.dataType.arrayType());
-            return data != null && data.length > 0 ? data : (T[]) Array.newInstance(this.dataType, 0);
+            //T[] data = new Gson().fromJson(reader, this.dataType.arrayType());
+            List<T> data = new Gson().fromJson(reader, new TypeToken<List<T>>(){}.getType());
+            return data != null && data.size() > 0 ? data : new ArrayList<>();
 
         } catch (FileNotFoundException e1) {
             try {

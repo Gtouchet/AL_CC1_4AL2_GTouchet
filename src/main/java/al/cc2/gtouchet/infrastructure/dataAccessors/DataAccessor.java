@@ -4,6 +4,6 @@ import java.util.List;
 
 public interface DataAccessor<T>
 {
-    T[] getData();
+    List<T> getData();
     void write(List<T> data);
 }

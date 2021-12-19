@@ -4,8 +4,6 @@ import al.cc2.gtouchet.domain.models.Entity;
 import al.cc2.gtouchet.domain.valueObjects.Id;
 import al.cc2.gtouchet.infrastructure.dataAccessors.DataAccessor;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class DataRepository<T extends Entity> extends MemoryRepository<T>
@@ -20,7 +18,7 @@ public class DataRepository<T extends Entity> extends MemoryRepository<T>
 
     private List<T> getData()
     {
-        return new ArrayList<>(Arrays.asList(this.dataAccessor.getData()));
+        return this.dataAccessor.getData();
     }
 
     @Override
