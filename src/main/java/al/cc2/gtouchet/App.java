@@ -1,6 +1,5 @@
 package al.cc2.gtouchet;
 
-
 import al.cc2.gtouchet.application.services.ServicesContainer;
 import al.cc2.gtouchet.console.engine.CommandProcessor;
 import al.cc2.gtouchet.console.engine.InterpreterEngine;

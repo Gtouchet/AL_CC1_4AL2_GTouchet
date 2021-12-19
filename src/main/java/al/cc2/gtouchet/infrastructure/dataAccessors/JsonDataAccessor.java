@@ -14,6 +14,7 @@ import java.util.List;
 
 public class JsonDataAccessor<T> implements DataAccessor<T>
 {
+    private final Class<T> dataType;
     private final DateFormat dateFormatter;
 
     private final String filePath;
@@ -21,6 +22,7 @@ public class JsonDataAccessor<T> implements DataAccessor<T>
 
     public JsonDataAccessor(Class<T> dataType)
     {
+        this.dataType = dataType;
         this.dateFormatter = new SimpleDateFormat("dd-MM-yyyy-HH-mm-ss");
 
         this.filePath = "./res/" + dataType.getSimpleName().toLowerCase() + "s.json";
@@ -31,10 +33,11 @@ public class JsonDataAccessor<T> implements DataAccessor<T>
     public List<T> getData()
     {
         try {
-            JsonReader reader = new JsonReader(new FileReader(this.filePath));
-            //T[] data = new Gson().fromJson(reader, this.dataType.arrayType());
-            List<T> data = new Gson().fromJson(reader, new TypeToken<List<T>>(){}.getType());
-            return data != null && data.size() > 0 ? data : new ArrayList<>();
+            List<T> data = new Gson().fromJson(
+                    new JsonReader(new FileReader(this.filePath)),
+                    TypeToken.getParameterized(List.class, this.dataType).getType()
+            );
+            return data != null ? data : new ArrayList<>();
 
         } catch (FileNotFoundException e1) {
             try {
