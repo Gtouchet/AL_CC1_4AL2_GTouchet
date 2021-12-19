@@ -11,14 +11,12 @@ public class App
 {
     public static void main(String[] args)
     {
-        // Register all application services
         ServicesContainer servicesContainer = ServicesContainer.initialize(
                 new DataRepositoriesFactory(),
                 new PasswordValidator(),
                 new PaymentMethodValidatorApi()
         );
 
-        // Starts the console application
         new InterpreterEngine(new CommandProcessor(servicesContainer)).run();
     }
 }

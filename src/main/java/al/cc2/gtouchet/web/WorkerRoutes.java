@@ -1,15 +1,19 @@
 package al.cc2.gtouchet.web;
 
 import al.cc2.gtouchet.application.services.ServicesContainer;
+import al.cc2.gtouchet.application.services.worker.CreateWorkerServiceHandler;
+import al.cc2.gtouchet.application.services.worker.DeleteWorkerServiceHandler;
 import al.cc2.gtouchet.application.services.worker.ReadAllWorkerServiceHandler;
+import al.cc2.gtouchet.application.services.worker.ReadIdWorkerServiceHandler;
+import al.cc2.gtouchet.application.services.worker.dtos.CreateWorkerDto;
 import al.cc2.gtouchet.domain.models.Worker;
 import al.cc2.gtouchet.domain.validators.PasswordValidator;
+import al.cc2.gtouchet.domain.valueObjects.Id;
 import al.cc2.gtouchet.infrastructure.apis.PaymentMethodValidatorApi;
 import al.cc2.gtouchet.infrastructure.repositories.factories.DataRepositoriesFactory;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.validation.Valid;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
@@ -29,14 +33,50 @@ public class WorkerRoutes
         );
     }
 
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response create(@Valid CreateWorkerDto createWorkerDto) // TODO
+    {
+        Worker worker = (Worker) this.servicesContainer.retrieve(CreateWorkerServiceHandler.class).handle(createWorkerDto);
+        return Response.status(Response.Status.CREATED).entity(worker).build();
+    }
+
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response All()
+    public Response readAll()
     {
         List<Worker> workers = (List<Worker>) this.servicesContainer.retrieve(ReadAllWorkerServiceHandler.class).handle(null);
         List<WorkerJson> workersJson = new ArrayList<>();
         workers.forEach(worker -> workersJson.add(new WorkerJson(worker)));
-        return Response.ok(workersJson).build();
+        return Response.ok().entity(workersJson).build();
+    }
+
+    @GET
+    @Path("{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response readId(@PathParam("id") String id)
+    {
+        Worker worker = (Worker) this.servicesContainer.retrieve(ReadIdWorkerServiceHandler.class).handle(Id.fromString(id));
+
+        if (worker == null)
+        {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        return Response.ok().entity(new WorkerJson(worker)).build();
+    }
+
+    // TODO PUT
+
+    @DELETE
+    @Path("{id}")
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response delete(@PathParam("id") String id)
+    {
+        boolean success = (boolean) this.servicesContainer.retrieve(DeleteWorkerServiceHandler.class).handle(Id.fromString(id));
+        return Response.ok(success ? "Worker " + id + " deleted" : "Could not delete worker " + id).build();
     }
 }
 
