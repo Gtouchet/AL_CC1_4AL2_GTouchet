@@ -51,10 +51,10 @@ public class HandlersContainer
         }
     }
 
-    public CommandHandler getCommandHandler(Class handler)
+    public CommandHandler getCommandHandler(Class command)
     {
         return this.commandHandlers.stream()
-                .filter(registeredCommand -> registeredCommand.getClass().equals(handler))
+                .filter(registeredCommand -> registeredCommand.getClass().equals(command))
                 .findFirst()
                 .orElse(null);
     }
