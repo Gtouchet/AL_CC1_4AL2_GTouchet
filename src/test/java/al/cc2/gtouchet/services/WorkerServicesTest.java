@@ -1,13 +1,14 @@
 package al.cc2.gtouchet.services;
 
-import al.cc2.gtouchet.application.services.ServicesContainer;
-import al.cc2.gtouchet.application.services.contractor.CreateContractorServiceHandler;
-import al.cc2.gtouchet.application.services.contractor.dtos.CreateContractorDto;
-import al.cc2.gtouchet.application.services.worker.CreateWorkerServiceHandler;
-import al.cc2.gtouchet.application.services.worker.DeleteWorkerServiceHandler;
-import al.cc2.gtouchet.application.services.worker.UpdateWorkerServiceHandler;
-import al.cc2.gtouchet.application.services.worker.dtos.CreateWorkerDto;
-import al.cc2.gtouchet.application.services.worker.dtos.UpdateWorkerDto;
+import al.cc2.gtouchet.application.services.HandlersContainer;
+import al.cc2.gtouchet.application.services.dtos.contractor.CreateContractorCommand;
+import al.cc2.gtouchet.application.services.dtos.worker.CreateWorkerCommand;
+import al.cc2.gtouchet.application.services.dtos.worker.DeleteWorkerCommand;
+import al.cc2.gtouchet.application.services.dtos.worker.UpdateWorkerCommand;
+import al.cc2.gtouchet.application.services.handlers.contractor.CreateContractorCommandHandler;
+import al.cc2.gtouchet.application.services.handlers.worker.CreateWorkerCommandHandler;
+import al.cc2.gtouchet.application.services.handlers.worker.DeleteWorkerCommandHandler;
+import al.cc2.gtouchet.application.services.handlers.worker.UpdateWorkerCommandHandler;
 import al.cc2.gtouchet.domain.models.Contractor;
 import al.cc2.gtouchet.domain.models.PaymentMethod;
 import al.cc2.gtouchet.domain.models.Service;
@@ -30,13 +31,13 @@ public class WorkerServicesTest
     public final ExpectedException exception = ExpectedException.none();
 
     private RepositoriesFactory repositoriesFactory;
-    private ServicesContainer servicesContainer;
+    private HandlersContainer handlersContainer;
 
     @Before
     public void setup()
     {
         this.repositoriesFactory = new MemoryRepositoriesRetainer();
-        this.servicesContainer = ServicesContainer.initialize(
+        this.handlersContainer = HandlersContainer.initialize(
                 this.repositoriesFactory,
                 new PasswordValidator(),
                 new PaymentMethodValidatorApi()
@@ -50,7 +51,7 @@ public class WorkerServicesTest
 
         assertEquals(0, workerRepoSize);
 
-        Worker worker = (Worker) this.servicesContainer.retrieve(CreateWorkerServiceHandler.class).handle(new CreateWorkerDto(
+        Worker worker = (Worker) this.handlersContainer.getCommandHandler(CreateWorkerCommandHandler.class).handle(new CreateWorkerCommand(
                 "GTouchet",
                 Password.of("ABcd1234!"),
                 "Guillaume",
@@ -67,7 +68,7 @@ public class WorkerServicesTest
     @Test
     public void deleteWorker()
     {
-        Worker worker = (Worker) this.servicesContainer.retrieve(CreateWorkerServiceHandler.class).handle(new CreateWorkerDto(
+        Worker worker = (Worker) this.handlersContainer.getCommandHandler(CreateWorkerCommandHandler.class).handle(new CreateWorkerCommand(
                 "GTouchet",
                 Password.of("ABcd1234!"),
                 "Guillaume",
@@ -75,7 +76,9 @@ public class WorkerServicesTest
                 91
         ));
 
-        assertTrue((boolean) this.servicesContainer.retrieve(DeleteWorkerServiceHandler.class).handle(worker.getId()));
+        assertTrue((boolean) this.handlersContainer.getCommandHandler(DeleteWorkerCommandHandler.class).handle(new DeleteWorkerCommand(
+                worker.getId()
+        )));
 
         long workerRepoSize = this.repositoriesFactory.createWorkerRepository().read().count();
 
@@ -88,7 +91,7 @@ public class WorkerServicesTest
     {
         String login = "GTouchet";
 
-        Worker worker1 = (Worker) this.servicesContainer.retrieve(CreateWorkerServiceHandler.class).handle(new CreateWorkerDto(
+        Worker worker1 = (Worker) this.handlersContainer.getCommandHandler(CreateWorkerCommandHandler.class).handle(new CreateWorkerCommand(
                 login,
                 Password.of("ABcd1234!"),
                 "Guillaume",
@@ -96,7 +99,7 @@ public class WorkerServicesTest
                 91
         ));
 
-        Worker worker2 = (Worker) this.servicesContainer.retrieve(CreateWorkerServiceHandler.class).handle(new CreateWorkerDto(
+        Worker worker2 = (Worker) this.handlersContainer.getCommandHandler(CreateWorkerCommandHandler.class).handle(new CreateWorkerCommand(
                 login,
                 Password.of("ABcd1234!"),
                 "Guillaume",
@@ -117,7 +120,7 @@ public class WorkerServicesTest
         String login = "GTouchet";
         long workerAndContractorReposSize;
 
-        Worker worker = (Worker) this.servicesContainer.retrieve(CreateWorkerServiceHandler.class).handle(new CreateWorkerDto(
+        Worker worker = (Worker) this.handlersContainer.getCommandHandler(CreateWorkerCommandHandler.class).handle(new CreateWorkerCommand(
                 login,
                 Password.of("ABcd1234!"),
                 "Guillaume",
@@ -125,7 +128,7 @@ public class WorkerServicesTest
                 91
         ));
 
-        Contractor contractor = (Contractor) this.servicesContainer.retrieve(CreateContractorServiceHandler.class).handle(new CreateContractorDto(
+        Contractor contractor = (Contractor) this.handlersContainer.getCommandHandler(CreateContractorCommandHandler.class).handle(new CreateContractorCommand(
                 login,
                 Password.of("ABcd1234!"),
                 "Touchet",
@@ -144,7 +147,7 @@ public class WorkerServicesTest
     @Test
     public void updateWorker()
     {
-        Worker originalWorker = (Worker) this.servicesContainer.retrieve(CreateWorkerServiceHandler.class).handle(new CreateWorkerDto(
+        Worker originalWorker = (Worker) this.handlersContainer.getCommandHandler(CreateWorkerCommandHandler.class).handle(new CreateWorkerCommand(
                 "GTouchet",
                 Password.of("ABcd1234!"),
                 "Guillaume",
@@ -157,7 +160,7 @@ public class WorkerServicesTest
         Service newService = Service.electrician;
         int newDepartment = 75;
 
-        Worker updatedWorker = (Worker) this.servicesContainer.retrieve(UpdateWorkerServiceHandler.class).handle(new UpdateWorkerDto(
+        Worker updatedWorker = (Worker) this.handlersContainer.getCommandHandler(UpdateWorkerCommandHandler.class).handle(new UpdateWorkerCommand(
                 originalWorker.getId(),
                 newPassword,
                 newName,
@@ -178,7 +181,7 @@ public class WorkerServicesTest
     {
         this.exception.expect(IllegalArgumentException.class);
 
-        this.servicesContainer.retrieve(CreateWorkerServiceHandler.class).handle(new CreateWorkerDto(
+        this.handlersContainer.getCommandHandler(CreateWorkerCommandHandler.class).handle(new CreateWorkerCommand(
                 "GTouchet",
                 Password.of("ABcd1234!"),
                 "Guillaume",
@@ -192,7 +195,7 @@ public class WorkerServicesTest
     {
         this.exception.expect(NumberFormatException.class);
 
-        this.servicesContainer.retrieve(CreateWorkerServiceHandler.class).handle(new CreateWorkerDto(
+        this.handlersContainer.getCommandHandler(CreateWorkerCommandHandler.class).handle(new CreateWorkerCommand(
                 "GTouchet",
                 Password.of("ABcd1234!"),
                 "Guillaume",

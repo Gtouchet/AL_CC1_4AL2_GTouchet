@@ -1,11 +1,13 @@
 package al.cc2.gtouchet.web;
 
-import al.cc2.gtouchet.application.services.ServicesContainer;
-import al.cc2.gtouchet.application.services.worker.CreateWorkerServiceHandler;
-import al.cc2.gtouchet.application.services.worker.DeleteWorkerServiceHandler;
-import al.cc2.gtouchet.application.services.worker.ReadAllWorkerServiceHandler;
-import al.cc2.gtouchet.application.services.worker.ReadIdWorkerServiceHandler;
-import al.cc2.gtouchet.application.services.worker.dtos.CreateWorkerDto;
+import al.cc2.gtouchet.application.services.HandlersContainer;
+import al.cc2.gtouchet.application.services.dtos.worker.CreateWorkerCommand;
+import al.cc2.gtouchet.application.services.dtos.worker.DeleteWorkerCommand;
+import al.cc2.gtouchet.application.services.dtos.worker.ReadWorkerQuery;
+import al.cc2.gtouchet.application.services.handlers.worker.CreateWorkerCommandHandler;
+import al.cc2.gtouchet.application.services.handlers.worker.DeleteWorkerCommandHandler;
+import al.cc2.gtouchet.application.services.handlers.worker.ReadAllWorkerQueryHandler;
+import al.cc2.gtouchet.application.services.handlers.worker.ReadWorkerQueryHandler;
 import al.cc2.gtouchet.domain.models.Worker;
 import al.cc2.gtouchet.domain.validators.PasswordValidator;
 import al.cc2.gtouchet.domain.valueObjects.Id;
@@ -22,11 +24,11 @@ import java.util.List;
 @Path("/worker")
 public class WorkerRoutes
 {
-    private final ServicesContainer servicesContainer;
+    private final HandlersContainer handlersContainer;
 
     public WorkerRoutes()
     {
-        this.servicesContainer = ServicesContainer.initialize(
+        this.handlersContainer = HandlersContainer.initialize(
                 new DataRepositoriesFactory(),
                 new PasswordValidator(),
                 new PaymentMethodValidatorApi()
@@ -36,9 +38,9 @@ public class WorkerRoutes
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response create(@Valid CreateWorkerDto createWorkerDto) // TODO
+    public Response create(@Valid CreateWorkerCommand createWorkerCommand) // TODO
     {
-        Worker worker = (Worker) this.servicesContainer.retrieve(CreateWorkerServiceHandler.class).handle(createWorkerDto);
+        Worker worker = (Worker) this.handlersContainer.getCommandHandler(CreateWorkerCommandHandler.class).handle(createWorkerCommand);
         return Response.status(Response.Status.CREATED).entity(worker).build();
     }
 
@@ -47,7 +49,7 @@ public class WorkerRoutes
     @Produces(MediaType.APPLICATION_JSON)
     public Response readAll()
     {
-        List<Worker> workers = (List<Worker>) this.servicesContainer.retrieve(ReadAllWorkerServiceHandler.class).handle(null);
+        List<Worker> workers = (List<Worker>) this.handlersContainer.getQueryHandler(ReadAllWorkerQueryHandler.class).handle(null);
         List<WorkerJson> workersJson = new ArrayList<>();
         workers.forEach(worker -> workersJson.add(new WorkerJson(worker)));
         return Response.ok().entity(workersJson).build();
@@ -58,7 +60,9 @@ public class WorkerRoutes
     @Produces(MediaType.APPLICATION_JSON)
     public Response readId(@PathParam("id") String id)
     {
-        Worker worker = (Worker) this.servicesContainer.retrieve(ReadIdWorkerServiceHandler.class).handle(Id.fromString(id));
+        Worker worker = (Worker) this.handlersContainer.getQueryHandler(ReadWorkerQueryHandler.class).handle(new ReadWorkerQuery(
+                Id.fromString(id)
+        ));
 
         if (worker == null)
         {
@@ -75,7 +79,9 @@ public class WorkerRoutes
     @Produces(MediaType.TEXT_PLAIN)
     public Response delete(@PathParam("id") String id)
     {
-        boolean success = (boolean) this.servicesContainer.retrieve(DeleteWorkerServiceHandler.class).handle(Id.fromString(id));
+        boolean success = (boolean) this.handlersContainer.getCommandHandler(DeleteWorkerCommandHandler.class).handle(new DeleteWorkerCommand(
+                Id.fromString(id)
+        ));
         return Response.ok(success ? "Worker " + id + " deleted" : "Could not delete worker " + id).build();
     }
 }

@@ -18,7 +18,7 @@ public class InterpreterEngine
         System.out.println("\nConsole application, type 'help' to see the list of commands");
 
         String command = "";
-        while (!command.trim().split(" ")[0].equalsIgnoreCase(Command.QUIT.keyword))
+        while (!command.trim().split(" ")[0].equalsIgnoreCase(ConsoleCommand.QUIT.keyword))
         {
             System.out.print("> ");
             command = this.scanner.nextLine();

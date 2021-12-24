@@ -11,13 +11,11 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="AL_CC1_4AL2_GTouchet" target="9" />
-      <module name="demo" target="11" />
+      <module name="demo" target="9" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="AL_CC1_4AL2_GTouchet" options="-parameters" />
       <module name="demo" options="-parameters" />
     </option>
   </component>

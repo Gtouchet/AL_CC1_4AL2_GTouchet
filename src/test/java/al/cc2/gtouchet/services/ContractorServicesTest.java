@@ -1,11 +1,10 @@
 package al.cc2.gtouchet.services;
 
-import al.cc2.gtouchet.application.services.ServicesContainer;
-import al.cc2.gtouchet.application.services.contractor.*;
-import al.cc2.gtouchet.application.services.contractor.dtos.CreateContractorDto;
-import al.cc2.gtouchet.application.services.contractor.dtos.UpdateContractorDto;
-import al.cc2.gtouchet.application.services.worker.CreateWorkerServiceHandler;
-import al.cc2.gtouchet.application.services.worker.dtos.CreateWorkerDto;
+import al.cc2.gtouchet.application.services.HandlersContainer;
+import al.cc2.gtouchet.application.services.dtos.contractor.*;
+import al.cc2.gtouchet.application.services.dtos.worker.CreateWorkerCommand;
+import al.cc2.gtouchet.application.services.handlers.contractor.*;
+import al.cc2.gtouchet.application.services.handlers.worker.CreateWorkerCommandHandler;
 import al.cc2.gtouchet.domain.models.Contractor;
 import al.cc2.gtouchet.domain.models.PaymentMethod;
 import al.cc2.gtouchet.domain.models.Service;
@@ -28,13 +27,13 @@ public class ContractorServicesTest
     public final ExpectedException exception = ExpectedException.none();
 
     private RepositoriesFactory repositoriesFactory;
-    private ServicesContainer servicesContainer;
+    private HandlersContainer handlersContainer;
 
     @Before
     public void setup()
     {
         this.repositoriesFactory = new MemoryRepositoriesRetainer();
-        this.servicesContainer = ServicesContainer.initialize(
+        this.handlersContainer = HandlersContainer.initialize(
                 this.repositoriesFactory,
                 new PasswordValidator(),
                 new PaymentMethodValidatorApi()
@@ -48,7 +47,7 @@ public class ContractorServicesTest
 
         assertEquals(0, contractorRepoSize);
 
-        Contractor contractor = (Contractor) this.servicesContainer.retrieve(CreateContractorServiceHandler.class).handle(new CreateContractorDto(
+        Contractor contractor = (Contractor) this.handlersContainer.getCommandHandler(CreateContractorCommandHandler.class).handle(new CreateContractorCommand(
                 "GTouchet",
                 Password.of("ABcd1234!"),
                 "Guillaume",
@@ -64,14 +63,16 @@ public class ContractorServicesTest
     @Test
     public void deleteContractor()
     {
-        Contractor contractor = (Contractor) this.servicesContainer.retrieve(CreateContractorServiceHandler.class).handle(new CreateContractorDto(
+        Contractor contractor = (Contractor) this.handlersContainer.getCommandHandler(CreateContractorCommandHandler.class).handle(new CreateContractorCommand(
                 "GTouchet",
                 Password.of("ABcd1234!"),
                 "Guillaume",
                 PaymentMethod.card
         ));
 
-        assertTrue((boolean) this.servicesContainer.retrieve(DeleteContractorServiceHandler.class).handle(contractor.getId()));
+        assertTrue((boolean) this.handlersContainer.getCommandHandler(DeleteContractorCommandHandler.class).handle(new DeleteContractorCommand(
+                contractor.getId()
+        )));
 
         long contractorRepoSize = this.repositoriesFactory.createContractorRepository().read().count();
 
@@ -84,14 +85,14 @@ public class ContractorServicesTest
     {
         final String sameLogin = "GTouchet";
 
-        Contractor contractor1 = (Contractor) this.servicesContainer.retrieve(CreateContractorServiceHandler.class).handle(new CreateContractorDto(
+        Contractor contractor1 = (Contractor) this.handlersContainer.getCommandHandler(CreateContractorCommandHandler.class).handle(new CreateContractorCommand(
                 sameLogin,
                 Password.of("ABcd1234!"),
                 "Guillaume",
                 PaymentMethod.card
         ));
 
-        Contractor contractor2 = (Contractor) this.servicesContainer.retrieve(CreateContractorServiceHandler.class).handle(new CreateContractorDto(
+        Contractor contractor2 = (Contractor) this.handlersContainer.getCommandHandler(CreateContractorCommandHandler.class).handle(new CreateContractorCommand(
                 sameLogin,
                 Password.of("ABcd1234!"),
                 "Guillaume",
@@ -110,14 +111,14 @@ public class ContractorServicesTest
     {
         final String sameLogin = "GTouchet";
 
-        Contractor contractor = (Contractor) this.servicesContainer.retrieve(CreateContractorServiceHandler.class).handle(new CreateContractorDto(
+        Contractor contractor = (Contractor) this.handlersContainer.getCommandHandler(CreateContractorCommandHandler.class).handle(new CreateContractorCommand(
                 sameLogin,
                 Password.of("ABcd1234!"),
                 "Touchet",
                 PaymentMethod.card
         ));
 
-        Worker worker = (Worker) this.servicesContainer.retrieve(CreateWorkerServiceHandler.class).handle(new CreateWorkerDto(
+        Worker worker = (Worker) this.handlersContainer.getCommandHandler(CreateWorkerCommandHandler.class).handle(new CreateWorkerCommand(
                 sameLogin,
                 Password.of("ABcd1234!"),
                 "Guillaume",
@@ -137,7 +138,7 @@ public class ContractorServicesTest
     @Test
     public void updateContractor()
     {
-        Contractor originalContractor = (Contractor) this.servicesContainer.retrieve(CreateContractorServiceHandler.class).handle(new CreateContractorDto(
+        Contractor originalContractor = (Contractor) this.handlersContainer.getCommandHandler(CreateContractorCommandHandler.class).handle(new CreateContractorCommand(
                 "GTouchet",
                 Password.of("ABcd1234!"),
                 "Guillaume",
@@ -148,7 +149,7 @@ public class ContractorServicesTest
         String newName = "Robert";
         PaymentMethod newPaymentMethod = PaymentMethod.paypal;
 
-        Contractor updatedContractor = (Contractor) this.servicesContainer.retrieve(UpdateContractorServiceHandler.class).handle(new UpdateContractorDto(
+        Contractor updatedContractor = (Contractor) this.handlersContainer.getCommandHandler(UpdateContractorCommandHandler.class).handle(new UpdateContractorCommand(
                 originalContractor.getId(),
                 newPassword,
                 newName,
@@ -165,7 +166,7 @@ public class ContractorServicesTest
     @Test
     public void validatePaymentMethod()
     {
-        Contractor contractor = (Contractor) this.servicesContainer.retrieve(CreateContractorServiceHandler.class).handle(new CreateContractorDto(
+        Contractor contractor = (Contractor) this.handlersContainer.getCommandHandler(CreateContractorCommandHandler.class).handle(new CreateContractorCommand(
                 "GTouchet",
                 Password.of("ABcd1234!"),
                 "Guillaume",
@@ -174,9 +175,13 @@ public class ContractorServicesTest
 
         assertFalse(contractor.isPaymentValidated());
 
-        assertTrue((boolean) this.servicesContainer.retrieve(ValidatePaymentServiceHandler.class).handle(contractor.getId()));
+        assertTrue((boolean) this.handlersContainer.getCommandHandler(ValidatePaymentCommandHandler.class).handle(new ValidatePaymentCommand(
+                contractor.getId()
+        )));
 
-        contractor = (Contractor) this.servicesContainer.retrieve(ReadIdContractorServiceHandler.class).handle(contractor.getId());
+        contractor = (Contractor) this.handlersContainer.getQueryHandler(ReadContractorQueryHandler.class).handle(new ReadContractorQuery(
+                contractor.getId()
+        ));
         assertTrue(contractor.isPaymentValidated());
     }
 
@@ -185,7 +190,7 @@ public class ContractorServicesTest
     {
         exception.expect(IllegalArgumentException.class);
 
-        this.servicesContainer.retrieve(CreateContractorServiceHandler.class).handle(new CreateContractorDto(
+        this.handlersContainer.getCommandHandler(CreateContractorCommandHandler.class).handle(new CreateContractorCommand(
                 "GTouchet",
                 Password.of("ABcd1234!"),
                 "Guillaume",

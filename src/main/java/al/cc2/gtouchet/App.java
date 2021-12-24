@@ -1,6 +1,6 @@
 package al.cc2.gtouchet;
 
-import al.cc2.gtouchet.application.services.ServicesContainer;
+import al.cc2.gtouchet.application.services.HandlersContainer;
 import al.cc2.gtouchet.console.engine.CommandProcessor;
 import al.cc2.gtouchet.console.engine.InterpreterEngine;
 import al.cc2.gtouchet.domain.validators.PasswordValidator;
@@ -11,12 +11,12 @@ public class App
 {
     public static void main(String[] args)
     {
-        ServicesContainer servicesContainer = ServicesContainer.initialize(
+        HandlersContainer handlersContainer = HandlersContainer.initialize(
                 new DataRepositoriesFactory(),
                 new PasswordValidator(),
                 new PaymentMethodValidatorApi()
         );
 
-        new InterpreterEngine(new CommandProcessor(servicesContainer)).run();
+        new InterpreterEngine(new CommandProcessor(handlersContainer)).run();
     }
 }

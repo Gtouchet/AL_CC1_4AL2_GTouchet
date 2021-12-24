@@ -1,15 +1,14 @@
 package al.cc2.gtouchet.services;
 
-import al.cc2.gtouchet.application.services.ServicesContainer;
-import al.cc2.gtouchet.application.services.contractor.CreateContractorServiceHandler;
-import al.cc2.gtouchet.application.services.contractor.dtos.CreateContractorDto;
-import al.cc2.gtouchet.application.services.project.*;
-import al.cc2.gtouchet.application.services.project.dtos.CreateProjectDto;
-import al.cc2.gtouchet.application.services.project.dtos.EngageFireWorkerDto;
-import al.cc2.gtouchet.application.services.project.dtos.UpdateProjectDto;
-import al.cc2.gtouchet.application.services.worker.CreateWorkerServiceHandler;
-import al.cc2.gtouchet.application.services.worker.DeleteWorkerServiceHandler;
-import al.cc2.gtouchet.application.services.worker.dtos.CreateWorkerDto;
+import al.cc2.gtouchet.application.services.HandlersContainer;
+import al.cc2.gtouchet.application.services.dtos.contractor.CreateContractorCommand;
+import al.cc2.gtouchet.application.services.dtos.project.*;
+import al.cc2.gtouchet.application.services.dtos.worker.CreateWorkerCommand;
+import al.cc2.gtouchet.application.services.dtos.worker.DeleteWorkerCommand;
+import al.cc2.gtouchet.application.services.handlers.contractor.CreateContractorCommandHandler;
+import al.cc2.gtouchet.application.services.handlers.project.*;
+import al.cc2.gtouchet.application.services.handlers.worker.CreateWorkerCommandHandler;
+import al.cc2.gtouchet.application.services.handlers.worker.DeleteWorkerCommandHandler;
 import al.cc2.gtouchet.domain.models.*;
 import al.cc2.gtouchet.domain.validators.PasswordValidator;
 import al.cc2.gtouchet.domain.valueObjects.Password;
@@ -24,7 +23,7 @@ import static org.junit.Assert.*;
 public class ProjectServicesTest
 {
     private RepositoriesFactory repositoriesFactory;
-    private ServicesContainer servicesContainer;
+    private HandlersContainer handlersContainer;
 
     private Contractor contractor;
     private Worker worker;
@@ -33,20 +32,20 @@ public class ProjectServicesTest
     public void setup()
     {
         this.repositoriesFactory = new MemoryRepositoriesRetainer();
-        this.servicesContainer = ServicesContainer.initialize(
+        this.handlersContainer = HandlersContainer.initialize(
                 this.repositoriesFactory,
                 new PasswordValidator(),
                 new PaymentMethodValidatorApi()
         );
 
-        this.contractor = (Contractor) this.servicesContainer.retrieve(CreateContractorServiceHandler.class).handle(new CreateContractorDto(
+        this.contractor = (Contractor) this.handlersContainer.getCommandHandler(CreateContractorCommandHandler.class).handle(new CreateContractorCommand(
                 "GTouchet1",
                 Password.of("ABcd1234!"),
                 "Guillaume",
                 PaymentMethod.card
         ));
 
-        this.worker = (Worker) this.servicesContainer.retrieve(CreateWorkerServiceHandler.class).handle(new CreateWorkerDto(
+        this.worker = (Worker) this.handlersContainer.getCommandHandler(CreateWorkerCommandHandler.class).handle(new CreateWorkerCommand(
                 "GTouchet2",
                 Password.of("ABcd1234!"),
                 "Guillaume",
@@ -62,7 +61,7 @@ public class ProjectServicesTest
 
         assertEquals(0, projectRepoSize);
 
-        Project project = (Project) this.servicesContainer.retrieve(CreateProjectServiceHandler.class).handle(new CreateProjectDto(
+        Project project = (Project) this.handlersContainer.getCommandHandler(CreateProjectCommandHandler.class).handle(new CreateProjectCommand(
                 this.contractor.getId(),
                 75
         ));
@@ -76,12 +75,14 @@ public class ProjectServicesTest
     @Test
     public void deleteProject()
     {
-        Project project = (Project) this.servicesContainer.retrieve(CreateProjectServiceHandler.class).handle(new CreateProjectDto(
+        Project project = (Project) this.handlersContainer.getCommandHandler(CreateProjectCommandHandler.class).handle(new CreateProjectCommand(
                 this.contractor.getId(),
                 75
         ));
 
-        assertTrue((boolean) this.servicesContainer.retrieve(DeleteProjectServiceHandler.class).handle(project.getId()));
+        assertTrue((boolean) this.handlersContainer.getCommandHandler(DeleteProjectCommandHandler.class).handle(new DeleteProjectCommand(
+                project.getId()
+        )));
 
         long projectRepoSize = this.repositoriesFactory.createProjectRepository().read().count();
 
@@ -92,12 +93,12 @@ public class ProjectServicesTest
     @Test
     public void updateProject()
     {
-        Project originalProject = (Project) this.servicesContainer.retrieve(CreateProjectServiceHandler.class).handle(new CreateProjectDto(
+        Project originalProject = (Project) this.handlersContainer.getCommandHandler(CreateProjectCommandHandler.class).handle(new CreateProjectCommand(
                 this.contractor.getId(),
                 75
         ));
 
-        Contractor newContractor = (Contractor) this.servicesContainer.retrieve(CreateContractorServiceHandler.class).handle(new CreateContractorDto(
+        Contractor newContractor = (Contractor) this.handlersContainer.getCommandHandler(CreateContractorCommandHandler.class).handle(new CreateContractorCommand(
                 "GTouchet3",
                 Password.of("ABcd1234!"),
                 "Guillaume",
@@ -105,7 +106,7 @@ public class ProjectServicesTest
         ));
         int newDepartment = 91;
 
-        Project updatedProject = (Project) this.servicesContainer.retrieve(UpdateProjectServiceHandler.class).handle(new UpdateProjectDto(
+        Project updatedProject = (Project) this.handlersContainer.getCommandHandler(UpdateProjectCommandHandler.class).handle(new UpdateProjectCommand(
                 originalProject.getId(),
                 newContractor.getId(),
                 newDepartment
@@ -120,12 +121,12 @@ public class ProjectServicesTest
     @Test
     public void engageWorker()
     {
-        Project project = (Project) this.servicesContainer.retrieve(CreateProjectServiceHandler.class).handle(new CreateProjectDto(
+        Project project = (Project) this.handlersContainer.getCommandHandler(CreateProjectCommandHandler.class).handle(new CreateProjectCommand(
                 this.contractor.getId(),
                 75
         ));
 
-        project = (Project) this.servicesContainer.retrieve(EngageWorkerServiceHandler.class).handle(new EngageFireWorkerDto(
+        project = (Project) this.handlersContainer.getCommandHandler(EngageWorkerCommandHandler.class).handle(new EngageFireWorkerCommand(
                 project.getId(),
                 this.worker.getId()
         ));
@@ -137,12 +138,12 @@ public class ProjectServicesTest
     @Test
     public void fireWorker()
     {
-        Project project = (Project) this.servicesContainer.retrieve(CreateProjectServiceHandler.class).handle(new CreateProjectDto(
+        Project project = (Project) this.handlersContainer.getCommandHandler(CreateProjectCommandHandler.class).handle(new CreateProjectCommand(
                 this.contractor.getId(),
                 75
         ));
 
-        project = (Project) this.servicesContainer.retrieve(EngageWorkerServiceHandler.class).handle(new EngageFireWorkerDto(
+        project = (Project) this.handlersContainer.getCommandHandler(EngageWorkerCommandHandler.class).handle(new EngageFireWorkerCommand(
                 project.getId(),
                 this.worker.getId()
         ));
@@ -150,7 +151,7 @@ public class ProjectServicesTest
         assertEquals(1, project.getWorkersId().size());
         assertTrue(project.getWorkersId().contains(this.worker.getId()));
 
-        project = (Project) this.servicesContainer.retrieve(FireWorkerServiceHandler.class).handle(new EngageFireWorkerDto(
+        project = (Project) this.handlersContainer.getCommandHandler(FireWorkerCommandHandler.class).handle(new EngageFireWorkerCommand(
                 project.getId(),
                 this.worker.getId()
         ));
@@ -180,12 +181,12 @@ public class ProjectServicesTest
     @Test
     public void hardDeletingEngagedWorker()
     {
-        Project project = (Project) this.servicesContainer.retrieve(CreateProjectServiceHandler.class).handle(new CreateProjectDto(
+        Project project = (Project) this.handlersContainer.getCommandHandler(CreateProjectCommandHandler.class).handle(new CreateProjectCommand(
                 this.contractor.getId(),
                 75
         ));
 
-        project = (Project) this.servicesContainer.retrieve(EngageWorkerServiceHandler.class).handle(new EngageFireWorkerDto(
+        project = (Project) this.handlersContainer.getCommandHandler(EngageWorkerCommandHandler.class).handle(new EngageFireWorkerCommand(
                 project.getId(),
                 this.worker.getId()
         ));
@@ -193,9 +194,13 @@ public class ProjectServicesTest
         assertEquals(1, project.getWorkersId().size());
         assertTrue(project.getWorkersId().contains(this.worker.getId()));
 
-        assertTrue((boolean) this.servicesContainer.retrieve(DeleteWorkerServiceHandler.class).handle(this.worker.getId()));
+        assertTrue((boolean) this.handlersContainer.getCommandHandler(DeleteWorkerCommandHandler.class).handle(new DeleteWorkerCommand(
+                this.worker.getId()
+        )));
 
-        project = (Project) this.servicesContainer.retrieve(ReadIdProjectServiceHandler.class).handle(project.getId());
+        project = (Project) this.handlersContainer.getQueryHandler(ReadProjectQueryHandler.class).handle(new ReadProjectQuery(
+                project.getId()
+        ));
 
         assertEquals(0, project.getWorkersId().size());
         assertFalse(project.getWorkersId().contains(this.worker.getId()));
