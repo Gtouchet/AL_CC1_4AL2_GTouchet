@@ -4,6 +4,7 @@ import al.cc2.gtouchet.application.kernel.CommandHandler;
 import al.cc2.gtouchet.application.kernel.QueryHandler;
 import al.cc2.gtouchet.application.services.HandlersContainer;
 import al.cc2.gtouchet.console.handlers.ConsoleHandler;
+import al.cc2.gtouchet.console.handlers.miscellaneous.HelpConsoleHandler;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -34,8 +35,15 @@ public class CommandProcessor
             return;
         }
 
+        if (consoleCommand == ConsoleCommand.HELP)
+        {
+            new HelpConsoleHandler().handle(params);
+            return;
+        }
+
         try {
             ConsoleHandler consoleHandler;
+
             if (consoleCommand.serviceHandlers.length == 1)
             {
                 consoleHandler = (ConsoleHandler) Class

@@ -37,7 +37,7 @@ public class ReadPaymentConsoleHandler implements ConsoleHandler
             }
             else
             {
-                System.out.println("No Contractor registered yet");
+                System.out.println("No Payment registered yet");
             }
         }
         else if (params.length == ConsoleCommand.READ_PAYMENT.parameters + 1) // Accepts an ID as an overloaded parameter
