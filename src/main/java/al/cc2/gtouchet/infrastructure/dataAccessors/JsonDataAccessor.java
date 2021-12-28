@@ -1,5 +1,7 @@
 package al.cc2.gtouchet.infrastructure.dataAccessors;
 
+import al.cc2.gtouchet.domain.models.Entity;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -12,21 +14,21 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class JsonDataAccessor<T> implements DataAccessor<T>
+public class JsonDataAccessor<T extends Entity> implements DataAccessor<T>
 {
-    private final Class<T> dataType;
+    private final Class dataType;
     private final DateFormat dateFormatter;
 
     private final String filePath;
     private final String backupFilePath;
 
-    public JsonDataAccessor(Class<T> dataType)
+    public JsonDataAccessor(Class dataType)
     {
         this.dataType = dataType;
         this.dateFormatter = new SimpleDateFormat("dd-MM-yyyy-HH-mm-ss");
 
-        this.filePath = "./res/" + dataType.getSimpleName().toLowerCase() + "s.json";
-        this.backupFilePath = "./res/backups/" + dataType.getSimpleName().toLowerCase() + "s/";
+        this.filePath = "./src/main/resources/jsonFiles/" + dataType.getSimpleName().toLowerCase() + "s.json";
+        this.backupFilePath = "./src/main/resources/jsonFiles/backups/" + dataType.getSimpleName().toLowerCase() + "s/";
     }
 
     @Override
