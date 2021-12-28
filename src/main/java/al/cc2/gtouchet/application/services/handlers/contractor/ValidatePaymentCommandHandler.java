@@ -15,7 +15,7 @@ public class ValidatePaymentCommandHandler implements CommandHandler<Boolean, Va
     private final PaymentMethodValidatorApi paymentMethodValidatorApi;
 
     public ValidatePaymentCommandHandler(
-            Repository<Contractor> contractorRepository,
+            Repository contractorRepository,
             PaymentMethodValidatorApi paymentMethodValidatorApi)
     {
         this.contractorRepository = contractorRepository;

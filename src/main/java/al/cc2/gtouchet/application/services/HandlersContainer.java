@@ -87,6 +87,7 @@ public class HandlersContainer
             handlersContainer.register(new ReadContractorQueryHandler(contractorRepository));
             handlersContainer.register(new UpdateContractorCommandHandler(contractorRepository, passwordValidator));
             handlersContainer.register(new ValidatePaymentCommandHandler(contractorRepository, paymentMethodValidatorApi));
+            handlersContainer.register(new ReadByPaymentContractorQueryHandler(contractorRepository));
 
             // Register Payment services
             handlersContainer.register(new CreatePaymentCommandHandler(paymentRepository, contractorRepository, workerRepository));

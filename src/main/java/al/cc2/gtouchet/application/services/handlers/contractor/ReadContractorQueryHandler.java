@@ -10,7 +10,7 @@ public class ReadContractorQueryHandler implements QueryHandler<Contractor, Read
 {
     private final Repository<Contractor> contractorRepository;
 
-    public ReadContractorQueryHandler(Repository<Contractor> contractorRepository)
+    public ReadContractorQueryHandler(Repository contractorRepository)
     {
         this.contractorRepository = contractorRepository;
     }

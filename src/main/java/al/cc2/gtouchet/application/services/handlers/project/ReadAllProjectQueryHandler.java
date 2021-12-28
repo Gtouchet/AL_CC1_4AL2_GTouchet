@@ -12,7 +12,7 @@ public class ReadAllProjectQueryHandler implements QueryHandler<List<Project>, R
 {
     private final Repository<Project> projectRepository;
 
-    public ReadAllProjectQueryHandler(Repository<Project> projectRepository)
+    public ReadAllProjectQueryHandler(Repository projectRepository)
     {
         this.projectRepository = projectRepository;
     }

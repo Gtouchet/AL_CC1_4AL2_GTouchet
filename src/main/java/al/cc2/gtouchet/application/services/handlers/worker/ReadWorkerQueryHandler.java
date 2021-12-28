@@ -10,7 +10,7 @@ public class ReadWorkerQueryHandler implements QueryHandler<Worker, ReadWorkerQu
 {
     private final Repository<Worker> workerRepository;
 
-    public ReadWorkerQueryHandler(Repository<Worker> workerRepository)
+    public ReadWorkerQueryHandler(Repository workerRepository)
     {
         this.workerRepository = workerRepository;
     }

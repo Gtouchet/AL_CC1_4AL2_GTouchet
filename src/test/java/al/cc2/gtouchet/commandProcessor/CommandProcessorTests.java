@@ -54,7 +54,7 @@ public class CommandProcessorTests
     {
         this.commandProcessor.process("help");
 
-        assertEquals(this.output.toString().split("\n").length, 25 + 4); // 25 commands + 4 line breaks
+        assertEquals(this.output.toString().split("\n").length, 26 + 4); // 26 commands + 4 line breaks
     }
 
     @Test

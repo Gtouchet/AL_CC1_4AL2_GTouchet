@@ -17,8 +17,8 @@ public class FireWorkerCommandHandler implements CommandHandler<Project, EngageF
     private final Repository<Worker> workerRepository;
 
     public FireWorkerCommandHandler(
-            Repository<Project> projectRepository,
-            Repository<Worker> workerRepository)
+            Repository projectRepository,
+            Repository workerRepository)
     {
         this.projectRepository = projectRepository;
         this.workerRepository = workerRepository;

@@ -7,6 +7,9 @@ import al.cc2.gtouchet.console.handlers.ConsoleHandler;
 import al.cc2.gtouchet.console.handlers.miscellaneous.HelpConsoleHandler;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class CommandProcessor
 {
@@ -42,25 +45,23 @@ public class CommandProcessor
         }
 
         try {
-            ConsoleHandler consoleHandler;
+            List<Class> constructorParametersTypes = new ArrayList<>();
+            List<QueryHandler> instanceQueries = new ArrayList<>();
+            List<CommandHandler> instanceCommands = new ArrayList<>();
 
-            if (consoleCommand.serviceHandlers.length == 1)
-            {
-                consoleHandler = (ConsoleHandler) Class
-                        .forName(consoleCommand.consoleHandler.getName())
-                        .getConstructor(new Class[] { CommandHandler.class })
-                        .newInstance(this.handlersContainer.getCommandHandler(consoleCommand.serviceHandlers[0]));
-            }
-            else
-            {
-                consoleHandler = (ConsoleHandler) Class
-                        .forName(consoleCommand.consoleHandler.getName())
-                        .getConstructor(new Class[] { QueryHandler.class, QueryHandler.class })
-                        .newInstance(
-                                this.handlersContainer.getQueryHandler(consoleCommand.serviceHandlers[0]),
-                                this.handlersContainer.getQueryHandler(consoleCommand.serviceHandlers[1])
-                        );
-            }
+            Arrays.asList(consoleCommand.serviceHandlers).forEach(handler -> {
+                constructorParametersTypes.add(handler.getInterfaces()[0]);
+                if (handler.getName().contains("Query")) { // TODO: refacto ?
+                    instanceQueries.add(this.handlersContainer.getQueryHandler(handler));
+                } else {
+                    instanceCommands.add(this.handlersContainer.getCommandHandler(handler));
+                }
+            });
+
+            ConsoleHandler consoleHandler = (ConsoleHandler) Class
+                    .forName(consoleCommand.consoleHandler.getName())
+                    .getConstructor(constructorParametersTypes.toArray(new Class[0]))
+                    .newInstance(instanceQueries.size() > 0 ? instanceQueries.toArray() : instanceCommands.toArray());
 
             consoleHandler.handle(params);
 

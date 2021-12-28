@@ -14,8 +14,8 @@ public class UpdateProjectCommandHandler implements CommandHandler<Project, Upda
     private final Repository<Contractor> contractorRepository;
 
     public UpdateProjectCommandHandler(
-            Repository<Project> projectRepository,
-            Repository<Contractor> contractorRepository)
+            Repository projectRepository,
+            Repository contractorRepository)
     {
         this.projectRepository = projectRepository;
         this.contractorRepository = contractorRepository;

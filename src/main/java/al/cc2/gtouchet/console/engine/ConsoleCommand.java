@@ -1,14 +1,22 @@
 package al.cc2.gtouchet.console.engine;
 
-import al.cc2.gtouchet.console.handlers.contractor.*;
-import al.cc2.gtouchet.console.handlers.miscellaneous.HelpConsoleHandler;
-import al.cc2.gtouchet.console.handlers.payment.*;
-import al.cc2.gtouchet.console.handlers.project.*;
-import al.cc2.gtouchet.console.handlers.worker.*;
 import al.cc2.gtouchet.application.services.handlers.contractor.*;
-import al.cc2.gtouchet.application.services.handlers.payment.*;
+import al.cc2.gtouchet.application.services.handlers.payment.CreatePaymentCommandHandler;
+import al.cc2.gtouchet.application.services.handlers.payment.DeletePaymentCommandHandler;
+import al.cc2.gtouchet.application.services.handlers.payment.ReadAllPaymentQueryHandler;
+import al.cc2.gtouchet.application.services.handlers.payment.ReadPaymentQueryHandler;
 import al.cc2.gtouchet.application.services.handlers.project.*;
 import al.cc2.gtouchet.application.services.handlers.worker.*;
+import al.cc2.gtouchet.console.handlers.contractor.*;
+import al.cc2.gtouchet.console.handlers.miscellaneous.HelpConsoleHandler;
+import al.cc2.gtouchet.console.handlers.payment.CreatePaymentConsoleHandler;
+import al.cc2.gtouchet.console.handlers.payment.DeletePaymentConsoleHandler;
+import al.cc2.gtouchet.console.handlers.payment.ReadPaymentConsoleHandler;
+import al.cc2.gtouchet.console.handlers.project.*;
+import al.cc2.gtouchet.console.handlers.worker.CreateWorkerConsoleHandler;
+import al.cc2.gtouchet.console.handlers.worker.DeleteWorkerConsoleHandler;
+import al.cc2.gtouchet.console.handlers.worker.ReadWorkerConsoleHandler;
+import al.cc2.gtouchet.console.handlers.worker.UpdateWorkerConsoleHandler;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,9 +42,13 @@ public enum ConsoleCommand
             DeleteContractorConsoleHandler.class,
             new Class[] { DeleteContractorCommandHandler.class }),
     VALIDATE_PAYMENT("VALIDATEPAYMENT", 2,
-            "VALIDATEPAYMENT id -> validate the contractor's payment method\n",
+            "VALIDATEPAYMENT id -> validate the contractor's payment method",
             ValidatePaymentConsoleHandler.class,
             new Class[] { ValidatePaymentCommandHandler.class }),
+    READ_CONTRACTOR_BY_PAYMENT("SELECTCONTRACTORBYPAYMENT", 2,
+            "SELECTCONTRACTORBYPAYMENT paymentMethod -> retrieve contractors by their payment methods\n",
+            ReadByPaymentContractorConsoleHandler.class,
+            new Class[] { ReadByPaymentContractorQueryHandler.class }),
 
     // Payment commands
     CREATE_PAYMENT("CREATEPAYMENT", 5,
@@ -114,7 +126,12 @@ public enum ConsoleCommand
     public final Class consoleHandler;
     public final Class[] serviceHandlers;
 
-    ConsoleCommand(String keyword, int parameters, String usage, Class consoleHandler, Class[] serviceHandlers)
+    ConsoleCommand(
+            String keyword,
+            int parameters,
+            String usage,
+            Class consoleHandler,
+            Class[] serviceHandlers)
     {
         this.keyword = keyword;
         this.parameters = parameters;

@@ -10,7 +10,7 @@ public class ReadProjectQueryHandler implements QueryHandler<Project, ReadProjec
 {
     private final Repository<Project> projectRepository;
 
-    public ReadProjectQueryHandler(Repository<Project> projectRepository)
+    public ReadProjectQueryHandler(Repository projectRepository)
     {
         this.projectRepository = projectRepository;
     }

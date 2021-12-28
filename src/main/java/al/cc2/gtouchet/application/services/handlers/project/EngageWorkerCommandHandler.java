@@ -17,8 +17,8 @@ public class EngageWorkerCommandHandler implements CommandHandler<Project, Engag
     private final Repository<Worker> workerRepository;
 
     public EngageWorkerCommandHandler(
-            Repository<Project> projectRepository,
-            Repository<Worker> workerRepository)
+            Repository projectRepository,
+            Repository workerRepository)
     {
         this.projectRepository = projectRepository;
         this.workerRepository = workerRepository;

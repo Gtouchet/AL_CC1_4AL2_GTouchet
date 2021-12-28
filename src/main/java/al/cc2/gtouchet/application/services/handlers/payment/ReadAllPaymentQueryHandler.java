@@ -12,7 +12,7 @@ public class ReadAllPaymentQueryHandler implements QueryHandler<List<Payment>, R
 {
     private final Repository<Payment> paymentRepository;
 
-    public ReadAllPaymentQueryHandler(Repository<Payment> paymentRepository)
+    public ReadAllPaymentQueryHandler(Repository paymentRepository)
     {
         this.paymentRepository = paymentRepository;
     }

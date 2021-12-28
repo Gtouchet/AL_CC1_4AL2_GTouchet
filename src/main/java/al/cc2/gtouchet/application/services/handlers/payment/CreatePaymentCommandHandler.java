@@ -18,9 +18,9 @@ public class CreatePaymentCommandHandler implements CommandHandler<Payment, Crea
     private final Repository<Worker> workerRepository;
 
     public CreatePaymentCommandHandler(
-            Repository<Payment> paymentRepository,
-            Repository<Contractor> contractorRepository,
-            Repository<Worker> workerRepository)
+            Repository paymentRepository,
+            Repository contractorRepository,
+            Repository workerRepository)
     {
         this.paymentRepository = paymentRepository;
         this.contractorRepository = contractorRepository;

@@ -15,8 +15,8 @@ public class CreateProjectCommandHandler implements CommandHandler<Project, Crea
     private final Repository<Contractor> contractorRepository;
 
     public CreateProjectCommandHandler(
-            Repository<Project> projectRepository,
-            Repository<Contractor> contractorRepository)
+            Repository projectRepository,
+            Repository contractorRepository)
     {
         this.projectRepository = projectRepository;
         this.contractorRepository = contractorRepository;

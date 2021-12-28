@@ -12,7 +12,7 @@ public class ReadAllContractorQueryHandler implements QueryHandler<List<Contract
 {
     private final Repository<Contractor> contractorRepository;
 
-    public ReadAllContractorQueryHandler(Repository<Contractor> contractorRepository)
+    public ReadAllContractorQueryHandler(Repository contractorRepository)
     {
         this.contractorRepository = contractorRepository;
     }

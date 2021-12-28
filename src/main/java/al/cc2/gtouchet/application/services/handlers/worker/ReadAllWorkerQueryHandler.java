@@ -12,7 +12,7 @@ public class ReadAllWorkerQueryHandler implements QueryHandler<List<Worker>, Rea
 {
     private final Repository<Worker> workerRepository;
 
-    public ReadAllWorkerQueryHandler(Repository<Worker> workerRepository)
+    public ReadAllWorkerQueryHandler(Repository workerRepository)
     {
         this.workerRepository = workerRepository;
     }

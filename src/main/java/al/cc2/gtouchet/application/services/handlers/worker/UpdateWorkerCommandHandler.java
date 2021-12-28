@@ -15,7 +15,7 @@ public class UpdateWorkerCommandHandler implements CommandHandler<Worker, Update
     private final PasswordValidator passwordValidator;
 
     public UpdateWorkerCommandHandler(
-            Repository<Worker> workerRepository,
+            Repository workerRepository,
             PasswordValidator passwordValidator)
     {
         this.workerRepository = workerRepository;

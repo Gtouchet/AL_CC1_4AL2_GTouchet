@@ -17,8 +17,8 @@ public class DeleteWorkerCommandHandler implements CommandHandler<Boolean, Delet
     private final Repository<Project> projectRepository;
 
     public DeleteWorkerCommandHandler(
-            Repository<Worker> workerRepository,
-            Repository<Project> projectRepository)
+            Repository workerRepository,
+            Repository projectRepository)
     {
         this.workerRepository = workerRepository;
         this.projectRepository = projectRepository;

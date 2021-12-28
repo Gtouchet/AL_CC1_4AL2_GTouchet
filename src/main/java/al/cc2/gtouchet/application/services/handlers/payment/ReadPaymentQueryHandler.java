@@ -10,7 +10,7 @@ public class ReadPaymentQueryHandler implements QueryHandler<Payment, ReadPaymen
 {
     private final Repository<Payment> paymentRepository;
 
-    public ReadPaymentQueryHandler(Repository<Payment> paymentRepository)
+    public ReadPaymentQueryHandler(Repository paymentRepository)
     {
         this.paymentRepository = paymentRepository;
     }

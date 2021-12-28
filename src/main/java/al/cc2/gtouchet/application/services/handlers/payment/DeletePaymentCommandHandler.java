@@ -10,7 +10,7 @@ public class DeletePaymentCommandHandler implements CommandHandler<Boolean, Dele
 {
     private final Repository<Payment> paymentRepository;
 
-    public DeletePaymentCommandHandler(Repository<Payment> paymentRepository)
+    public DeletePaymentCommandHandler(Repository paymentRepository)
     {
         this.paymentRepository = paymentRepository;
     }

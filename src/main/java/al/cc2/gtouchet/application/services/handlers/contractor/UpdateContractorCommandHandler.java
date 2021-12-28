@@ -15,7 +15,7 @@ public class UpdateContractorCommandHandler implements CommandHandler<Contractor
     private final PasswordValidator passwordValidator;
 
     public UpdateContractorCommandHandler(
-            Repository<Contractor> contractorRepository,
+            Repository contractorRepository,
             PasswordValidator passwordValidator)
     {
         this.contractorRepository = contractorRepository;

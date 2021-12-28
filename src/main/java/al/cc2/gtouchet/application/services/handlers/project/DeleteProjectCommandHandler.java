@@ -10,7 +10,7 @@ public class DeleteProjectCommandHandler implements CommandHandler<Boolean, Dele
 {
     private final Repository<Project> projectRepository;
 
-    public DeleteProjectCommandHandler(Repository<Project> projectRepository)
+    public DeleteProjectCommandHandler(Repository projectRepository)
     {
         this.projectRepository = projectRepository;
     }

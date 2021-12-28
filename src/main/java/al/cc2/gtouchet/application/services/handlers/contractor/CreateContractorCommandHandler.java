@@ -18,8 +18,8 @@ public class CreateContractorCommandHandler implements CommandHandler<Contractor
     private final PasswordValidator passwordValidator;
 
     public CreateContractorCommandHandler(
-            Repository<Contractor> contractorRepository,
-            Repository<Worker> workerRepository,
+            Repository contractorRepository,
+            Repository workerRepository,
             PasswordValidator passwordValidator)
     {
         this.contractorRepository = contractorRepository;

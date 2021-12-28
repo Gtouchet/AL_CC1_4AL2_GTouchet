@@ -10,7 +10,7 @@ public class DeleteContractorCommandHandler implements CommandHandler<Boolean, D
 {
     private final Repository<Contractor> contractorRepository;
 
-    public DeleteContractorCommandHandler(Repository<Contractor> contractorRepository)
+    public DeleteContractorCommandHandler(Repository contractorRepository)
     {
         this.contractorRepository = contractorRepository;
     }
