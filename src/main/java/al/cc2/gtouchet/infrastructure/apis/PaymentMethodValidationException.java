@@ -1,8 +1,8 @@
 package al.cc2.gtouchet.infrastructure.apis;
 
-import al.cc2.gtouchet.domain.models.PaymentMethod;
+import al.cc2.gtouchet.domain.models.payment.PaymentMethod;
 
-public class PaymentMethodValidationException extends Exception
+public class PaymentMethodValidationException extends RuntimeException
 {
     public PaymentMethodValidationException(PaymentMethod paymentMethod)
     {

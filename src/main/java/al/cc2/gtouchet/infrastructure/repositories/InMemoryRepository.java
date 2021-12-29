@@ -7,11 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
-public class MemoryRepository<T extends Entity> implements Repository<T>
+public class InMemoryRepository<T extends Entity> implements Repository<T>
 {
     protected List<T> entities;
 
-    public MemoryRepository()
+    public InMemoryRepository()
     {
         this.entities = new ArrayList<>();
     }

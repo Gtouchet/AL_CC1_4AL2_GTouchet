@@ -5,13 +5,13 @@ import al.cc2.gtouchet.application.services.dtos.worker.CreateWorkerCommand;
 import al.cc2.gtouchet.console.engine.ConsoleCommand;
 import al.cc2.gtouchet.console.engine.WrongNumberOfArgumentException;
 import al.cc2.gtouchet.console.handlers.ConsoleHandler;
-import al.cc2.gtouchet.domain.models.Service;
-import al.cc2.gtouchet.domain.models.Worker;
+import al.cc2.gtouchet.domain.models.user.WorkerService;
+import al.cc2.gtouchet.domain.models.user.Worker;
 import al.cc2.gtouchet.domain.valueObjects.Password;
 
 import java.util.Objects;
 
-public class CreateWorkerConsoleHandler implements ConsoleHandler
+public final class CreateWorkerConsoleHandler implements ConsoleHandler
 {
     private final CommandHandler<Worker, CreateWorkerCommand> commandHandler;
 
@@ -30,7 +30,7 @@ public class CreateWorkerConsoleHandler implements ConsoleHandler
                         params[1],
                         Password.of(params[2]),
                         params[3],
-                        Service.valueOf(params[4].toLowerCase()),
+                        WorkerService.valueOf(params[4].toUpperCase()),
                         Integer.parseInt(params[5])
                 ));
                 if (worker != null)

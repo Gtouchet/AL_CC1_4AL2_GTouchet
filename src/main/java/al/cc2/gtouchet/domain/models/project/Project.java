@@ -1,11 +1,12 @@
-package al.cc2.gtouchet.domain.models;
+package al.cc2.gtouchet.domain.models.project;
 
+import al.cc2.gtouchet.domain.models.Entity;
 import al.cc2.gtouchet.domain.valueObjects.Date;
 import al.cc2.gtouchet.domain.valueObjects.Id;
 
 import java.util.List;
 
-public class Project extends Entity
+public final class Project extends Entity
 {
     private final Id contractorId;
     private final int department;

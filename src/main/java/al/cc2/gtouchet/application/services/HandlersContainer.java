@@ -9,10 +9,10 @@ import al.cc2.gtouchet.application.services.handlers.payment.ReadAllPaymentQuery
 import al.cc2.gtouchet.application.services.handlers.payment.ReadPaymentQueryHandler;
 import al.cc2.gtouchet.application.services.handlers.project.*;
 import al.cc2.gtouchet.application.services.handlers.worker.*;
-import al.cc2.gtouchet.domain.models.Contractor;
-import al.cc2.gtouchet.domain.models.Payment;
-import al.cc2.gtouchet.domain.models.Project;
-import al.cc2.gtouchet.domain.models.Worker;
+import al.cc2.gtouchet.domain.models.user.Contractor;
+import al.cc2.gtouchet.domain.models.payment.Payment;
+import al.cc2.gtouchet.domain.models.project.Project;
+import al.cc2.gtouchet.domain.models.user.Worker;
 import al.cc2.gtouchet.domain.validators.PasswordValidator;
 import al.cc2.gtouchet.infrastructure.apis.PaymentMethodValidatorApi;
 import al.cc2.gtouchet.infrastructure.repositories.Repository;
@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class HandlersContainer
+public final class HandlersContainer
 {
     private final List<CommandHandler> commandHandlers;
     private final List<QueryHandler> queryHandlers;

@@ -6,13 +6,13 @@ import al.cc2.gtouchet.application.services.dtos.worker.ReadWorkerQuery;
 import al.cc2.gtouchet.console.engine.ConsoleCommand;
 import al.cc2.gtouchet.console.engine.WrongNumberOfArgumentException;
 import al.cc2.gtouchet.console.handlers.ConsoleHandler;
-import al.cc2.gtouchet.domain.models.Worker;
+import al.cc2.gtouchet.domain.models.user.Worker;
 import al.cc2.gtouchet.domain.valueObjects.Id;
 
 import java.util.List;
 import java.util.Objects;
 
-public class ReadWorkerConsoleHandler implements ConsoleHandler
+public final class ReadWorkerConsoleHandler implements ConsoleHandler
 {
     private final QueryHandler<List<Worker>, ReadAllWorkerQuery> queryHandlerAll;
     private final QueryHandler<Worker, ReadWorkerQuery> queryHandlerId;

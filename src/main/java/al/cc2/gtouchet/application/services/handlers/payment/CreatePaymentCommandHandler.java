@@ -3,15 +3,15 @@ package al.cc2.gtouchet.application.services.handlers.payment;
 import al.cc2.gtouchet.application.kernel.CommandHandler;
 import al.cc2.gtouchet.application.services.dtos.payment.CreatePaymentCommand;
 import al.cc2.gtouchet.domain.builders.PaymentBuilder;
-import al.cc2.gtouchet.domain.models.Contractor;
-import al.cc2.gtouchet.domain.models.Payment;
-import al.cc2.gtouchet.domain.models.Worker;
+import al.cc2.gtouchet.domain.models.user.Contractor;
+import al.cc2.gtouchet.domain.models.payment.Payment;
+import al.cc2.gtouchet.domain.models.user.Worker;
 import al.cc2.gtouchet.domain.valueObjects.Date;
 import al.cc2.gtouchet.domain.valueObjects.Id;
 import al.cc2.gtouchet.infrastructure.repositories.EntityNotFoundException;
 import al.cc2.gtouchet.infrastructure.repositories.Repository;
 
-public class CreatePaymentCommandHandler implements CommandHandler<Payment, CreatePaymentCommand>
+public final class CreatePaymentCommandHandler implements CommandHandler<Payment, CreatePaymentCommand>
 {
     private final Repository<Payment> paymentRepository;
     private final Repository<Contractor> contractorRepository;

@@ -3,7 +3,7 @@ package al.cc2.gtouchet.console.handlers.miscellaneous;
 import al.cc2.gtouchet.console.engine.ConsoleCommand;
 import al.cc2.gtouchet.console.handlers.ConsoleHandler;
 
-public class HelpConsoleHandler implements ConsoleHandler
+public final class HelpConsoleHandler implements ConsoleHandler
 {
     @Override
     public void handle(String[] params)

@@ -3,15 +3,15 @@ package al.cc2.gtouchet.application.services.handlers.project;
 import al.cc2.gtouchet.application.kernel.CommandHandler;
 import al.cc2.gtouchet.application.services.dtos.project.EngageFireWorkerCommand;
 import al.cc2.gtouchet.domain.builders.ProjectBuilder;
-import al.cc2.gtouchet.domain.models.Project;
-import al.cc2.gtouchet.domain.models.Worker;
+import al.cc2.gtouchet.domain.models.project.Project;
+import al.cc2.gtouchet.domain.models.user.Worker;
 import al.cc2.gtouchet.domain.valueObjects.Id;
 import al.cc2.gtouchet.infrastructure.repositories.EntityNotFoundException;
 import al.cc2.gtouchet.infrastructure.repositories.Repository;
 
 import java.util.List;
 
-public class FireWorkerCommandHandler implements CommandHandler<Project, EngageFireWorkerCommand>
+public final class FireWorkerCommandHandler implements CommandHandler<Project, EngageFireWorkerCommand>
 {
     private final Repository<Project> projectRepository;
     private final Repository<Worker> workerRepository;

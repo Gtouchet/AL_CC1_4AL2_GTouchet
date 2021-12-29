@@ -3,13 +3,13 @@ package al.cc2.gtouchet.application.services.handlers.contractor;
 import al.cc2.gtouchet.application.kernel.CommandHandler;
 import al.cc2.gtouchet.application.services.dtos.contractor.UpdateContractorCommand;
 import al.cc2.gtouchet.domain.builders.ContractorBuilder;
-import al.cc2.gtouchet.domain.models.Contractor;
+import al.cc2.gtouchet.domain.models.user.Contractor;
 import al.cc2.gtouchet.domain.validators.PasswordFormatException;
 import al.cc2.gtouchet.domain.validators.PasswordValidator;
 import al.cc2.gtouchet.infrastructure.repositories.EntityNotFoundException;
 import al.cc2.gtouchet.infrastructure.repositories.Repository;
 
-public class UpdateContractorCommandHandler implements CommandHandler<Contractor, UpdateContractorCommand>
+public final class UpdateContractorCommandHandler implements CommandHandler<Contractor, UpdateContractorCommand>
 {
     private final Repository<Contractor> contractorRepository;
     private final PasswordValidator passwordValidator;

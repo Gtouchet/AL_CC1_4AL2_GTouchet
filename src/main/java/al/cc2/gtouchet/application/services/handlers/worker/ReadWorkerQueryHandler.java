@@ -2,11 +2,11 @@ package al.cc2.gtouchet.application.services.handlers.worker;
 
 import al.cc2.gtouchet.application.kernel.QueryHandler;
 import al.cc2.gtouchet.application.services.dtos.worker.ReadWorkerQuery;
-import al.cc2.gtouchet.domain.models.Worker;
+import al.cc2.gtouchet.domain.models.user.Worker;
 import al.cc2.gtouchet.infrastructure.repositories.EntityNotFoundException;
 import al.cc2.gtouchet.infrastructure.repositories.Repository;
 
-public class ReadWorkerQueryHandler implements QueryHandler<Worker, ReadWorkerQuery>
+public final class ReadWorkerQueryHandler implements QueryHandler<Worker, ReadWorkerQuery>
 {
     private final Repository<Worker> workerRepository;
 

@@ -3,7 +3,7 @@ package al.cc2.gtouchet.domain.valueObjects;
 import java.util.Objects;
 import java.util.UUID;
 
-public class Id
+public final class Id
 {
     private final String value;
 

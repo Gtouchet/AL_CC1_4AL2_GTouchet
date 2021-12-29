@@ -5,13 +5,13 @@ import al.cc2.gtouchet.application.services.dtos.contractor.CreateContractorComm
 import al.cc2.gtouchet.console.engine.ConsoleCommand;
 import al.cc2.gtouchet.console.engine.WrongNumberOfArgumentException;
 import al.cc2.gtouchet.console.handlers.ConsoleHandler;
-import al.cc2.gtouchet.domain.models.Contractor;
-import al.cc2.gtouchet.domain.models.PaymentMethod;
+import al.cc2.gtouchet.domain.models.payment.PaymentMethod;
+import al.cc2.gtouchet.domain.models.user.Contractor;
 import al.cc2.gtouchet.domain.valueObjects.Password;
 
 import java.util.Objects;
 
-public class CreateContractorConsoleHandler implements ConsoleHandler
+public final class CreateContractorConsoleHandler implements ConsoleHandler
 {
     private final CommandHandler<Contractor, CreateContractorCommand> commandHandler;
 
@@ -30,7 +30,7 @@ public class CreateContractorConsoleHandler implements ConsoleHandler
                         params[1],
                         Password.of(params[2]),
                         params[3],
-                        PaymentMethod.valueOf(params[4].toLowerCase())
+                        PaymentMethod.valueOf(params[4].toUpperCase())
                 ));
                 if (contractor != null)
                 {

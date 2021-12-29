@@ -1,20 +1,21 @@
 package al.cc2.gtouchet.domain.builders;
 
-import al.cc2.gtouchet.domain.models.Service;
-import al.cc2.gtouchet.domain.models.Worker;
+import al.cc2.gtouchet.domain.models.user.Credentials;
+import al.cc2.gtouchet.domain.models.user.WorkerService;
+import al.cc2.gtouchet.domain.models.user.Worker;
 import al.cc2.gtouchet.domain.valueObjects.Date;
 import al.cc2.gtouchet.domain.valueObjects.Id;
 import al.cc2.gtouchet.domain.valueObjects.Password;
 
 import java.util.Objects;
 
-public class WorkerBuilder implements Builder<Worker>
+public final class WorkerBuilder implements Builder<Worker>
 {
     private final Id id;
     private final String login;
     private Password password;
     private String name;
-    private Service service;
+    private WorkerService workerService;
     private int department;
     private final Date creationDate;
 
@@ -30,10 +31,12 @@ public class WorkerBuilder implements Builder<Worker>
     {
         return Worker.of(
                 Objects.requireNonNull(this.id),
-                Objects.requireNonNull(this.login),
-                Objects.requireNonNull(this.password),
+                new Credentials(
+                        Objects.requireNonNull(this.login),
+                        Objects.requireNonNull(this.password)
+                ),
                 Objects.requireNonNull(this.name),
-                Objects.requireNonNull(this.service),
+                Objects.requireNonNull(this.workerService),
                 this.department,
                 Objects.requireNonNull(this.creationDate)
         );
@@ -48,13 +51,13 @@ public class WorkerBuilder implements Builder<Worker>
     {
         WorkerBuilder builder = new WorkerBuilder(
                 worker.getId(),
-                worker.getLogin(),
+                worker.getCredentials().getLogin(),
                 worker.getCreationDate()
         );
 
-        builder.password = worker.getPassword();
+        builder.password = worker.getCredentials().getPassword();
         builder.name = worker.getName();
-        builder.service = worker.getService();
+        builder.workerService = worker.getService();
         builder.department = worker.getDepartment();
 
         return builder;
@@ -74,10 +77,10 @@ public class WorkerBuilder implements Builder<Worker>
         return builder;
     }
 
-    public WorkerBuilder setService(Service service)
+    public WorkerBuilder setService(WorkerService workerService)
     {
         WorkerBuilder builder = this;
-        builder.service = service;
+        builder.workerService = workerService;
         return builder;
     }
 

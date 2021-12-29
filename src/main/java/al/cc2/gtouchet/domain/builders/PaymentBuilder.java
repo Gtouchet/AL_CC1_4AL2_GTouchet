@@ -1,13 +1,13 @@
 package al.cc2.gtouchet.domain.builders;
 
-import al.cc2.gtouchet.domain.models.Payment;
-import al.cc2.gtouchet.domain.models.PaymentMethod;
+import al.cc2.gtouchet.domain.models.payment.Payment;
+import al.cc2.gtouchet.domain.models.payment.PaymentMethod;
 import al.cc2.gtouchet.domain.valueObjects.Date;
 import al.cc2.gtouchet.domain.valueObjects.Id;
 
 import java.util.Objects;
 
-public class PaymentBuilder implements Builder<Payment>
+public final class PaymentBuilder implements Builder<Payment>
 {
     private final Id id;
     private Id contractorId;

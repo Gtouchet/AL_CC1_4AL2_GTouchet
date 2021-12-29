@@ -3,15 +3,15 @@ package al.cc2.gtouchet.application.services.handlers.contractor;
 import al.cc2.gtouchet.application.kernel.CommandHandler;
 import al.cc2.gtouchet.application.services.dtos.contractor.CreateContractorCommand;
 import al.cc2.gtouchet.domain.builders.ContractorBuilder;
-import al.cc2.gtouchet.domain.models.Contractor;
-import al.cc2.gtouchet.domain.models.Worker;
+import al.cc2.gtouchet.domain.models.user.Contractor;
+import al.cc2.gtouchet.domain.models.user.Worker;
 import al.cc2.gtouchet.domain.validators.PasswordFormatException;
 import al.cc2.gtouchet.domain.validators.PasswordValidator;
 import al.cc2.gtouchet.domain.valueObjects.Date;
 import al.cc2.gtouchet.domain.valueObjects.Id;
 import al.cc2.gtouchet.infrastructure.repositories.Repository;
 
-public class CreateContractorCommandHandler implements CommandHandler<Contractor, CreateContractorCommand>
+public final class CreateContractorCommandHandler implements CommandHandler<Contractor, CreateContractorCommand>
 {
     private final Repository<Contractor> contractorRepository;
     private final Repository<Worker> workerRepository;
@@ -30,8 +30,8 @@ public class CreateContractorCommandHandler implements CommandHandler<Contractor
     @Override
     public Contractor handle(CreateContractorCommand command)
     {
-        if (this.workerRepository.read().anyMatch(worker -> worker.getLogin().equals(command.login)) ||
-            this.contractorRepository.read().anyMatch(contractor -> contractor.getLogin().equals(command.login)))
+        if (this.workerRepository.read().anyMatch(worker -> worker.getCredentials().getLogin().equals(command.login)) ||
+            this.contractorRepository.read().anyMatch(contractor -> contractor.getCredentials().getLogin().equals(command.login)))
         {
             System.out.println("Error: login already in use");
             return null;

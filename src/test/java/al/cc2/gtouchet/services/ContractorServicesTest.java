@@ -5,10 +5,10 @@ import al.cc2.gtouchet.application.services.dtos.contractor.*;
 import al.cc2.gtouchet.application.services.dtos.worker.CreateWorkerCommand;
 import al.cc2.gtouchet.application.services.handlers.contractor.*;
 import al.cc2.gtouchet.application.services.handlers.worker.CreateWorkerCommandHandler;
-import al.cc2.gtouchet.domain.models.Contractor;
-import al.cc2.gtouchet.domain.models.PaymentMethod;
-import al.cc2.gtouchet.domain.models.Service;
-import al.cc2.gtouchet.domain.models.Worker;
+import al.cc2.gtouchet.domain.models.user.Contractor;
+import al.cc2.gtouchet.domain.models.payment.PaymentMethod;
+import al.cc2.gtouchet.domain.models.user.WorkerService;
+import al.cc2.gtouchet.domain.models.user.Worker;
 import al.cc2.gtouchet.domain.validators.PasswordValidator;
 import al.cc2.gtouchet.domain.valueObjects.Password;
 import al.cc2.gtouchet.infrastructure.apis.PaymentMethodValidatorApi;
@@ -51,7 +51,7 @@ public class ContractorServicesTest
                 "GTouchet",
                 Password.of("ABcd1234!"),
                 "Guillaume",
-                PaymentMethod.card
+                PaymentMethod.CARD
         ));
 
         contractorRepoSize = this.repositoriesFactory.createContractorRepository().read().count();
@@ -67,7 +67,7 @@ public class ContractorServicesTest
                 "GTouchet",
                 Password.of("ABcd1234!"),
                 "Guillaume",
-                PaymentMethod.card
+                PaymentMethod.CARD
         ));
 
         assertTrue((boolean) this.handlersContainer.getCommandHandler(DeleteContractorCommandHandler.class).handle(new DeleteContractorCommand(
@@ -89,14 +89,14 @@ public class ContractorServicesTest
                 sameLogin,
                 Password.of("ABcd1234!"),
                 "Guillaume",
-                PaymentMethod.card
+                PaymentMethod.CARD
         ));
 
         Contractor contractor2 = (Contractor) this.handlersContainer.getCommandHandler(CreateContractorCommandHandler.class).handle(new CreateContractorCommand(
                 sameLogin,
                 Password.of("ABcd1234!"),
                 "Guillaume",
-                PaymentMethod.card
+                PaymentMethod.CARD
         ));
 
         long contractorRepoSize = this.repositoriesFactory.createContractorRepository().read().count();
@@ -115,14 +115,14 @@ public class ContractorServicesTest
                 sameLogin,
                 Password.of("ABcd1234!"),
                 "Touchet",
-                PaymentMethod.card
+                PaymentMethod.CARD
         ));
 
         Worker worker = (Worker) this.handlersContainer.getCommandHandler(CreateWorkerCommandHandler.class).handle(new CreateWorkerCommand(
                 sameLogin,
                 Password.of("ABcd1234!"),
                 "Guillaume",
-                Service.builder,
+                WorkerService.BUILDER,
                 91
         ));
 
@@ -142,12 +142,12 @@ public class ContractorServicesTest
                 "GTouchet",
                 Password.of("ABcd1234!"),
                 "Guillaume",
-                PaymentMethod.card
+                PaymentMethod.CARD
         ));
 
         Password newPassword = Password.of("newPass123??");
         String newName = "Robert";
-        PaymentMethod newPaymentMethod = PaymentMethod.paypal;
+        PaymentMethod newPaymentMethod = PaymentMethod.PAYPAL;
 
         Contractor updatedContractor = (Contractor) this.handlersContainer.getCommandHandler(UpdateContractorCommandHandler.class).handle(new UpdateContractorCommand(
                 originalContractor.getId(),
@@ -158,7 +158,7 @@ public class ContractorServicesTest
 
         assertNotSame(originalContractor, updatedContractor);
         assertEquals(originalContractor.getId(), updatedContractor.getId());
-        assertEquals(updatedContractor.getPassword(), newPassword);
+        assertEquals(updatedContractor.getCredentials().getPassword(), newPassword);
         assertEquals(updatedContractor.getName(), newName);
         assertEquals(updatedContractor.getPaymentMethod(), newPaymentMethod);
     }
@@ -170,7 +170,7 @@ public class ContractorServicesTest
                 "GTouchet",
                 Password.of("ABcd1234!"),
                 "Guillaume",
-                PaymentMethod.card
+                PaymentMethod.CARD
         ));
 
         assertFalse(contractor.isPaymentValidated());

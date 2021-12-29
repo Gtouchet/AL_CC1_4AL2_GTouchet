@@ -3,7 +3,7 @@ package al.cc2.gtouchet.domain.valueObjects;
 import java.text.SimpleDateFormat;
 import java.util.Objects;
 
-public class Date
+public final class Date
 {
     private final String value;
 

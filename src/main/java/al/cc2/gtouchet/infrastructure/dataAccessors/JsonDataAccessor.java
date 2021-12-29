@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class JsonDataAccessor<T extends Entity> implements DataAccessor<T>
+public final class JsonDataAccessor<T extends Entity> implements DataAccessor<T>
 {
     private final Class dataType;
     private final DateFormat dateFormatter;

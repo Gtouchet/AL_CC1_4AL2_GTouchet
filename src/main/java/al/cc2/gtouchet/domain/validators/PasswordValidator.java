@@ -2,7 +2,7 @@ package al.cc2.gtouchet.domain.validators;
 
 import al.cc2.gtouchet.domain.valueObjects.Password;
 
-public class PasswordValidator
+public final class PasswordValidator
 {
     public void validate(Password password) throws PasswordFormatException
     {

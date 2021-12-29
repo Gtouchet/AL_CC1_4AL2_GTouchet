@@ -95,7 +95,7 @@ public class ReadQueriesTests
                 "Login: myLogin\n" +
                 "Password: myPass123!\n" +
                 "Name: guillaume\n" +
-                "Payment method: card\n" +
+                "Payment method: CARD\n" +
                 "Is payment validated: false")
         );
     }

@@ -1,8 +1,8 @@
 package al.cc2.gtouchet.builders;
 
 import al.cc2.gtouchet.domain.builders.PaymentBuilder;
-import al.cc2.gtouchet.domain.models.Payment;
-import al.cc2.gtouchet.domain.models.PaymentMethod;
+import al.cc2.gtouchet.domain.models.payment.Payment;
+import al.cc2.gtouchet.domain.models.payment.PaymentMethod;
 import al.cc2.gtouchet.domain.valueObjects.Date;
 import al.cc2.gtouchet.domain.valueObjects.Id;
 import org.junit.Rule;
@@ -26,7 +26,7 @@ public class PaymentBuilderTest
         Payment payment = PaymentBuilder.init(Id.generate(), Date.now())
                 .setContractorId(contractorId)
                 .setWorkerId(workerId)
-                .setPaymentMethod(PaymentMethod.card)
+                .setPaymentMethod(PaymentMethod.CARD)
                 .setAmount(1)
                 .setReason("anyReason")
                 .build();
@@ -35,7 +35,7 @@ public class PaymentBuilderTest
 
         assertEquals(contractorId, payment.getContractorId());
         assertEquals(workerId, payment.getWorkerId());
-        assertEquals(PaymentMethod.card, payment.getPaymentMethod());
+        assertEquals(PaymentMethod.CARD, payment.getPaymentMethod());
         assertEquals(1, payment.getAmount(), 0.0);
         assertEquals("anyReason", payment.getReason());
     }
@@ -46,7 +46,7 @@ public class PaymentBuilderTest
         Payment payment = PaymentBuilder.init(Id.generate(), Date.now())
                 .setContractorId(Id.generate())
                 .setWorkerId(Id.generate())
-                .setPaymentMethod(PaymentMethod.card)
+                .setPaymentMethod(PaymentMethod.CARD)
                 // Payment amount set to Double's default if not specified (0.0)
                 .setReason("anyReason")
                 .build();
@@ -64,7 +64,7 @@ public class PaymentBuilderTest
         PaymentBuilder.init(Id.generate(), Date.now())
                 .setContractorId(Id.generate())
                 //.setWorkerId(Id.generate())
-                .setPaymentMethod(PaymentMethod.card)
+                .setPaymentMethod(PaymentMethod.CARD)
                 .setAmount(1)
                 .setReason("anyReason")
                 .build();

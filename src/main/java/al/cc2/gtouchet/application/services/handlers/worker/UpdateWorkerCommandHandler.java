@@ -3,13 +3,13 @@ package al.cc2.gtouchet.application.services.handlers.worker;
 import al.cc2.gtouchet.application.kernel.CommandHandler;
 import al.cc2.gtouchet.application.services.dtos.worker.UpdateWorkerCommand;
 import al.cc2.gtouchet.domain.builders.WorkerBuilder;
-import al.cc2.gtouchet.domain.models.Worker;
+import al.cc2.gtouchet.domain.models.user.Worker;
 import al.cc2.gtouchet.domain.validators.PasswordFormatException;
 import al.cc2.gtouchet.domain.validators.PasswordValidator;
 import al.cc2.gtouchet.infrastructure.repositories.EntityNotFoundException;
 import al.cc2.gtouchet.infrastructure.repositories.Repository;
 
-public class UpdateWorkerCommandHandler implements CommandHandler<Worker, UpdateWorkerCommand>
+public final class UpdateWorkerCommandHandler implements CommandHandler<Worker, UpdateWorkerCommand>
 {
     private final Repository<Worker> workerRepository;
     private final PasswordValidator passwordValidator;
@@ -33,7 +33,7 @@ public class UpdateWorkerCommandHandler implements CommandHandler<Worker, Update
             worker = WorkerBuilder.init(worker)
                     .setPassword(command.password)
                     .setName(command.name)
-                    .setService(command.service)
+                    .setService(command.workerService)
                     .setDepartment(command.department)
                     .build();
 

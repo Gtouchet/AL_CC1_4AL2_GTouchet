@@ -1,14 +1,14 @@
 package al.cc2.gtouchet.infrastructure.repositories.factories;
 
-import al.cc2.gtouchet.domain.models.Contractor;
-import al.cc2.gtouchet.domain.models.Payment;
-import al.cc2.gtouchet.domain.models.Project;
-import al.cc2.gtouchet.domain.models.Worker;
+import al.cc2.gtouchet.domain.models.user.Contractor;
+import al.cc2.gtouchet.domain.models.payment.Payment;
+import al.cc2.gtouchet.domain.models.project.Project;
+import al.cc2.gtouchet.domain.models.user.Worker;
 import al.cc2.gtouchet.infrastructure.dataAccessors.JsonDataAccessor;
 import al.cc2.gtouchet.infrastructure.repositories.DataRepository;
 import al.cc2.gtouchet.infrastructure.repositories.Repository;
 
-public class DataRepositoriesFactory implements RepositoriesFactory
+public final class DataRepositoriesFactory implements RepositoriesFactory
 {
     @Override
     public Repository<Contractor> createContractorRepository()

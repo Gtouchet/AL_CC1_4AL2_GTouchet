@@ -9,7 +9,7 @@ import al.cc2.gtouchet.domain.valueObjects.Id;
 
 import java.util.Objects;
 
-public class ValidatePaymentConsoleHandler implements ConsoleHandler
+public final class ValidatePaymentConsoleHandler implements ConsoleHandler
 {
     private final CommandHandler<Boolean, ValidatePaymentCommand> commandHandler;
 

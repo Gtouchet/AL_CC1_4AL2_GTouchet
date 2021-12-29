@@ -9,7 +9,11 @@ import al.cc2.gtouchet.application.services.handlers.contractor.CreateContractor
 import al.cc2.gtouchet.application.services.handlers.project.*;
 import al.cc2.gtouchet.application.services.handlers.worker.CreateWorkerCommandHandler;
 import al.cc2.gtouchet.application.services.handlers.worker.DeleteWorkerCommandHandler;
-import al.cc2.gtouchet.domain.models.*;
+import al.cc2.gtouchet.domain.models.project.Project;
+import al.cc2.gtouchet.domain.models.user.Contractor;
+import al.cc2.gtouchet.domain.models.payment.PaymentMethod;
+import al.cc2.gtouchet.domain.models.user.WorkerService;
+import al.cc2.gtouchet.domain.models.user.Worker;
 import al.cc2.gtouchet.domain.validators.PasswordValidator;
 import al.cc2.gtouchet.domain.valueObjects.Password;
 import al.cc2.gtouchet.infrastructure.apis.PaymentMethodValidatorApi;
@@ -42,14 +46,14 @@ public class ProjectServicesTest
                 "GTouchet1",
                 Password.of("ABcd1234!"),
                 "Guillaume",
-                PaymentMethod.card
+                PaymentMethod.CARD
         ));
 
         this.worker = (Worker) this.handlersContainer.getCommandHandler(CreateWorkerCommandHandler.class).handle(new CreateWorkerCommand(
                 "GTouchet2",
                 Password.of("ABcd1234!"),
                 "Guillaume",
-                Service.builder,
+                WorkerService.BUILDER,
                 91
         ));
     }
@@ -102,7 +106,7 @@ public class ProjectServicesTest
                 "GTouchet3",
                 Password.of("ABcd1234!"),
                 "Guillaume",
-                PaymentMethod.card
+                PaymentMethod.CARD
         ));
         int newDepartment = 91;
 

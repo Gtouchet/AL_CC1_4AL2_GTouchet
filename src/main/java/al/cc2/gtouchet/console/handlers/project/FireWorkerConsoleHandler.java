@@ -5,12 +5,12 @@ import al.cc2.gtouchet.application.services.dtos.project.EngageFireWorkerCommand
 import al.cc2.gtouchet.console.engine.ConsoleCommand;
 import al.cc2.gtouchet.console.engine.WrongNumberOfArgumentException;
 import al.cc2.gtouchet.console.handlers.ConsoleHandler;
-import al.cc2.gtouchet.domain.models.Project;
+import al.cc2.gtouchet.domain.models.project.Project;
 import al.cc2.gtouchet.domain.valueObjects.Id;
 
 import java.util.Objects;
 
-public class FireWorkerConsoleHandler implements ConsoleHandler
+public final class FireWorkerConsoleHandler implements ConsoleHandler
 {
     private final CommandHandler<Project, EngageFireWorkerCommand> commandHandler;
 

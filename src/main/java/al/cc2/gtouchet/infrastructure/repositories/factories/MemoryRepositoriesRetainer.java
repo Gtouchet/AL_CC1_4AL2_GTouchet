@@ -1,13 +1,13 @@
 package al.cc2.gtouchet.infrastructure.repositories.factories;
 
-import al.cc2.gtouchet.domain.models.Contractor;
-import al.cc2.gtouchet.domain.models.Payment;
-import al.cc2.gtouchet.domain.models.Project;
-import al.cc2.gtouchet.domain.models.Worker;
-import al.cc2.gtouchet.infrastructure.repositories.MemoryRepository;
+import al.cc2.gtouchet.domain.models.user.Contractor;
+import al.cc2.gtouchet.domain.models.payment.Payment;
+import al.cc2.gtouchet.domain.models.project.Project;
+import al.cc2.gtouchet.domain.models.user.Worker;
+import al.cc2.gtouchet.infrastructure.repositories.InMemoryRepository;
 import al.cc2.gtouchet.infrastructure.repositories.Repository;
 
-public class MemoryRepositoriesRetainer implements RepositoriesFactory
+public final class MemoryRepositoriesRetainer implements RepositoriesFactory
 {
     private final Repository<Contractor> contractorRepository;
     private final Repository<Payment> paymentRepository;
@@ -16,10 +16,10 @@ public class MemoryRepositoriesRetainer implements RepositoriesFactory
 
     public MemoryRepositoriesRetainer()
     {
-        this.contractorRepository = new MemoryRepository<>();
-        this.paymentRepository = new MemoryRepository<>();
-        this.projectRepository = new MemoryRepository<>();
-        this.workerRepository = new MemoryRepository<>();
+        this.contractorRepository = new InMemoryRepository<>();
+        this.paymentRepository = new InMemoryRepository<>();
+        this.projectRepository = new InMemoryRepository<>();
+        this.workerRepository = new InMemoryRepository<>();
     }
 
     @Override

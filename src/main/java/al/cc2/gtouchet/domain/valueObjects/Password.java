@@ -2,7 +2,7 @@ package al.cc2.gtouchet.domain.valueObjects;
 
 import java.util.Objects;
 
-public class Password
+public final class Password
 {
     private final String value;
 

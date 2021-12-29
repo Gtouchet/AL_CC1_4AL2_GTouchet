@@ -3,12 +3,12 @@ package al.cc2.gtouchet.application.services.handlers.project;
 import al.cc2.gtouchet.application.kernel.CommandHandler;
 import al.cc2.gtouchet.application.services.dtos.project.UpdateProjectCommand;
 import al.cc2.gtouchet.domain.builders.ProjectBuilder;
-import al.cc2.gtouchet.domain.models.Contractor;
-import al.cc2.gtouchet.domain.models.Project;
+import al.cc2.gtouchet.domain.models.user.Contractor;
+import al.cc2.gtouchet.domain.models.project.Project;
 import al.cc2.gtouchet.infrastructure.repositories.EntityNotFoundException;
 import al.cc2.gtouchet.infrastructure.repositories.Repository;
 
-public class UpdateProjectCommandHandler implements CommandHandler<Project, UpdateProjectCommand>
+public final class UpdateProjectCommandHandler implements CommandHandler<Project, UpdateProjectCommand>
 {
     private final Repository<Project> projectRepository;
     private final Repository<Contractor> contractorRepository;

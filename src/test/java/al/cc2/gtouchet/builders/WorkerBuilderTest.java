@@ -1,8 +1,8 @@
 package al.cc2.gtouchet.builders;
 
 import al.cc2.gtouchet.domain.builders.WorkerBuilder;
-import al.cc2.gtouchet.domain.models.Service;
-import al.cc2.gtouchet.domain.models.Worker;
+import al.cc2.gtouchet.domain.models.user.WorkerService;
+import al.cc2.gtouchet.domain.models.user.Worker;
 import al.cc2.gtouchet.domain.valueObjects.Date;
 import al.cc2.gtouchet.domain.valueObjects.Id;
 import al.cc2.gtouchet.domain.valueObjects.Password;
@@ -26,16 +26,16 @@ public class WorkerBuilderTest
         Worker worker = WorkerBuilder.init(id, "GTouchet", Date.now())
                 .setPassword(Password.of("ABcd1234!"))
                 .setName("Guillaume")
-                .setService(Service.builder)
+                .setService(WorkerService.BUILDER)
                 .setDepartment(91)
                 .build();
 
         assertNotNull(worker);
 
         assertEquals(id, worker.getId());
-        assertEquals("ABcd1234!", worker.getPassword().toString());
+        assertEquals("ABcd1234!", worker.getCredentials().getPassword().toString());
         assertEquals("Guillaume", worker.getName());
-        assertEquals(Service.builder, worker.getService());
+        assertEquals(WorkerService.BUILDER, worker.getService());
         assertEquals(91, worker.getDepartment());
     }
 
@@ -45,7 +45,7 @@ public class WorkerBuilderTest
         Worker worker = WorkerBuilder.init(Id.generate(), "GTouchet", Date.now())
                 .setPassword(Password.of("ABcd1234!"))
                 .setName("Guillaume")
-                .setService(Service.builder)
+                .setService(WorkerService.BUILDER)
                 // Department set to Integer's default if not specified (0)
                 .build();
 

@@ -1,6 +1,6 @@
 package al.cc2.gtouchet.domain.builders;
 
-import al.cc2.gtouchet.domain.models.Project;
+import al.cc2.gtouchet.domain.models.project.Project;
 import al.cc2.gtouchet.domain.valueObjects.Date;
 import al.cc2.gtouchet.domain.valueObjects.Id;
 
@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class ProjectBuilder implements Builder<Project>
+public final class ProjectBuilder implements Builder<Project>
 {
     private final Id id;
     private Id contractorId;

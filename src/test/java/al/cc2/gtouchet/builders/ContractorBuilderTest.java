@@ -1,8 +1,8 @@
 package al.cc2.gtouchet.builders;
 
 import al.cc2.gtouchet.domain.builders.ContractorBuilder;
-import al.cc2.gtouchet.domain.models.Contractor;
-import al.cc2.gtouchet.domain.models.PaymentMethod;
+import al.cc2.gtouchet.domain.models.user.Contractor;
+import al.cc2.gtouchet.domain.models.payment.PaymentMethod;
 import al.cc2.gtouchet.domain.valueObjects.Date;
 import al.cc2.gtouchet.domain.valueObjects.Id;
 import al.cc2.gtouchet.domain.valueObjects.Password;
@@ -25,16 +25,16 @@ public class ContractorBuilderTest
         Contractor contractor = ContractorBuilder.init(id, "GTouchet", Date.now())
                 .setPassword(Password.of("ABcd1234!"))
                 .setName("Guillaume")
-                .setPaymentMethod(PaymentMethod.card)
+                .setPaymentMethod(PaymentMethod.CARD)
                 .setIsPaymentValidated(false)
                 .build();
 
         assertNotNull(contractor);
 
         assertEquals(id, contractor.getId());
-        assertEquals("ABcd1234!", contractor.getPassword().toString());
+        assertEquals("ABcd1234!", contractor.getCredentials().getPassword().toString());
         assertEquals("Guillaume", contractor.getName());
-        assertEquals(PaymentMethod.card, contractor.getPaymentMethod());
+        assertEquals(PaymentMethod.CARD, contractor.getPaymentMethod());
         assertFalse(contractor.isPaymentValidated());
     }
 
@@ -44,7 +44,7 @@ public class ContractorBuilderTest
         Contractor contractor = ContractorBuilder.init(Id.generate(), "GTouchet", Date.now())
                 .setPassword(Password.of("ABcd1234!"))
                 .setName("Guillaume")
-                .setPaymentMethod(PaymentMethod.card)
+                .setPaymentMethod(PaymentMethod.CARD)
                 // Payment validation set to Boolean's default if not specified (false)
                 .build();
 
@@ -61,7 +61,7 @@ public class ContractorBuilderTest
         ContractorBuilder.init(Id.generate(), "GTouchet", Date.now())
                 .setPassword(Password.of("ABcd1234!"))
                 //.setName("Guillaume")
-                .setPaymentMethod(PaymentMethod.card)
+                .setPaymentMethod(PaymentMethod.CARD)
                 .setIsPaymentValidated(false)
                 .build();
     }

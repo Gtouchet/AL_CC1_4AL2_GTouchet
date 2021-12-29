@@ -9,10 +9,10 @@ import al.cc2.gtouchet.application.services.handlers.contractor.CreateContractor
 import al.cc2.gtouchet.application.services.handlers.worker.CreateWorkerCommandHandler;
 import al.cc2.gtouchet.application.services.handlers.worker.DeleteWorkerCommandHandler;
 import al.cc2.gtouchet.application.services.handlers.worker.UpdateWorkerCommandHandler;
-import al.cc2.gtouchet.domain.models.Contractor;
-import al.cc2.gtouchet.domain.models.PaymentMethod;
-import al.cc2.gtouchet.domain.models.Service;
-import al.cc2.gtouchet.domain.models.Worker;
+import al.cc2.gtouchet.domain.models.user.Contractor;
+import al.cc2.gtouchet.domain.models.payment.PaymentMethod;
+import al.cc2.gtouchet.domain.models.user.WorkerService;
+import al.cc2.gtouchet.domain.models.user.Worker;
 import al.cc2.gtouchet.domain.validators.PasswordValidator;
 import al.cc2.gtouchet.domain.valueObjects.Password;
 import al.cc2.gtouchet.infrastructure.apis.PaymentMethodValidatorApi;
@@ -55,7 +55,7 @@ public class WorkerServicesTest
                 "GTouchet",
                 Password.of("ABcd1234!"),
                 "Guillaume",
-                Service.builder,
+                WorkerService.BUILDER,
                 91
         ));
 
@@ -72,7 +72,7 @@ public class WorkerServicesTest
                 "GTouchet",
                 Password.of("ABcd1234!"),
                 "Guillaume",
-                Service.builder,
+                WorkerService.BUILDER,
                 91
         ));
 
@@ -95,7 +95,7 @@ public class WorkerServicesTest
                 login,
                 Password.of("ABcd1234!"),
                 "Guillaume",
-                Service.builder,
+                WorkerService.BUILDER,
                 91
         ));
 
@@ -103,7 +103,7 @@ public class WorkerServicesTest
                 login,
                 Password.of("ABcd1234!"),
                 "Guillaume",
-                Service.builder,
+                WorkerService.BUILDER,
                 91
         ));
 
@@ -124,7 +124,7 @@ public class WorkerServicesTest
                 login,
                 Password.of("ABcd1234!"),
                 "Guillaume",
-                Service.builder,
+                WorkerService.BUILDER,
                 91
         ));
 
@@ -132,7 +132,7 @@ public class WorkerServicesTest
                 login,
                 Password.of("ABcd1234!"),
                 "Touchet",
-                PaymentMethod.card
+                PaymentMethod.CARD
         ));
 
         workerAndContractorReposSize =
@@ -151,28 +151,28 @@ public class WorkerServicesTest
                 "GTouchet",
                 Password.of("ABcd1234!"),
                 "Guillaume",
-                Service.builder,
+                WorkerService.BUILDER,
                 91
         ));
 
         Password newPassword = Password.of("newPass123??");
         String newName = "Robert";
-        Service newService = Service.electrician;
+        WorkerService newWorkerService = WorkerService.ELECTRICIAN;
         int newDepartment = 75;
 
         Worker updatedWorker = (Worker) this.handlersContainer.getCommandHandler(UpdateWorkerCommandHandler.class).handle(new UpdateWorkerCommand(
                 originalWorker.getId(),
                 newPassword,
                 newName,
-                newService,
+                newWorkerService,
                 newDepartment
         ));
 
         assertNotSame(originalWorker, updatedWorker);
         assertEquals(originalWorker.getId(), updatedWorker.getId());
-        assertEquals(updatedWorker.getPassword(), newPassword);
+        assertEquals(updatedWorker.getCredentials().getPassword(), newPassword);
         assertEquals(updatedWorker.getName(), newName);
-        assertEquals(updatedWorker.getService(), newService);
+        assertEquals(updatedWorker.getService(), newWorkerService);
         assertEquals(updatedWorker.getDepartment(), newDepartment);
     }
 
@@ -185,7 +185,7 @@ public class WorkerServicesTest
                 "GTouchet",
                 Password.of("ABcd1234!"),
                 "Guillaume",
-                Service.valueOf("developer"),
+                WorkerService.valueOf("developer"),
                 91
         ));
     }
@@ -199,7 +199,7 @@ public class WorkerServicesTest
                 "GTouchet",
                 Password.of("ABcd1234!"),
                 "Guillaume",
-                Service.builder,
+                WorkerService.BUILDER,
                 Integer.parseInt("ninety one")
         ));
     }

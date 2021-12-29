@@ -3,13 +3,13 @@ package al.cc2.gtouchet.application.services.handlers.contractor;
 import al.cc2.gtouchet.application.kernel.CommandHandler;
 import al.cc2.gtouchet.application.services.dtos.contractor.ValidatePaymentCommand;
 import al.cc2.gtouchet.domain.builders.ContractorBuilder;
-import al.cc2.gtouchet.domain.models.Contractor;
+import al.cc2.gtouchet.domain.models.user.Contractor;
 import al.cc2.gtouchet.infrastructure.apis.PaymentMethodValidationException;
 import al.cc2.gtouchet.infrastructure.apis.PaymentMethodValidatorApi;
 import al.cc2.gtouchet.infrastructure.repositories.EntityNotFoundException;
 import al.cc2.gtouchet.infrastructure.repositories.Repository;
 
-public class ValidatePaymentCommandHandler implements CommandHandler<Boolean, ValidatePaymentCommand>
+public final class ValidatePaymentCommandHandler implements CommandHandler<Boolean, ValidatePaymentCommand>
 {
     private final Repository<Contractor> contractorRepository;
     private final PaymentMethodValidatorApi paymentMethodValidatorApi;

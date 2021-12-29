@@ -6,7 +6,7 @@ import al.cc2.gtouchet.infrastructure.dataAccessors.DataAccessor;
 
 import java.util.List;
 
-public class DataRepository<T extends Entity> extends MemoryRepository<T>
+public final class DataRepository<T extends Entity> extends InMemoryRepository<T>
 {
     private final DataAccessor<T> dataAccessor;
 

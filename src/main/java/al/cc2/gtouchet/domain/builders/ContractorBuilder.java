@@ -1,14 +1,15 @@
 package al.cc2.gtouchet.domain.builders;
 
-import al.cc2.gtouchet.domain.models.Contractor;
-import al.cc2.gtouchet.domain.models.PaymentMethod;
+import al.cc2.gtouchet.domain.models.user.Contractor;
+import al.cc2.gtouchet.domain.models.user.Credentials;
+import al.cc2.gtouchet.domain.models.payment.PaymentMethod;
 import al.cc2.gtouchet.domain.valueObjects.Date;
 import al.cc2.gtouchet.domain.valueObjects.Id;
 import al.cc2.gtouchet.domain.valueObjects.Password;
 
 import java.util.Objects;
 
-public class ContractorBuilder implements Builder<Contractor>
+public final class ContractorBuilder implements Builder<Contractor>
 {
     private final Id id;
     private final String login;
@@ -30,8 +31,10 @@ public class ContractorBuilder implements Builder<Contractor>
     {
         return Contractor.of(
                 Objects.requireNonNull(this.id),
-                Objects.requireNonNull(this.login),
-                Objects.requireNonNull(this.password),
+                new Credentials(
+                        Objects.requireNonNull(this.login),
+                        Objects.requireNonNull(this.password)
+                ),
                 Objects.requireNonNull(this.name),
                 Objects.requireNonNull(this.paymentMethod),
                 this.isPaymentValidated,
@@ -48,11 +51,11 @@ public class ContractorBuilder implements Builder<Contractor>
     {
         ContractorBuilder builder = new ContractorBuilder(
                 contractor.getId(),
-                contractor.getLogin(),
+                contractor.getCredentials().getLogin(),
                 contractor.getCreationDate()
         );
 
-        builder.password = contractor.getPassword();
+        builder.password = contractor.getCredentials().getPassword();
         builder.name = contractor.getName();
         builder.paymentMethod = contractor.getPaymentMethod();
         builder.isPaymentValidated = contractor.isPaymentValidated();

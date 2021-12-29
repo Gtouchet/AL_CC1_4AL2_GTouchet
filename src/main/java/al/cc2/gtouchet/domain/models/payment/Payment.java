@@ -1,9 +1,10 @@
-package al.cc2.gtouchet.domain.models;
+package al.cc2.gtouchet.domain.models.payment;
 
+import al.cc2.gtouchet.domain.models.Entity;
 import al.cc2.gtouchet.domain.valueObjects.Date;
 import al.cc2.gtouchet.domain.valueObjects.Id;
 
-public class Payment extends Entity
+public final class Payment extends Entity
 {
     private final Id contractorId;
     private final Id workerId;

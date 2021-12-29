@@ -11,7 +11,11 @@ import al.cc2.gtouchet.application.services.handlers.contractor.ValidatePaymentC
 import al.cc2.gtouchet.application.services.handlers.payment.CreatePaymentCommandHandler;
 import al.cc2.gtouchet.application.services.handlers.payment.DeletePaymentCommandHandler;
 import al.cc2.gtouchet.application.services.handlers.worker.CreateWorkerCommandHandler;
-import al.cc2.gtouchet.domain.models.*;
+import al.cc2.gtouchet.domain.models.payment.Payment;
+import al.cc2.gtouchet.domain.models.user.Contractor;
+import al.cc2.gtouchet.domain.models.payment.PaymentMethod;
+import al.cc2.gtouchet.domain.models.user.WorkerService;
+import al.cc2.gtouchet.domain.models.user.Worker;
 import al.cc2.gtouchet.domain.validators.PasswordValidator;
 import al.cc2.gtouchet.domain.valueObjects.Password;
 import al.cc2.gtouchet.infrastructure.apis.PaymentMethodValidatorApi;
@@ -49,7 +53,7 @@ public class PaymentServicesTest
                 "GTouchet1",
                 Password.of("ABcd1234!"),
                 "Guillaume",
-                PaymentMethod.card
+                PaymentMethod.CARD
         ));
         this.handlersContainer.getCommandHandler(ValidatePaymentCommandHandler.class).handle(new ValidatePaymentCommand(
                 this.contractor.getId()
@@ -59,7 +63,7 @@ public class PaymentServicesTest
                 "GTouchet2",
                 Password.of("ABcd1234!"),
                 "Guillaume",
-                Service.builder,
+                WorkerService.BUILDER,
                 91
         ));
     }
@@ -115,7 +119,7 @@ public class PaymentServicesTest
                 "GTouchet3",
                 Password.of("ABcd1234!"),
                 "Guillaume",
-                PaymentMethod.card
+                PaymentMethod.CARD
         ));
         assertFalse(unvalidatedContractor.isPaymentValidated());
 

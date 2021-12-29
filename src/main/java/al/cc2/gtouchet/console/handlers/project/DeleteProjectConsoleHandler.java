@@ -9,7 +9,7 @@ import al.cc2.gtouchet.domain.valueObjects.Id;
 
 import java.util.Objects;
 
-public class DeleteProjectConsoleHandler implements ConsoleHandler
+public final class DeleteProjectConsoleHandler implements ConsoleHandler
 {
     private final CommandHandler<Boolean, DeleteProjectCommand> commandHandler;
 

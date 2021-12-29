@@ -50,7 +50,7 @@ public class UpdateCommandsTests
                 "Login: myLogin\n" +
                 "Password: newPass789?\n" +
                 "Name: touchet\n" +
-                "Payment method: paypal\n" +
+                "Payment method: PAYPAL\n" +
                 "Is payment validated: false")
         );
     }

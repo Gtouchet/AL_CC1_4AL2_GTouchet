@@ -1,7 +1,7 @@
 package al.cc2.gtouchet.builders;
 
 import al.cc2.gtouchet.domain.builders.ProjectBuilder;
-import al.cc2.gtouchet.domain.models.Project;
+import al.cc2.gtouchet.domain.models.project.Project;
 import al.cc2.gtouchet.domain.valueObjects.Date;
 import al.cc2.gtouchet.domain.valueObjects.Id;
 import org.junit.Rule;

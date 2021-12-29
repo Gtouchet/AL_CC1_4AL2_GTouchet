@@ -8,7 +8,7 @@ import al.cc2.gtouchet.application.services.handlers.worker.CreateWorkerCommandH
 import al.cc2.gtouchet.application.services.handlers.worker.DeleteWorkerCommandHandler;
 import al.cc2.gtouchet.application.services.handlers.worker.ReadAllWorkerQueryHandler;
 import al.cc2.gtouchet.application.services.handlers.worker.ReadWorkerQueryHandler;
-import al.cc2.gtouchet.domain.models.Worker;
+import al.cc2.gtouchet.domain.models.user.Worker;
 import al.cc2.gtouchet.domain.validators.PasswordValidator;
 import al.cc2.gtouchet.domain.valueObjects.Id;
 import al.cc2.gtouchet.infrastructure.apis.PaymentMethodValidatorApi;
@@ -100,8 +100,8 @@ class WorkerJson
     public WorkerJson(Worker worker)
     {
         this.id = worker.getId().toString();
-        this.login = worker.getLogin();
-        this.password = worker.getPassword().toString();
+        this.login = worker.getCredentials().getLogin();
+        this.password = worker.getCredentials().getPassword().toString();
         this.name = worker.getName();
         this.service = worker.getService().toString();
         this.department = worker.getDepartment();

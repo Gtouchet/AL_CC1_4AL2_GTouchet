@@ -3,13 +3,13 @@ package al.cc2.gtouchet.application.services.handlers.project;
 import al.cc2.gtouchet.application.kernel.CommandHandler;
 import al.cc2.gtouchet.application.services.dtos.project.CreateProjectCommand;
 import al.cc2.gtouchet.domain.builders.ProjectBuilder;
-import al.cc2.gtouchet.domain.models.Contractor;
-import al.cc2.gtouchet.domain.models.Project;
+import al.cc2.gtouchet.domain.models.user.Contractor;
+import al.cc2.gtouchet.domain.models.project.Project;
 import al.cc2.gtouchet.domain.valueObjects.Date;
 import al.cc2.gtouchet.domain.valueObjects.Id;
 import al.cc2.gtouchet.infrastructure.repositories.Repository;
 
-public class CreateProjectCommandHandler implements CommandHandler<Project, CreateProjectCommand>
+public final class CreateProjectCommandHandler implements CommandHandler<Project, CreateProjectCommand>
 {
     private final Repository<Project> projectRepository;
     private final Repository<Contractor> contractorRepository;

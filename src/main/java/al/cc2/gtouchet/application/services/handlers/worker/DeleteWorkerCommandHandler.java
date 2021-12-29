@@ -3,15 +3,15 @@ package al.cc2.gtouchet.application.services.handlers.worker;
 import al.cc2.gtouchet.application.kernel.CommandHandler;
 import al.cc2.gtouchet.application.services.dtos.worker.DeleteWorkerCommand;
 import al.cc2.gtouchet.domain.builders.ProjectBuilder;
-import al.cc2.gtouchet.domain.models.Project;
-import al.cc2.gtouchet.domain.models.Worker;
+import al.cc2.gtouchet.domain.models.project.Project;
+import al.cc2.gtouchet.domain.models.user.Worker;
 import al.cc2.gtouchet.infrastructure.repositories.EntityNotFoundException;
 import al.cc2.gtouchet.infrastructure.repositories.Repository;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class DeleteWorkerCommandHandler implements CommandHandler<Boolean, DeleteWorkerCommand>
+public final class DeleteWorkerCommandHandler implements CommandHandler<Boolean, DeleteWorkerCommand>
 {
     private final Repository<Worker> workerRepository;
     private final Repository<Project> projectRepository;

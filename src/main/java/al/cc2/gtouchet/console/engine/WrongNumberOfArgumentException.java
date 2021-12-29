@@ -1,6 +1,6 @@
 package al.cc2.gtouchet.console.engine;
 
-public class WrongNumberOfArgumentException extends Exception
+public class WrongNumberOfArgumentException extends RuntimeException
 {
     public WrongNumberOfArgumentException(ConsoleCommand command)
     {

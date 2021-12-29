@@ -2,11 +2,11 @@ package al.cc2.gtouchet.application.services.handlers.contractor;
 
 import al.cc2.gtouchet.application.kernel.QueryHandler;
 import al.cc2.gtouchet.application.services.dtos.contractor.ReadContractorQuery;
-import al.cc2.gtouchet.domain.models.Contractor;
+import al.cc2.gtouchet.domain.models.user.Contractor;
 import al.cc2.gtouchet.infrastructure.repositories.EntityNotFoundException;
 import al.cc2.gtouchet.infrastructure.repositories.Repository;
 
-public class ReadContractorQueryHandler implements QueryHandler<Contractor, ReadContractorQuery>
+public final class ReadContractorQueryHandler implements QueryHandler<Contractor, ReadContractorQuery>
 {
     private final Repository<Contractor> contractorRepository;
 

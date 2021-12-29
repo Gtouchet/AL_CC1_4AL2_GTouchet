@@ -2,11 +2,11 @@ package al.cc2.gtouchet.application.services.handlers.project;
 
 import al.cc2.gtouchet.application.kernel.QueryHandler;
 import al.cc2.gtouchet.application.services.dtos.project.ReadProjectQuery;
-import al.cc2.gtouchet.domain.models.Project;
+import al.cc2.gtouchet.domain.models.project.Project;
 import al.cc2.gtouchet.infrastructure.repositories.EntityNotFoundException;
 import al.cc2.gtouchet.infrastructure.repositories.Repository;
 
-public class ReadProjectQueryHandler implements QueryHandler<Project, ReadProjectQuery>
+public final class ReadProjectQueryHandler implements QueryHandler<Project, ReadProjectQuery>
 {
     private final Repository<Project> projectRepository;
 

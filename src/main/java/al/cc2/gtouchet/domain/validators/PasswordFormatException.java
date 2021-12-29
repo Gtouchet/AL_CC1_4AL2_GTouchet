@@ -1,6 +1,6 @@
 package al.cc2.gtouchet.domain.validators;
 
-public class PasswordFormatException extends Exception
+public class PasswordFormatException extends RuntimeException
 {
     public PasswordFormatException()
     {

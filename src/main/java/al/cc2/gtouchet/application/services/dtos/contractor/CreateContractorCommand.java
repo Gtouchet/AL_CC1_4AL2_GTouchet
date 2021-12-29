@@ -1,7 +1,7 @@
 package al.cc2.gtouchet.application.services.dtos.contractor;
 
 import al.cc2.gtouchet.application.kernel.Command;
-import al.cc2.gtouchet.domain.models.PaymentMethod;
+import al.cc2.gtouchet.domain.models.payment.PaymentMethod;
 import al.cc2.gtouchet.domain.valueObjects.Password;
 
 public final class CreateContractorCommand implements Command

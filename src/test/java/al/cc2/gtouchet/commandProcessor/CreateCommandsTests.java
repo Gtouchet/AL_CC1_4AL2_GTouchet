@@ -62,7 +62,7 @@ public class CreateCommandsTests
                 "Login: myLogin\n" +
                 "Password: myPass123!\n" +
                 "Name: guillaume\n" +
-                "Service: plumber\n" +
+                "Service: PLUMBER\n" +
                 "Department: 75")
         );
     }
