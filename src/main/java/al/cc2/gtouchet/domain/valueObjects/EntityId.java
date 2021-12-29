@@ -3,23 +3,23 @@ package al.cc2.gtouchet.domain.valueObjects;
 import java.util.Objects;
 import java.util.UUID;
 
-public final class Id
+public final class EntityId
 {
     private final String value;
 
-    private Id(String id)
+    private EntityId(String id)
     {
         this.value = id;
     }
 
-    public static Id generate()
+    public static EntityId generate()
     {
-        return new Id(UUID.randomUUID().toString());
+        return new EntityId(UUID.randomUUID().toString());
     }
 
-    public static Id fromString(String value)
+    public static EntityId fromString(String value)
     {
-        return new Id(value);
+        return new EntityId(value);
     }
 
     @Override
@@ -27,7 +27,7 @@ public final class Id
     {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Id id = (Id) o;
+        EntityId id = (EntityId) o;
         return Objects.equals(value, id.value);
     }
 

@@ -1,17 +1,17 @@
 package al.cc2.gtouchet.domain.models.user;
 
 import al.cc2.gtouchet.domain.models.Entity;
-import al.cc2.gtouchet.domain.valueObjects.Date;
-import al.cc2.gtouchet.domain.valueObjects.Id;
+import al.cc2.gtouchet.domain.valueObjects.Clock;
+import al.cc2.gtouchet.domain.valueObjects.EntityId;
 
 public abstract class User extends Entity
 {
     private final Credentials credentials;
     private final String name;
 
-    protected User(Id id, Credentials credentials, String name, Date creationDate)
+    protected User(EntityId id, Credentials credentials, String name, Clock creationClock)
     {
-        super(id, creationDate);
+        super(id, creationClock);
 
         this.credentials = credentials;
         this.name = name;

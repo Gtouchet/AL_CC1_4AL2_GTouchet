@@ -7,7 +7,7 @@ import al.cc2.gtouchet.console.engine.ConsoleCommand;
 import al.cc2.gtouchet.console.engine.WrongNumberOfArgumentException;
 import al.cc2.gtouchet.console.handlers.ConsoleHandler;
 import al.cc2.gtouchet.domain.models.payment.Payment;
-import al.cc2.gtouchet.domain.valueObjects.Id;
+import al.cc2.gtouchet.domain.valueObjects.EntityId;
 
 import java.util.List;
 import java.util.Objects;
@@ -43,7 +43,7 @@ public final class ReadPaymentConsoleHandler implements ConsoleHandler
         else if (params.length == ConsoleCommand.READ_PAYMENT.parameters + 1) // Accepts an ID as an overloaded parameter
         {
             Payment payment = this.queryHandlerId.handle(new ReadPaymentQuery(
-                    Id.fromString(params[1].toLowerCase())
+                    EntityId.fromString(params[1].toLowerCase())
             ));
             if (payment != null)
             {

@@ -7,8 +7,8 @@ import al.cc2.gtouchet.domain.models.user.Contractor;
 import al.cc2.gtouchet.domain.models.user.Worker;
 import al.cc2.gtouchet.domain.validators.PasswordFormatException;
 import al.cc2.gtouchet.domain.validators.PasswordValidator;
-import al.cc2.gtouchet.domain.valueObjects.Date;
-import al.cc2.gtouchet.domain.valueObjects.Id;
+import al.cc2.gtouchet.domain.valueObjects.Clock;
+import al.cc2.gtouchet.domain.valueObjects.EntityId;
 import al.cc2.gtouchet.infrastructure.repositories.Repository;
 
 public final class CreateWorkerCommandHandler implements CommandHandler<Worker, CreateWorkerCommand>
@@ -40,7 +40,7 @@ public final class CreateWorkerCommandHandler implements CommandHandler<Worker, 
         try {
             this.passwordValidator.validate(command.password);
 
-            Worker worker = WorkerBuilder.init(Id.generate(), command.login, Date.now())
+            Worker worker = WorkerBuilder.init(EntityId.generate(), command.login, Clock.now())
                     .setPassword(command.password)
                     .setName(command.name)
                     .setService(command.workerService)

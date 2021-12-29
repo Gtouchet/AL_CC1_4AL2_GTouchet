@@ -5,8 +5,8 @@ import al.cc2.gtouchet.application.services.dtos.project.CreateProjectCommand;
 import al.cc2.gtouchet.domain.builders.ProjectBuilder;
 import al.cc2.gtouchet.domain.models.user.Contractor;
 import al.cc2.gtouchet.domain.models.project.Project;
-import al.cc2.gtouchet.domain.valueObjects.Date;
-import al.cc2.gtouchet.domain.valueObjects.Id;
+import al.cc2.gtouchet.domain.valueObjects.Clock;
+import al.cc2.gtouchet.domain.valueObjects.EntityId;
 import al.cc2.gtouchet.infrastructure.repositories.Repository;
 
 public final class CreateProjectCommandHandler implements CommandHandler<Project, CreateProjectCommand>
@@ -32,7 +32,7 @@ public final class CreateProjectCommandHandler implements CommandHandler<Project
         }
 
         try {
-            Project project = ProjectBuilder.init(Id.generate(), Date.now())
+            Project project = ProjectBuilder.init(EntityId.generate(), Clock.now())
                     .setContractorId(command.contractorId)
                     .setDepartment(command.department)
                     .build();

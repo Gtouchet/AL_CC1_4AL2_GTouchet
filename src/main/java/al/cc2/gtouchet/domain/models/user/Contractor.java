@@ -1,28 +1,28 @@
 package al.cc2.gtouchet.domain.models.user;
 
 import al.cc2.gtouchet.domain.models.payment.PaymentMethod;
-import al.cc2.gtouchet.domain.valueObjects.Date;
-import al.cc2.gtouchet.domain.valueObjects.Id;
+import al.cc2.gtouchet.domain.valueObjects.Clock;
+import al.cc2.gtouchet.domain.valueObjects.EntityId;
 
 public final class Contractor extends User
 {
     private final PaymentMethod paymentMethod;
     private final boolean isPaymentValidated;
 
-    private Contractor(Id id, Credentials credentials, String name,
-                       PaymentMethod paymentMethod, boolean isPaymentValidated, Date creationDate)
+    private Contractor(EntityId id, Credentials credentials, String name,
+                       PaymentMethod paymentMethod, boolean isPaymentValidated, Clock creationClock)
     {
-        super(id, credentials, name, creationDate);
+        super(id, credentials, name, creationClock);
 
         this.paymentMethod = paymentMethod;
         this.isPaymentValidated = isPaymentValidated;
     }
 
     public static Contractor of(
-            Id id, Credentials credentials, String name,
-            PaymentMethod paymentMethod, boolean isPaymentValidated, Date creationDate)
+            EntityId id, Credentials credentials, String name,
+            PaymentMethod paymentMethod, boolean isPaymentValidated, Clock creationClock)
     {
-        return new Contractor(id, credentials, name, paymentMethod, isPaymentValidated, creationDate);
+        return new Contractor(id, credentials, name, paymentMethod, isPaymentValidated, creationClock);
     }
 
     public PaymentMethod getPaymentMethod()

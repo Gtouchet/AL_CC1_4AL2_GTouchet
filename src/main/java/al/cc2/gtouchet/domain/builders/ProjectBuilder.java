@@ -1,8 +1,8 @@
 package al.cc2.gtouchet.domain.builders;
 
 import al.cc2.gtouchet.domain.models.project.Project;
-import al.cc2.gtouchet.domain.valueObjects.Date;
-import al.cc2.gtouchet.domain.valueObjects.Id;
+import al.cc2.gtouchet.domain.valueObjects.Clock;
+import al.cc2.gtouchet.domain.valueObjects.EntityId;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,16 +10,16 @@ import java.util.Objects;
 
 public final class ProjectBuilder implements Builder<Project>
 {
-    private final Id id;
-    private Id contractorId;
+    private final EntityId id;
+    private EntityId contractorId;
     private int department;
-    private List<Id> workersId;
-    private final Date creationDate;
+    private List<EntityId> workersId;
+    private final Clock creationClock;
 
-    private ProjectBuilder(Id id, Date creationDate)
+    private ProjectBuilder(EntityId id, Clock creationClock)
     {
         this.id = id;
-        this.creationDate = creationDate;
+        this.creationClock = creationClock;
     }
 
     @Override
@@ -30,13 +30,13 @@ public final class ProjectBuilder implements Builder<Project>
                 Objects.requireNonNull(this.contractorId),
                 this.department,
                 Objects.requireNonNullElse(this.workersId, new ArrayList<>()),
-                Objects.requireNonNull(this.creationDate)
+                Objects.requireNonNull(this.creationClock)
         );
     }
 
-    public static ProjectBuilder init(Id id, Date creationDate)
+    public static ProjectBuilder init(EntityId id, Clock creationClock)
     {
-        return new ProjectBuilder(id, creationDate);
+        return new ProjectBuilder(id, creationClock);
     }
 
     public static ProjectBuilder init(Project project)
@@ -53,7 +53,7 @@ public final class ProjectBuilder implements Builder<Project>
         return builder;
     }
 
-    public ProjectBuilder setContractorId(Id contractorId)
+    public ProjectBuilder setContractorId(EntityId contractorId)
     {
         ProjectBuilder builder = this;
         builder.contractorId = contractorId;
@@ -67,7 +67,7 @@ public final class ProjectBuilder implements Builder<Project>
         return builder;
     }
 
-    public ProjectBuilder setWorkersId(List<Id> workersId)
+    public ProjectBuilder setWorkersId(List<EntityId> workersId)
     {
         ProjectBuilder builder = this;
         builder.workersId = workersId;

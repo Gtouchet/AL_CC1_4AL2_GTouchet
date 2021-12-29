@@ -3,8 +3,8 @@ package al.cc2.gtouchet.builders;
 import al.cc2.gtouchet.domain.builders.ContractorBuilder;
 import al.cc2.gtouchet.domain.models.user.Contractor;
 import al.cc2.gtouchet.domain.models.payment.PaymentMethod;
-import al.cc2.gtouchet.domain.valueObjects.Date;
-import al.cc2.gtouchet.domain.valueObjects.Id;
+import al.cc2.gtouchet.domain.valueObjects.Clock;
+import al.cc2.gtouchet.domain.valueObjects.EntityId;
 import al.cc2.gtouchet.domain.valueObjects.Password;
 import org.junit.Rule;
 import org.junit.Test;
@@ -20,9 +20,9 @@ public class ContractorBuilderTest
     @Test
     public void buildContractor()
     {
-        Id id = Id.generate();
+        EntityId id = EntityId.generate();
 
-        Contractor contractor = ContractorBuilder.init(id, "GTouchet", Date.now())
+        Contractor contractor = ContractorBuilder.init(id, "GTouchet", Clock.now())
                 .setPassword(Password.of("ABcd1234!"))
                 .setName("Guillaume")
                 .setPaymentMethod(PaymentMethod.CARD)
@@ -41,7 +41,7 @@ public class ContractorBuilderTest
     @Test
     public void buildContractor_withoutPaymentValidation()
     {
-        Contractor contractor = ContractorBuilder.init(Id.generate(), "GTouchet", Date.now())
+        Contractor contractor = ContractorBuilder.init(EntityId.generate(), "GTouchet", Clock.now())
                 .setPassword(Password.of("ABcd1234!"))
                 .setName("Guillaume")
                 .setPaymentMethod(PaymentMethod.CARD)
@@ -58,7 +58,7 @@ public class ContractorBuilderTest
     {
         exception.expect(NullPointerException.class);
 
-        ContractorBuilder.init(Id.generate(), "GTouchet", Date.now())
+        ContractorBuilder.init(EntityId.generate(), "GTouchet", Clock.now())
                 .setPassword(Password.of("ABcd1234!"))
                 //.setName("Guillaume")
                 .setPaymentMethod(PaymentMethod.CARD)

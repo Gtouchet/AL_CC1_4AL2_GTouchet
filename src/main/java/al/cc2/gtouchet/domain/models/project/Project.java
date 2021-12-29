@@ -1,32 +1,32 @@
 package al.cc2.gtouchet.domain.models.project;
 
 import al.cc2.gtouchet.domain.models.Entity;
-import al.cc2.gtouchet.domain.valueObjects.Date;
-import al.cc2.gtouchet.domain.valueObjects.Id;
+import al.cc2.gtouchet.domain.valueObjects.Clock;
+import al.cc2.gtouchet.domain.valueObjects.EntityId;
 
 import java.util.List;
 
 public final class Project extends Entity
 {
-    private final Id contractorId;
+    private final EntityId contractorId;
     private final int department;
-    private final List<Id> workersId;
+    private final List<EntityId> workersId;
 
-    private Project(Id id, Id contractorId, int department, List<Id> workersId, Date creationDate)
+    private Project(EntityId id, EntityId contractorId, int department, List<EntityId> workersId, Clock creationClock)
     {
-        super(id, creationDate);
+        super(id, creationClock);
 
         this.contractorId = contractorId;
         this.department = department;
         this.workersId = workersId;
     }
 
-    public static Project of(Id id, Id contractorId, int department, List<Id> workersId, Date creationDate)
+    public static Project of(EntityId id, EntityId contractorId, int department, List<EntityId> workersId, Clock creationClock)
     {
-        return new Project(id, contractorId, department, workersId, creationDate);
+        return new Project(id, contractorId, department, workersId, creationClock);
     }
 
-    public Id getContractorId()
+    public EntityId getContractorId()
     {
         return this.contractorId;
     }
@@ -36,7 +36,7 @@ public final class Project extends Entity
         return this.department;
     }
 
-    public List<Id> getWorkersId()
+    public List<EntityId> getWorkersId()
     {
         return this.workersId;
     }

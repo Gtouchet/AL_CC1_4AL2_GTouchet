@@ -10,7 +10,7 @@ import al.cc2.gtouchet.application.services.handlers.worker.ReadAllWorkerQueryHa
 import al.cc2.gtouchet.application.services.handlers.worker.ReadWorkerByIdQueryHandler;
 import al.cc2.gtouchet.domain.models.user.Worker;
 import al.cc2.gtouchet.domain.validators.PasswordValidator;
-import al.cc2.gtouchet.domain.valueObjects.Id;
+import al.cc2.gtouchet.domain.valueObjects.EntityId;
 import al.cc2.gtouchet.infrastructure.apis.PaymentMethodValidatorApi;
 import al.cc2.gtouchet.infrastructure.repositories.factories.DataRepositoriesFactory;
 
@@ -61,7 +61,7 @@ public class WorkerRoutes
     public Response readId(@PathParam("id") String id)
     {
         Worker worker = (Worker) this.handlersContainer.getQueryHandler(ReadWorkerByIdQueryHandler.class).handle(new ReadWorkerQuery(
-                Id.fromString(id)
+                EntityId.fromString(id)
         ));
 
         if (worker == null)
@@ -80,7 +80,7 @@ public class WorkerRoutes
     public Response delete(@PathParam("id") String id)
     {
         boolean success = (boolean) this.handlersContainer.getCommandHandler(DeleteWorkerByIdCommandHandler.class).handle(new DeleteWorkerCommand(
-                Id.fromString(id)
+                EntityId.fromString(id)
         ));
         return Response.ok(success ? "Worker " + id + " deleted" : "Could not delete worker " + id).build();
     }

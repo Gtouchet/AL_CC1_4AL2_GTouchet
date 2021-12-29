@@ -5,7 +5,7 @@ import al.cc2.gtouchet.application.services.dtos.project.EngageFireWorkerCommand
 import al.cc2.gtouchet.domain.builders.ProjectBuilder;
 import al.cc2.gtouchet.domain.models.project.Project;
 import al.cc2.gtouchet.domain.models.user.Worker;
-import al.cc2.gtouchet.domain.valueObjects.Id;
+import al.cc2.gtouchet.domain.valueObjects.EntityId;
 import al.cc2.gtouchet.infrastructure.repositories.EntityNotFoundException;
 import al.cc2.gtouchet.infrastructure.repositories.Repository;
 
@@ -36,7 +36,7 @@ public final class EngageWorkerCommandHandler implements CommandHandler<Project,
                 return null;
             }
 
-            List<Id> workersId = project.getWorkersId();
+            List<EntityId> workersId = project.getWorkersId();
 
             if (project.getWorkersId().contains(command.workerId))
             {

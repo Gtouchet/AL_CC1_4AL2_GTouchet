@@ -2,25 +2,25 @@ package al.cc2.gtouchet.domain.builders;
 
 import al.cc2.gtouchet.domain.models.payment.Payment;
 import al.cc2.gtouchet.domain.models.payment.PaymentMethod;
-import al.cc2.gtouchet.domain.valueObjects.Date;
-import al.cc2.gtouchet.domain.valueObjects.Id;
+import al.cc2.gtouchet.domain.valueObjects.Clock;
+import al.cc2.gtouchet.domain.valueObjects.EntityId;
 
 import java.util.Objects;
 
 public final class PaymentBuilder implements Builder<Payment>
 {
-    private final Id id;
-    private Id contractorId;
-    private Id workerId;
+    private final EntityId id;
+    private EntityId contractorId;
+    private EntityId workerId;
     private PaymentMethod paymentMethod;
     private double amount;
     private String reason;
-    private final Date creationDate;
+    private final Clock creationClock;
 
-    private PaymentBuilder(Id id, Date creationDate)
+    private PaymentBuilder(EntityId id, Clock creationClock)
     {
         this.id = id;
-        this.creationDate = creationDate;
+        this.creationClock = creationClock;
     }
 
     @Override
@@ -33,23 +33,23 @@ public final class PaymentBuilder implements Builder<Payment>
                 Objects.requireNonNull(this.paymentMethod),
                 this.amount,
                 Objects.requireNonNull(this.reason),
-                Objects.requireNonNull(this.creationDate)
+                Objects.requireNonNull(this.creationClock)
         );
     }
 
-    public static PaymentBuilder init(Id id, Date creationDate)
+    public static PaymentBuilder init(EntityId id, Clock creationClock)
     {
-        return new PaymentBuilder(id, creationDate);
+        return new PaymentBuilder(id, creationClock);
     }
 
-    public PaymentBuilder setContractorId(Id contractorId)
+    public PaymentBuilder setContractorId(EntityId contractorId)
     {
         PaymentBuilder builder = this;
         builder.contractorId = contractorId;
         return builder;
     }
 
-    public PaymentBuilder setWorkerId(Id workerId)
+    public PaymentBuilder setWorkerId(EntityId workerId)
     {
         PaymentBuilder builder = this;
         builder.workerId = workerId;

@@ -3,7 +3,7 @@ ok    Dans le repo GIT supprimer les répertoires .mvn, .idea et res
     Eviter les classes abstraites mais favoriser les marker interface
 ok    Bien mettre final sur les classes
 ?    Favoriser les RuntimeException au lieu des java.lang.Exception. Et cela éviter par exemple les try/catch(EntityNotFoundException) par exemple
-nok (crash json accessor)   Éviter les classes trop génériques comme Id ou Date. Pour l'objet Date, plutôt favoriser Clock. A noter qu' il faut maintenant favoriser les
+ok   Éviter les classes trop génériques comme Id ou Date. Pour l'objet Date, plutôt favoriser Clock. A noter qu' il faut maintenant favoriser les
     objets LocalDate par exemple au lieu de java.util.Date.
 ?    Et utiliser plutôt des VOID explicites comme ContractorId, PaymentId. Mais conserver une interface de type VOID reste bien
 ok    Pour les enum, favoriser les constantes en majuscules

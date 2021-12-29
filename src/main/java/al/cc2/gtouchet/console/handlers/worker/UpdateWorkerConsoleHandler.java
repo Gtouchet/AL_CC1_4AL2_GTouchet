@@ -7,7 +7,7 @@ import al.cc2.gtouchet.console.engine.WrongNumberOfArgumentException;
 import al.cc2.gtouchet.console.handlers.ConsoleHandler;
 import al.cc2.gtouchet.domain.models.user.WorkerService;
 import al.cc2.gtouchet.domain.models.user.Worker;
-import al.cc2.gtouchet.domain.valueObjects.Id;
+import al.cc2.gtouchet.domain.valueObjects.EntityId;
 import al.cc2.gtouchet.domain.valueObjects.Password;
 
 import java.util.Objects;
@@ -28,7 +28,7 @@ public final class UpdateWorkerConsoleHandler implements ConsoleHandler
         {
             try {
                 Worker worker = this.commandHandler.handle(new UpdateWorkerCommand(
-                        Id.fromString(params[1].toLowerCase()),
+                        EntityId.fromString(params[1].toLowerCase()),
                         Password.of(params[2]),
                         params[3],
                         WorkerService.valueOf(params[4].toUpperCase()),

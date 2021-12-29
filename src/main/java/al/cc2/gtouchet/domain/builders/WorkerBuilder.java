@@ -3,27 +3,27 @@ package al.cc2.gtouchet.domain.builders;
 import al.cc2.gtouchet.domain.models.user.Credentials;
 import al.cc2.gtouchet.domain.models.user.WorkerService;
 import al.cc2.gtouchet.domain.models.user.Worker;
-import al.cc2.gtouchet.domain.valueObjects.Date;
-import al.cc2.gtouchet.domain.valueObjects.Id;
+import al.cc2.gtouchet.domain.valueObjects.Clock;
+import al.cc2.gtouchet.domain.valueObjects.EntityId;
 import al.cc2.gtouchet.domain.valueObjects.Password;
 
 import java.util.Objects;
 
 public final class WorkerBuilder implements Builder<Worker>
 {
-    private final Id id;
+    private final EntityId id;
     private final String login;
     private Password password;
     private String name;
     private WorkerService workerService;
     private int department;
-    private final Date creationDate;
+    private final Clock creationClock;
 
-    private WorkerBuilder(Id id, String login, Date creationDate)
+    private WorkerBuilder(EntityId id, String login, Clock creationClock)
     {
         this.id = id;
         this.login = login;
-        this.creationDate = creationDate;
+        this.creationClock = creationClock;
     }
 
     @Override
@@ -38,13 +38,13 @@ public final class WorkerBuilder implements Builder<Worker>
                 Objects.requireNonNull(this.name),
                 Objects.requireNonNull(this.workerService),
                 this.department,
-                Objects.requireNonNull(this.creationDate)
+                Objects.requireNonNull(this.creationClock)
         );
     }
 
-    public static WorkerBuilder init(Id id, String login, Date creationDate)
+    public static WorkerBuilder init(EntityId id, String login, Clock creationClock)
     {
-        return new WorkerBuilder(id, login, creationDate);
+        return new WorkerBuilder(id, login, creationClock);
     }
 
     public static WorkerBuilder init(Worker worker)

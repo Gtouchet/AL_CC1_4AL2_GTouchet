@@ -1,34 +1,34 @@
 package al.cc2.gtouchet.domain.models;
 
-import al.cc2.gtouchet.domain.valueObjects.Date;
-import al.cc2.gtouchet.domain.valueObjects.Id;
+import al.cc2.gtouchet.domain.valueObjects.Clock;
+import al.cc2.gtouchet.domain.valueObjects.EntityId;
 
 public abstract class Entity
 {
-    private final Id id;
-    private final Date creationDate;
-    private final Date updateDate;
+    private final EntityId id;
+    private final Clock creationClock;
+    private final Clock updateClock;
 
-    protected Entity(Id id, Date creationDate)
+    protected Entity(EntityId id, Clock creationClock)
     {
         this.id = id;
-        this.creationDate = creationDate;
-        this.updateDate = Date.now();
+        this.creationClock = creationClock;
+        this.updateClock = Clock.now();
     }
 
-    public Id getId()
+    public EntityId getId()
     {
         return this.id;
     }
 
-    public Date getCreationDate()
+    public Clock getCreationDate()
     {
-        return this.creationDate;
+        return this.creationClock;
     }
 
-    public Date getUpdateDate()
+    public Clock getUpdateDate()
     {
-        return this.updateDate;
+        return this.updateClock;
     }
 
     @Override

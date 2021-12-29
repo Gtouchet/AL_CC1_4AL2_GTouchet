@@ -2,8 +2,8 @@ package al.cc2.gtouchet.builders;
 
 import al.cc2.gtouchet.domain.builders.ProjectBuilder;
 import al.cc2.gtouchet.domain.models.project.Project;
-import al.cc2.gtouchet.domain.valueObjects.Date;
-import al.cc2.gtouchet.domain.valueObjects.Id;
+import al.cc2.gtouchet.domain.valueObjects.Clock;
+import al.cc2.gtouchet.domain.valueObjects.EntityId;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -23,11 +23,11 @@ public class ProjectBuilderTest
     @Test
     public void buildProject()
     {
-        Id projectId = Id.generate();
-        Id contractorId = Id.generate();
-        List<Id> workersId = Arrays.asList(Id.generate(), Id.generate(), Id.generate());
+        EntityId projectId = EntityId.generate();
+        EntityId contractorId = EntityId.generate();
+        List<EntityId> workersId = Arrays.asList(EntityId.generate(), EntityId.generate(), EntityId.generate());
 
-        Project project = ProjectBuilder.init(projectId, Date.now())
+        Project project = ProjectBuilder.init(projectId, Clock.now())
                 .setContractorId(contractorId)
                 .setDepartment(75)
                 .setWorkersId(workersId)
@@ -43,8 +43,8 @@ public class ProjectBuilderTest
     @Test
     public void buildProject_withoutDepartment()
     {
-        Project project = ProjectBuilder.init(Id.generate(), Date.now())
-                .setContractorId(Id.generate())
+        Project project = ProjectBuilder.init(EntityId.generate(), Clock.now())
+                .setContractorId(EntityId.generate())
                 // Department set to Integer's default if not specified (0)
                 .setWorkersId(new ArrayList<>())
                 .build();
@@ -57,8 +57,8 @@ public class ProjectBuilderTest
     @Test
     public void buildProject_withoutWorkers()
     {
-        Project project = ProjectBuilder.init(Id.generate(), Date.now())
-                .setContractorId(Id.generate())
+        Project project = ProjectBuilder.init(EntityId.generate(), Clock.now())
+                .setContractorId(EntityId.generate())
                 .setDepartment(75)
                 // Workers list set to empty list of not specified
                 .build();
@@ -73,7 +73,7 @@ public class ProjectBuilderTest
     {
         exception.expect(NullPointerException.class);
 
-        ProjectBuilder.init(Id.generate(), Date.now())
+        ProjectBuilder.init(EntityId.generate(), Clock.now())
                 //.setContractorId(Id.generate())
                 .setDepartment(75)
                 .setWorkersId(new ArrayList<>())

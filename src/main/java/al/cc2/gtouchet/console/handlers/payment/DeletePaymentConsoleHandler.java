@@ -5,7 +5,7 @@ import al.cc2.gtouchet.application.services.dtos.payment.DeletePaymentCommand;
 import al.cc2.gtouchet.console.engine.ConsoleCommand;
 import al.cc2.gtouchet.console.engine.WrongNumberOfArgumentException;
 import al.cc2.gtouchet.console.handlers.ConsoleHandler;
-import al.cc2.gtouchet.domain.valueObjects.Id;
+import al.cc2.gtouchet.domain.valueObjects.EntityId;
 
 import java.util.Objects;
 
@@ -24,7 +24,7 @@ public final class DeletePaymentConsoleHandler implements ConsoleHandler
         if (params.length == ConsoleCommand.DELETE_PAYMENT.parameters)
         {
             boolean success = this.commandHandler.handle(new DeletePaymentCommand(
-                    Id.fromString(params[1].toLowerCase())
+                    EntityId.fromString(params[1].toLowerCase())
             ));
             if (success)
             {

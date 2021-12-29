@@ -1,7 +1,7 @@
 package al.cc2.gtouchet.infrastructure.repositories;
 
 import al.cc2.gtouchet.domain.models.Entity;
-import al.cc2.gtouchet.domain.valueObjects.Id;
+import al.cc2.gtouchet.domain.valueObjects.EntityId;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,31 +29,31 @@ public class InMemoryRepository<T extends Entity> implements Repository<T>
     }
 
     @Override
-    public T read(Id id) throws EntityNotFoundException
+    public T read(EntityId id) throws EntityNotFoundException
     {
         return this.findById(id);
     }
 
     @Override
-    public void update(Id id, T entity) throws EntityNotFoundException
+    public void update(EntityId id, T entity) throws EntityNotFoundException
     {
         this.entities.remove(this.findById(id));
         this.entities.add(entity);
     }
 
     @Override
-    public void remove(Id id) throws EntityNotFoundException
+    public void remove(EntityId id) throws EntityNotFoundException
     {
         this.entities.remove(this.findById(id));
     }
 
     @Override
-    public boolean exists(Id id)
+    public boolean exists(EntityId id)
     {
         return this.entities.stream().anyMatch(entity -> entity.getId().equals(id));
     }
 
-    private T findById(Id id) throws EntityNotFoundException
+    private T findById(EntityId id) throws EntityNotFoundException
     {
         if (this.exists(id))
         {

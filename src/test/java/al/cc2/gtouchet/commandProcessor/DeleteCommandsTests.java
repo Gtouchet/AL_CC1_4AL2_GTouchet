@@ -3,7 +3,7 @@ package al.cc2.gtouchet.commandProcessor;
 import al.cc2.gtouchet.application.services.HandlersContainer;
 import al.cc2.gtouchet.console.engine.CommandProcessor;
 import al.cc2.gtouchet.domain.validators.PasswordValidator;
-import al.cc2.gtouchet.domain.valueObjects.Id;
+import al.cc2.gtouchet.domain.valueObjects.EntityId;
 import al.cc2.gtouchet.infrastructure.apis.PaymentMethodValidatorApi;
 import al.cc2.gtouchet.infrastructure.repositories.factories.MemoryRepositoriesRetainer;
 
@@ -37,7 +37,7 @@ public class DeleteCommandsTests
     @Test
     public void deleteNonExistentProject()
     {
-        Id projectId = Id.generate();
+        EntityId projectId = EntityId.generate();
         this.commandProcessor.process("deleteproject " + projectId);
 
         assertEquals(this.output.toString(), "Error: no desired entity registered with ID [" + projectId + "]\r\n");

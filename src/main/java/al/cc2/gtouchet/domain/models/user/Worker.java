@@ -1,24 +1,24 @@
 package al.cc2.gtouchet.domain.models.user;
 
-import al.cc2.gtouchet.domain.valueObjects.Date;
-import al.cc2.gtouchet.domain.valueObjects.Id;
+import al.cc2.gtouchet.domain.valueObjects.Clock;
+import al.cc2.gtouchet.domain.valueObjects.EntityId;
 
 public final class Worker extends User
 {
     private final WorkerService workerService;
     private final int department;
 
-    private Worker(Id id, Credentials credentials, String name, WorkerService workerService, int department, Date creationDate)
+    private Worker(EntityId id, Credentials credentials, String name, WorkerService workerService, int department, Clock creationClock)
     {
-        super(id, credentials, name, creationDate);
+        super(id, credentials, name, creationClock);
 
         this.workerService = workerService;
         this.department = department;
     }
 
-    public static Worker of(Id id, Credentials credentials, String name, WorkerService workerService, int department, Date creationDate)
+    public static Worker of(EntityId id, Credentials credentials, String name, WorkerService workerService, int department, Clock creationClock)
     {
-        return new Worker(id, credentials, name, workerService, department, creationDate);
+        return new Worker(id, credentials, name, workerService, department, creationClock);
     }
 
     public WorkerService getService()

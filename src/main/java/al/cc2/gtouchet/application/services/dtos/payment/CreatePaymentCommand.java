@@ -1,18 +1,18 @@
 package al.cc2.gtouchet.application.services.dtos.payment;
 
 import al.cc2.gtouchet.application.kernel.Command;
-import al.cc2.gtouchet.domain.valueObjects.Id;
+import al.cc2.gtouchet.domain.valueObjects.EntityId;
 
 public final class CreatePaymentCommand implements Command
 {
-    public final Id contractorId;
-    public final Id workerId;
+    public final EntityId contractorId;
+    public final EntityId workerId;
     public final double amount;
     public final String reason;
 
     public CreatePaymentCommand(
-            Id contractorId,
-            Id workerId,
+            EntityId contractorId,
+            EntityId workerId,
             double amount,
             String reason)
     {

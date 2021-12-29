@@ -3,8 +3,8 @@ package al.cc2.gtouchet.builders;
 import al.cc2.gtouchet.domain.builders.WorkerBuilder;
 import al.cc2.gtouchet.domain.models.user.WorkerService;
 import al.cc2.gtouchet.domain.models.user.Worker;
-import al.cc2.gtouchet.domain.valueObjects.Date;
-import al.cc2.gtouchet.domain.valueObjects.Id;
+import al.cc2.gtouchet.domain.valueObjects.Clock;
+import al.cc2.gtouchet.domain.valueObjects.EntityId;
 import al.cc2.gtouchet.domain.valueObjects.Password;
 import org.junit.Rule;
 import org.junit.Test;
@@ -21,9 +21,9 @@ public class WorkerBuilderTest
     @Test
     public void buildWorker()
     {
-        Id id = Id.generate();
+        EntityId id = EntityId.generate();
 
-        Worker worker = WorkerBuilder.init(id, "GTouchet", Date.now())
+        Worker worker = WorkerBuilder.init(id, "GTouchet", Clock.now())
                 .setPassword(Password.of("ABcd1234!"))
                 .setName("Guillaume")
                 .setService(WorkerService.BUILDER)
@@ -42,7 +42,7 @@ public class WorkerBuilderTest
     @Test
     public void buildWorker_withoutDepartment()
     {
-        Worker worker = WorkerBuilder.init(Id.generate(), "GTouchet", Date.now())
+        Worker worker = WorkerBuilder.init(EntityId.generate(), "GTouchet", Clock.now())
                 .setPassword(Password.of("ABcd1234!"))
                 .setName("Guillaume")
                 .setService(WorkerService.BUILDER)
@@ -59,7 +59,7 @@ public class WorkerBuilderTest
     {
         exception.expect(NullPointerException.class);
 
-        WorkerBuilder.init(Id.generate(), "GTouchet", Date.now())
+        WorkerBuilder.init(EntityId.generate(), "GTouchet", Clock.now())
                 .setPassword(Password.of("ABcd1234!"))
                 .setName("Guillaume")
                 //.setService(Service.builder)

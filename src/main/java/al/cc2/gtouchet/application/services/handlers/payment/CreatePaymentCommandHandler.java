@@ -6,8 +6,8 @@ import al.cc2.gtouchet.domain.builders.PaymentBuilder;
 import al.cc2.gtouchet.domain.models.user.Contractor;
 import al.cc2.gtouchet.domain.models.payment.Payment;
 import al.cc2.gtouchet.domain.models.user.Worker;
-import al.cc2.gtouchet.domain.valueObjects.Date;
-import al.cc2.gtouchet.domain.valueObjects.Id;
+import al.cc2.gtouchet.domain.valueObjects.Clock;
+import al.cc2.gtouchet.domain.valueObjects.EntityId;
 import al.cc2.gtouchet.infrastructure.repositories.EntityNotFoundException;
 import al.cc2.gtouchet.infrastructure.repositories.Repository;
 
@@ -48,7 +48,7 @@ public final class CreatePaymentCommandHandler implements CommandHandler<Payment
                 return null;
             }
 
-            Payment payment = PaymentBuilder.init(Id.generate(), Date.now())
+            Payment payment = PaymentBuilder.init(EntityId.generate(), Clock.now())
                     .setContractorId(command.contractorId)
                     .setWorkerId(command.workerId)
                     .setPaymentMethod(contractor.getPaymentMethod())

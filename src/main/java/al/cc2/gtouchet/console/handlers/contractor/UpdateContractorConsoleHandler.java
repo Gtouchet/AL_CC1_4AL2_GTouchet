@@ -7,7 +7,7 @@ import al.cc2.gtouchet.console.engine.WrongNumberOfArgumentException;
 import al.cc2.gtouchet.console.handlers.ConsoleHandler;
 import al.cc2.gtouchet.domain.models.user.Contractor;
 import al.cc2.gtouchet.domain.models.payment.PaymentMethod;
-import al.cc2.gtouchet.domain.valueObjects.Id;
+import al.cc2.gtouchet.domain.valueObjects.EntityId;
 import al.cc2.gtouchet.domain.valueObjects.Password;
 
 import java.util.Objects;
@@ -28,7 +28,7 @@ public final class UpdateContractorConsoleHandler implements ConsoleHandler
         {
             try {
                 Contractor contractor = this.commandHandler.handle(new UpdateContractorCommand(
-                        Id.fromString(params[1].toLowerCase()),
+                        EntityId.fromString(params[1].toLowerCase()),
                         Password.of(params[2]),
                         params[3],
                         PaymentMethod.valueOf(params[4].toUpperCase())

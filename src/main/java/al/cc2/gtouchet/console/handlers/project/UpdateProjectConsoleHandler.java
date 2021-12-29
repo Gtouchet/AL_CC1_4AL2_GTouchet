@@ -6,7 +6,7 @@ import al.cc2.gtouchet.console.engine.ConsoleCommand;
 import al.cc2.gtouchet.console.engine.WrongNumberOfArgumentException;
 import al.cc2.gtouchet.console.handlers.ConsoleHandler;
 import al.cc2.gtouchet.domain.models.project.Project;
-import al.cc2.gtouchet.domain.valueObjects.Id;
+import al.cc2.gtouchet.domain.valueObjects.EntityId;
 
 import java.util.Objects;
 
@@ -26,8 +26,8 @@ public final class UpdateProjectConsoleHandler implements ConsoleHandler
         {
             try {
                 Project project = this.commandHandler.handle(new UpdateProjectCommand(
-                        Id.fromString(params[1].toLowerCase()),
-                        Id.fromString(params[2].toLowerCase()),
+                        EntityId.fromString(params[1].toLowerCase()),
+                        EntityId.fromString(params[2].toLowerCase()),
                         Integer.parseInt(params[3])
                 ));
                 if (project != null)

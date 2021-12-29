@@ -7,27 +7,28 @@ import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 
 import java.io.*;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public final class JsonDataAccessor<T extends Entity> implements DataAccessor<T>
 {
     private final Class dataType;
-    private final DateFormat dateFormatter;
-
     private final String filePath;
     private final String backupFilePath;
 
     public JsonDataAccessor(Class dataType)
     {
         this.dataType = dataType;
-        this.dateFormatter = new SimpleDateFormat("dd-MM-yyyy-HH-mm-ss");
-
         this.filePath = "./src/main/resources/jsonFiles/" + dataType.getSimpleName().toLowerCase() + "s.json";
-        this.backupFilePath = "./src/main/resources/jsonFiles/backups/" + dataType.getSimpleName().toLowerCase() + "s/";
+        this.backupFilePath =
+                "./src/main/resources/jsonFiles/backups/" + dataType.getSimpleName().toLowerCase() + "s/" +
+                this.dataType.getSimpleName().toLowerCase() + "s_" +
+                LocalDateTime.of(LocalDate.now(), LocalTime.now())
+                        .format(DateTimeFormatter.ofPattern("dd-MM-uuuu_HH-mm-ss")) + "_old.json";
     }
 
     @Override
@@ -86,11 +87,12 @@ public final class JsonDataAccessor<T extends Entity> implements DataAccessor<T>
     {
         try {
             InputStream in = new FileInputStream(this.filePath);
-            OutputStream out = new FileOutputStream(this.backupFilePath + this.dateFormatter.format(new Date()) + ".json");
+            OutputStream out = new FileOutputStream(this.backupFilePath);
 
             byte[] buffer = new byte[1024];
             int length;
-            while ((length = in.read(buffer)) > 0) {
+            while ((length = in.read(buffer)) > 0)
+            {
                 out.write(buffer, 0, length);
             }
 

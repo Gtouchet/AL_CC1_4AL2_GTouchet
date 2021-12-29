@@ -6,7 +6,7 @@ import al.cc2.gtouchet.console.engine.ConsoleCommand;
 import al.cc2.gtouchet.console.engine.WrongNumberOfArgumentException;
 import al.cc2.gtouchet.console.handlers.ConsoleHandler;
 import al.cc2.gtouchet.domain.models.payment.Payment;
-import al.cc2.gtouchet.domain.valueObjects.Id;
+import al.cc2.gtouchet.domain.valueObjects.EntityId;
 
 import java.util.Objects;
 
@@ -26,8 +26,8 @@ public final class CreatePaymentConsoleHandler implements ConsoleHandler
         {
             try {
                 Payment payment = this.commandHandler.handle(new CreatePaymentCommand(
-                        Id.fromString(params[1].toLowerCase()),
-                        Id.fromString(params[2].toLowerCase()),
+                        EntityId.fromString(params[1].toLowerCase()),
+                        EntityId.fromString(params[2].toLowerCase()),
                         Double.parseDouble(params[3]),
                         params[4]
                 ));

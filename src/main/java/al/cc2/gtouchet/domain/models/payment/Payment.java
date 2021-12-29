@@ -1,21 +1,21 @@
 package al.cc2.gtouchet.domain.models.payment;
 
 import al.cc2.gtouchet.domain.models.Entity;
-import al.cc2.gtouchet.domain.valueObjects.Date;
-import al.cc2.gtouchet.domain.valueObjects.Id;
+import al.cc2.gtouchet.domain.valueObjects.Clock;
+import al.cc2.gtouchet.domain.valueObjects.EntityId;
 
 public final class Payment extends Entity
 {
-    private final Id contractorId;
-    private final Id workerId;
+    private final EntityId contractorId;
+    private final EntityId workerId;
     private final PaymentMethod paymentMethod;
     private final double amount;
     private final String reason;
 
-    private Payment(Id id, Id contractorId, Id workerId, PaymentMethod paymentMethod,
-                    double amount, String reason, Date creationDate)
+    private Payment(EntityId id, EntityId contractorId, EntityId workerId, PaymentMethod paymentMethod,
+                    double amount, String reason, Clock creationClock)
     {
-        super(id, creationDate);
+        super(id, creationClock);
 
         this.contractorId = contractorId;
         this.workerId = workerId;
@@ -24,18 +24,18 @@ public final class Payment extends Entity
         this.reason = reason;
     }
 
-    public static Payment of(Id id, Id contractorId, Id workerId, PaymentMethod paymentMethod,
-                             double amount, String reason, Date creationDate)
+    public static Payment of(EntityId id, EntityId contractorId, EntityId workerId, PaymentMethod paymentMethod,
+                             double amount, String reason, Clock creationClock)
     {
-        return new Payment(id, contractorId, workerId, paymentMethod, amount, reason, creationDate);
+        return new Payment(id, contractorId, workerId, paymentMethod, amount, reason, creationClock);
     }
 
-    public Id getContractorId()
+    public EntityId getContractorId()
     {
         return this.contractorId;
     }
 
-    public Id getWorkerId()
+    public EntityId getWorkerId()
     {
         return this.workerId;
     }
