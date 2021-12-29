@@ -7,8 +7,8 @@ import al.cc2.gtouchet.application.services.dtos.worker.DeleteWorkerCommand;
 import al.cc2.gtouchet.application.services.dtos.worker.UpdateWorkerCommand;
 import al.cc2.gtouchet.application.services.handlers.contractor.CreateContractorCommandHandler;
 import al.cc2.gtouchet.application.services.handlers.worker.CreateWorkerCommandHandler;
-import al.cc2.gtouchet.application.services.handlers.worker.DeleteWorkerCommandHandler;
-import al.cc2.gtouchet.application.services.handlers.worker.UpdateWorkerCommandHandler;
+import al.cc2.gtouchet.application.services.handlers.worker.DeleteWorkerByIdCommandHandler;
+import al.cc2.gtouchet.application.services.handlers.worker.UpdateWorkerByIdCommandHandler;
 import al.cc2.gtouchet.domain.models.user.Contractor;
 import al.cc2.gtouchet.domain.models.payment.PaymentMethod;
 import al.cc2.gtouchet.domain.models.user.WorkerService;
@@ -76,7 +76,7 @@ public class WorkerServicesTest
                 91
         ));
 
-        assertTrue((boolean) this.handlersContainer.getCommandHandler(DeleteWorkerCommandHandler.class).handle(new DeleteWorkerCommand(
+        assertTrue((boolean) this.handlersContainer.getCommandHandler(DeleteWorkerByIdCommandHandler.class).handle(new DeleteWorkerCommand(
                 worker.getId()
         )));
 
@@ -160,7 +160,7 @@ public class WorkerServicesTest
         WorkerService newWorkerService = WorkerService.ELECTRICIAN;
         int newDepartment = 75;
 
-        Worker updatedWorker = (Worker) this.handlersContainer.getCommandHandler(UpdateWorkerCommandHandler.class).handle(new UpdateWorkerCommand(
+        Worker updatedWorker = (Worker) this.handlersContainer.getCommandHandler(UpdateWorkerByIdCommandHandler.class).handle(new UpdateWorkerCommand(
                 originalWorker.getId(),
                 newPassword,
                 newName,

@@ -1,7 +1,6 @@
 package al.cc2.gtouchet.infrastructure.dataAccessors;
 
 import al.cc2.gtouchet.domain.models.Entity;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;

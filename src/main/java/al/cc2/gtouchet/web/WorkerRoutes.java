@@ -5,9 +5,9 @@ import al.cc2.gtouchet.application.services.dtos.worker.CreateWorkerCommand;
 import al.cc2.gtouchet.application.services.dtos.worker.DeleteWorkerCommand;
 import al.cc2.gtouchet.application.services.dtos.worker.ReadWorkerQuery;
 import al.cc2.gtouchet.application.services.handlers.worker.CreateWorkerCommandHandler;
-import al.cc2.gtouchet.application.services.handlers.worker.DeleteWorkerCommandHandler;
+import al.cc2.gtouchet.application.services.handlers.worker.DeleteWorkerByIdCommandHandler;
 import al.cc2.gtouchet.application.services.handlers.worker.ReadAllWorkerQueryHandler;
-import al.cc2.gtouchet.application.services.handlers.worker.ReadWorkerQueryHandler;
+import al.cc2.gtouchet.application.services.handlers.worker.ReadWorkerByIdQueryHandler;
 import al.cc2.gtouchet.domain.models.user.Worker;
 import al.cc2.gtouchet.domain.validators.PasswordValidator;
 import al.cc2.gtouchet.domain.valueObjects.Id;
@@ -60,7 +60,7 @@ public class WorkerRoutes
     @Produces(MediaType.APPLICATION_JSON)
     public Response readId(@PathParam("id") String id)
     {
-        Worker worker = (Worker) this.handlersContainer.getQueryHandler(ReadWorkerQueryHandler.class).handle(new ReadWorkerQuery(
+        Worker worker = (Worker) this.handlersContainer.getQueryHandler(ReadWorkerByIdQueryHandler.class).handle(new ReadWorkerQuery(
                 Id.fromString(id)
         ));
 
@@ -79,7 +79,7 @@ public class WorkerRoutes
     @Produces(MediaType.TEXT_PLAIN)
     public Response delete(@PathParam("id") String id)
     {
-        boolean success = (boolean) this.handlersContainer.getCommandHandler(DeleteWorkerCommandHandler.class).handle(new DeleteWorkerCommand(
+        boolean success = (boolean) this.handlersContainer.getCommandHandler(DeleteWorkerByIdCommandHandler.class).handle(new DeleteWorkerCommand(
                 Id.fromString(id)
         ));
         return Response.ok(success ? "Worker " + id + " deleted" : "Could not delete worker " + id).build();

@@ -6,11 +6,11 @@ import al.cc2.gtouchet.domain.models.user.Worker;
 import al.cc2.gtouchet.infrastructure.repositories.EntityNotFoundException;
 import al.cc2.gtouchet.infrastructure.repositories.Repository;
 
-public final class ReadWorkerQueryHandler implements QueryHandler<Worker, ReadWorkerQuery>
+public final class ReadWorkerByIdQueryHandler implements QueryHandler<Worker, ReadWorkerQuery>
 {
     private final Repository<Worker> workerRepository;
 
-    public ReadWorkerQueryHandler(Repository workerRepository)
+    public ReadWorkerByIdQueryHandler(Repository workerRepository)
     {
         this.workerRepository = workerRepository;
     }

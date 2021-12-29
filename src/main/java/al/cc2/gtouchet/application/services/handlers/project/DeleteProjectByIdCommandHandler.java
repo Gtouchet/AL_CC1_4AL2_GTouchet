@@ -1,28 +1,29 @@
 package al.cc2.gtouchet.application.services.handlers.project;
 
-import al.cc2.gtouchet.application.kernel.QueryHandler;
-import al.cc2.gtouchet.application.services.dtos.project.ReadProjectQuery;
+import al.cc2.gtouchet.application.kernel.CommandHandler;
+import al.cc2.gtouchet.application.services.dtos.project.DeleteProjectCommand;
 import al.cc2.gtouchet.domain.models.project.Project;
 import al.cc2.gtouchet.infrastructure.repositories.EntityNotFoundException;
 import al.cc2.gtouchet.infrastructure.repositories.Repository;
 
-public final class ReadProjectQueryHandler implements QueryHandler<Project, ReadProjectQuery>
+public final class DeleteProjectByIdCommandHandler implements CommandHandler<Boolean, DeleteProjectCommand>
 {
     private final Repository<Project> projectRepository;
 
-    public ReadProjectQueryHandler(Repository projectRepository)
+    public DeleteProjectByIdCommandHandler(Repository projectRepository)
     {
         this.projectRepository = projectRepository;
     }
 
     @Override
-    public Project handle(ReadProjectQuery query)
+    public Boolean handle(DeleteProjectCommand command)
     {
         try {
-            return this.projectRepository.read(query.id);
+            this.projectRepository.remove(command.id);
+            return true;
         } catch (EntityNotFoundException e) {
             System.out.println(e.getMessage());
-            return null;
+            return false;
         }
     }
 }

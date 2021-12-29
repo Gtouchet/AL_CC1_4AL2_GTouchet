@@ -9,12 +9,12 @@ import al.cc2.gtouchet.infrastructure.apis.PaymentMethodValidatorApi;
 import al.cc2.gtouchet.infrastructure.repositories.EntityNotFoundException;
 import al.cc2.gtouchet.infrastructure.repositories.Repository;
 
-public final class ValidatePaymentCommandHandler implements CommandHandler<Boolean, ValidatePaymentCommand>
+public final class ValidatePaymentByIdCommandHandler implements CommandHandler<Boolean, ValidatePaymentCommand>
 {
     private final Repository<Contractor> contractorRepository;
     private final PaymentMethodValidatorApi paymentMethodValidatorApi;
 
-    public ValidatePaymentCommandHandler(
+    public ValidatePaymentByIdCommandHandler(
             Repository contractorRepository,
             PaymentMethodValidatorApi paymentMethodValidatorApi)
     {

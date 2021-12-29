@@ -8,12 +8,12 @@ import al.cc2.gtouchet.domain.models.project.Project;
 import al.cc2.gtouchet.infrastructure.repositories.EntityNotFoundException;
 import al.cc2.gtouchet.infrastructure.repositories.Repository;
 
-public final class UpdateProjectCommandHandler implements CommandHandler<Project, UpdateProjectCommand>
+public final class UpdateProjectByIdCommandHandler implements CommandHandler<Project, UpdateProjectCommand>
 {
     private final Repository<Project> projectRepository;
     private final Repository<Contractor> contractorRepository;
 
-    public UpdateProjectCommandHandler(
+    public UpdateProjectByIdCommandHandler(
             Repository projectRepository,
             Repository contractorRepository)
     {

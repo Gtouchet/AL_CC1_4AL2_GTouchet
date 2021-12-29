@@ -8,11 +8,11 @@ import al.cc2.gtouchet.infrastructure.repositories.Repository;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public final class ReadByPaymentContractorQueryHandler implements QueryHandler<List<Contractor>, ReadByPaymentContractorQuery>
+public final class ReadContractorByPaymentQueryHandler implements QueryHandler<List<Contractor>, ReadByPaymentContractorQuery>
 {
     public final Repository<Contractor> contractorRepository;
 
-    public ReadByPaymentContractorQueryHandler(Repository contractorRepository)
+    public ReadContractorByPaymentQueryHandler(Repository contractorRepository)
     {
         this.contractorRepository = contractorRepository;
     }

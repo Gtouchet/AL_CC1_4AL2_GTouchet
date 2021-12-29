@@ -11,12 +11,12 @@ import al.cc2.gtouchet.infrastructure.repositories.Repository;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public final class DeleteWorkerCommandHandler implements CommandHandler<Boolean, DeleteWorkerCommand>
+public final class DeleteWorkerByIdCommandHandler implements CommandHandler<Boolean, DeleteWorkerCommand>
 {
     private final Repository<Worker> workerRepository;
     private final Repository<Project> projectRepository;
 
-    public DeleteWorkerCommandHandler(
+    public DeleteWorkerByIdCommandHandler(
             Repository workerRepository,
             Repository projectRepository)
     {

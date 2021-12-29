@@ -6,11 +6,11 @@ import al.cc2.gtouchet.domain.models.payment.Payment;
 import al.cc2.gtouchet.infrastructure.repositories.EntityNotFoundException;
 import al.cc2.gtouchet.infrastructure.repositories.Repository;
 
-public final class ReadPaymentQueryHandler implements QueryHandler<Payment, ReadPaymentQuery>
+public final class ReadPaymentByIdQueryHandler implements QueryHandler<Payment, ReadPaymentQuery>
 {
     private final Repository<Payment> paymentRepository;
 
-    public ReadPaymentQueryHandler(Repository paymentRepository)
+    public ReadPaymentByIdQueryHandler(Repository paymentRepository)
     {
         this.paymentRepository = paymentRepository;
     }

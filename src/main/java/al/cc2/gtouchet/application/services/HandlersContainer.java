@@ -4,9 +4,9 @@ import al.cc2.gtouchet.application.kernel.CommandHandler;
 import al.cc2.gtouchet.application.kernel.QueryHandler;
 import al.cc2.gtouchet.application.services.handlers.contractor.*;
 import al.cc2.gtouchet.application.services.handlers.payment.CreatePaymentCommandHandler;
-import al.cc2.gtouchet.application.services.handlers.payment.DeletePaymentCommandHandler;
+import al.cc2.gtouchet.application.services.handlers.payment.DeletePaymentByIdCommandHandler;
 import al.cc2.gtouchet.application.services.handlers.payment.ReadAllPaymentQueryHandler;
-import al.cc2.gtouchet.application.services.handlers.payment.ReadPaymentQueryHandler;
+import al.cc2.gtouchet.application.services.handlers.payment.ReadPaymentByIdQueryHandler;
 import al.cc2.gtouchet.application.services.handlers.project.*;
 import al.cc2.gtouchet.application.services.handlers.worker.*;
 import al.cc2.gtouchet.domain.models.user.Contractor;
@@ -82,34 +82,34 @@ public final class HandlersContainer
         try {
             // Register Contractor services
             handlersContainer.register(new CreateContractorCommandHandler(contractorRepository, workerRepository, passwordValidator));
-            handlersContainer.register(new DeleteContractorCommandHandler(contractorRepository));
+            handlersContainer.register(new DeleteContractorByIdCommandHandler(contractorRepository));
             handlersContainer.register(new ReadAllContractorQueryHandler(contractorRepository));
-            handlersContainer.register(new ReadContractorQueryHandler(contractorRepository));
-            handlersContainer.register(new UpdateContractorCommandHandler(contractorRepository, passwordValidator));
-            handlersContainer.register(new ValidatePaymentCommandHandler(contractorRepository, paymentMethodValidatorApi));
-            handlersContainer.register(new ReadByPaymentContractorQueryHandler(contractorRepository));
+            handlersContainer.register(new ReadContractorByIdQueryHandler(contractorRepository));
+            handlersContainer.register(new UpdateContractorByIdCommandHandler(contractorRepository, passwordValidator));
+            handlersContainer.register(new ValidatePaymentByIdCommandHandler(contractorRepository, paymentMethodValidatorApi));
+            handlersContainer.register(new ReadContractorByPaymentQueryHandler(contractorRepository));
 
             // Register Payment services
             handlersContainer.register(new CreatePaymentCommandHandler(paymentRepository, contractorRepository, workerRepository));
-            handlersContainer.register(new DeletePaymentCommandHandler(paymentRepository));
+            handlersContainer.register(new DeletePaymentByIdCommandHandler(paymentRepository));
             handlersContainer.register(new ReadAllPaymentQueryHandler(paymentRepository));
-            handlersContainer.register(new ReadPaymentQueryHandler(paymentRepository));
+            handlersContainer.register(new ReadPaymentByIdQueryHandler(paymentRepository));
 
             // Register Project services
             handlersContainer.register(new CreateProjectCommandHandler(projectRepository, contractorRepository));
-            handlersContainer.register(new DeleteProjectCommandHandler(projectRepository));
+            handlersContainer.register(new DeleteProjectByIdCommandHandler(projectRepository));
             handlersContainer.register(new EngageWorkerCommandHandler(projectRepository, workerRepository));
             handlersContainer.register(new FireWorkerCommandHandler(projectRepository, workerRepository));
             handlersContainer.register(new ReadAllProjectQueryHandler(projectRepository));
-            handlersContainer.register(new ReadProjectQueryHandler(projectRepository));
-            handlersContainer.register(new UpdateProjectCommandHandler(projectRepository, contractorRepository));
+            handlersContainer.register(new ReadProjectByIdQueryHandler(projectRepository));
+            handlersContainer.register(new UpdateProjectByIdCommandHandler(projectRepository, contractorRepository));
 
             // Register Worker services
             handlersContainer.register(new CreateWorkerCommandHandler(workerRepository, contractorRepository, passwordValidator));
-            handlersContainer.register(new DeleteWorkerCommandHandler(workerRepository, projectRepository));
+            handlersContainer.register(new DeleteWorkerByIdCommandHandler(workerRepository, projectRepository));
             handlersContainer.register(new ReadAllWorkerQueryHandler(workerRepository));
-            handlersContainer.register(new ReadWorkerQueryHandler(workerRepository));
-            handlersContainer.register(new UpdateWorkerCommandHandler(workerRepository, passwordValidator));
+            handlersContainer.register(new ReadWorkerByIdQueryHandler(workerRepository));
+            handlersContainer.register(new UpdateWorkerByIdCommandHandler(workerRepository, passwordValidator));
 
         } catch (NullPointerException e) {
             e.printStackTrace();

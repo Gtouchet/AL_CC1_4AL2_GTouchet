@@ -9,12 +9,12 @@ import al.cc2.gtouchet.domain.validators.PasswordValidator;
 import al.cc2.gtouchet.infrastructure.repositories.EntityNotFoundException;
 import al.cc2.gtouchet.infrastructure.repositories.Repository;
 
-public final class UpdateContractorCommandHandler implements CommandHandler<Contractor, UpdateContractorCommand>
+public final class UpdateContractorByIdCommandHandler implements CommandHandler<Contractor, UpdateContractorCommand>
 {
     private final Repository<Contractor> contractorRepository;
     private final PasswordValidator passwordValidator;
 
-    public UpdateContractorCommandHandler(
+    public UpdateContractorByIdCommandHandler(
             Repository contractorRepository,
             PasswordValidator passwordValidator)
     {

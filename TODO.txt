@@ -3,7 +3,7 @@ ok    Dans le repo GIT supprimer les répertoires .mvn, .idea et res
     Eviter les classes abstraites mais favoriser les marker interface
 ok    Bien mettre final sur les classes
 ?    Favoriser les RuntimeException au lieu des java.lang.Exception. Et cela éviter par exemple les try/catch(EntityNotFoundException) par exemple
-    Éviter les classes trop génériques comme Id ou Date. Pour l'objet Date, plutôt favoriser Clock. A noter qu' il faut maintenant favoriser les
+nok (crash json accessor)   Éviter les classes trop génériques comme Id ou Date. Pour l'objet Date, plutôt favoriser Clock. A noter qu' il faut maintenant favoriser les
     objets LocalDate par exemple au lieu de java.util.Date.
 ?    Et utiliser plutôt des VOID explicites comme ContractorId, PaymentId. Mais conserver une interface de type VOID reste bien
 ok    Pour les enum, favoriser les constantes en majuscules
@@ -13,5 +13,5 @@ ok~    Bien nommer les implémentations comme MemoryRepository-> InMemoryReposit
 ok~    Dans certains constructeur, il faut penser à utiliser les types paramétrés comme CommandHandler
 ?    Favoriser l'usage d'un Repository au sens métier avec une méthode add qui couvre à la fois la méthode create() et la méthode update()
     Bien penser à relancer une runtimeException dans un catch d'une exception fixe
-    Possibilité d'améliorer le nom de certaines commandes/query comme ReadContractorQuery en ReadContractorByIdQuery
+ok~    Possibilité d'améliorer le nom de certaines commandes/query comme ReadContractorQuery en ReadContractorByIdQuery
     Possibilité d'utiliser les types paramétrés sur la classe HandlerContainer pour éviter les cast

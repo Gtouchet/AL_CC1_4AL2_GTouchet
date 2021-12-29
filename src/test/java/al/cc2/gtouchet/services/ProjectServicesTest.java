@@ -8,7 +8,7 @@ import al.cc2.gtouchet.application.services.dtos.worker.DeleteWorkerCommand;
 import al.cc2.gtouchet.application.services.handlers.contractor.CreateContractorCommandHandler;
 import al.cc2.gtouchet.application.services.handlers.project.*;
 import al.cc2.gtouchet.application.services.handlers.worker.CreateWorkerCommandHandler;
-import al.cc2.gtouchet.application.services.handlers.worker.DeleteWorkerCommandHandler;
+import al.cc2.gtouchet.application.services.handlers.worker.DeleteWorkerByIdCommandHandler;
 import al.cc2.gtouchet.domain.models.project.Project;
 import al.cc2.gtouchet.domain.models.user.Contractor;
 import al.cc2.gtouchet.domain.models.payment.PaymentMethod;
@@ -84,7 +84,7 @@ public class ProjectServicesTest
                 75
         ));
 
-        assertTrue((boolean) this.handlersContainer.getCommandHandler(DeleteProjectCommandHandler.class).handle(new DeleteProjectCommand(
+        assertTrue((boolean) this.handlersContainer.getCommandHandler(DeleteProjectByIdCommandHandler.class).handle(new DeleteProjectCommand(
                 project.getId()
         )));
 
@@ -110,7 +110,7 @@ public class ProjectServicesTest
         ));
         int newDepartment = 91;
 
-        Project updatedProject = (Project) this.handlersContainer.getCommandHandler(UpdateProjectCommandHandler.class).handle(new UpdateProjectCommand(
+        Project updatedProject = (Project) this.handlersContainer.getCommandHandler(UpdateProjectByIdCommandHandler.class).handle(new UpdateProjectCommand(
                 originalProject.getId(),
                 newContractor.getId(),
                 newDepartment
@@ -198,11 +198,11 @@ public class ProjectServicesTest
         assertEquals(1, project.getWorkersId().size());
         assertTrue(project.getWorkersId().contains(this.worker.getId()));
 
-        assertTrue((boolean) this.handlersContainer.getCommandHandler(DeleteWorkerCommandHandler.class).handle(new DeleteWorkerCommand(
+        assertTrue((boolean) this.handlersContainer.getCommandHandler(DeleteWorkerByIdCommandHandler.class).handle(new DeleteWorkerCommand(
                 this.worker.getId()
         )));
 
-        project = (Project) this.handlersContainer.getQueryHandler(ReadProjectQueryHandler.class).handle(new ReadProjectQuery(
+        project = (Project) this.handlersContainer.getQueryHandler(ReadProjectByIdQueryHandler.class).handle(new ReadProjectQuery(
                 project.getId()
         ));
 

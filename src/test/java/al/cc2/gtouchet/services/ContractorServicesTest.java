@@ -70,7 +70,7 @@ public class ContractorServicesTest
                 PaymentMethod.CARD
         ));
 
-        assertTrue((boolean) this.handlersContainer.getCommandHandler(DeleteContractorCommandHandler.class).handle(new DeleteContractorCommand(
+        assertTrue((boolean) this.handlersContainer.getCommandHandler(DeleteContractorByIdCommandHandler.class).handle(new DeleteContractorCommand(
                 contractor.getId()
         )));
 
@@ -149,7 +149,7 @@ public class ContractorServicesTest
         String newName = "Robert";
         PaymentMethod newPaymentMethod = PaymentMethod.PAYPAL;
 
-        Contractor updatedContractor = (Contractor) this.handlersContainer.getCommandHandler(UpdateContractorCommandHandler.class).handle(new UpdateContractorCommand(
+        Contractor updatedContractor = (Contractor) this.handlersContainer.getCommandHandler(UpdateContractorByIdCommandHandler.class).handle(new UpdateContractorCommand(
                 originalContractor.getId(),
                 newPassword,
                 newName,
@@ -175,11 +175,11 @@ public class ContractorServicesTest
 
         assertFalse(contractor.isPaymentValidated());
 
-        assertTrue((boolean) this.handlersContainer.getCommandHandler(ValidatePaymentCommandHandler.class).handle(new ValidatePaymentCommand(
+        assertTrue((boolean) this.handlersContainer.getCommandHandler(ValidatePaymentByIdCommandHandler.class).handle(new ValidatePaymentCommand(
                 contractor.getId()
         )));
 
-        contractor = (Contractor) this.handlersContainer.getQueryHandler(ReadContractorQueryHandler.class).handle(new ReadContractorQuery(
+        contractor = (Contractor) this.handlersContainer.getQueryHandler(ReadContractorByIdQueryHandler.class).handle(new ReadContractorQuery(
                 contractor.getId()
         ));
         assertTrue(contractor.isPaymentValidated());

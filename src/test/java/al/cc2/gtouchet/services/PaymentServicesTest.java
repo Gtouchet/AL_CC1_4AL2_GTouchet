@@ -7,9 +7,9 @@ import al.cc2.gtouchet.application.services.dtos.payment.CreatePaymentCommand;
 import al.cc2.gtouchet.application.services.dtos.payment.DeletePaymentCommand;
 import al.cc2.gtouchet.application.services.dtos.worker.CreateWorkerCommand;
 import al.cc2.gtouchet.application.services.handlers.contractor.CreateContractorCommandHandler;
-import al.cc2.gtouchet.application.services.handlers.contractor.ValidatePaymentCommandHandler;
+import al.cc2.gtouchet.application.services.handlers.contractor.ValidatePaymentByIdCommandHandler;
 import al.cc2.gtouchet.application.services.handlers.payment.CreatePaymentCommandHandler;
-import al.cc2.gtouchet.application.services.handlers.payment.DeletePaymentCommandHandler;
+import al.cc2.gtouchet.application.services.handlers.payment.DeletePaymentByIdCommandHandler;
 import al.cc2.gtouchet.application.services.handlers.worker.CreateWorkerCommandHandler;
 import al.cc2.gtouchet.domain.models.payment.Payment;
 import al.cc2.gtouchet.domain.models.user.Contractor;
@@ -55,7 +55,7 @@ public class PaymentServicesTest
                 "Guillaume",
                 PaymentMethod.CARD
         ));
-        this.handlersContainer.getCommandHandler(ValidatePaymentCommandHandler.class).handle(new ValidatePaymentCommand(
+        this.handlersContainer.getCommandHandler(ValidatePaymentByIdCommandHandler.class).handle(new ValidatePaymentCommand(
                 this.contractor.getId()
         ));
 
@@ -98,7 +98,7 @@ public class PaymentServicesTest
                 "Croissant"
         ));
 
-        assertTrue((boolean) this.handlersContainer.getCommandHandler(DeletePaymentCommandHandler.class).handle(new DeletePaymentCommand(
+        assertTrue((boolean) this.handlersContainer.getCommandHandler(DeletePaymentByIdCommandHandler.class).handle(new DeletePaymentCommand(
                 payment.getId()
         )));
 

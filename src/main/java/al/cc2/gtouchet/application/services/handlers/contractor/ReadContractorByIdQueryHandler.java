@@ -1,29 +1,28 @@
 package al.cc2.gtouchet.application.services.handlers.contractor;
 
-import al.cc2.gtouchet.application.kernel.CommandHandler;
-import al.cc2.gtouchet.application.services.dtos.contractor.DeleteContractorCommand;
+import al.cc2.gtouchet.application.kernel.QueryHandler;
+import al.cc2.gtouchet.application.services.dtos.contractor.ReadContractorQuery;
 import al.cc2.gtouchet.domain.models.user.Contractor;
 import al.cc2.gtouchet.infrastructure.repositories.EntityNotFoundException;
 import al.cc2.gtouchet.infrastructure.repositories.Repository;
 
-public final class DeleteContractorCommandHandler implements CommandHandler<Boolean, DeleteContractorCommand>
+public final class ReadContractorByIdQueryHandler implements QueryHandler<Contractor, ReadContractorQuery>
 {
     private final Repository<Contractor> contractorRepository;
 
-    public DeleteContractorCommandHandler(Repository contractorRepository)
+    public ReadContractorByIdQueryHandler(Repository contractorRepository)
     {
         this.contractorRepository = contractorRepository;
     }
 
     @Override
-    public Boolean handle(DeleteContractorCommand command)
+    public Contractor handle(ReadContractorQuery query)
     {
         try {
-            this.contractorRepository.remove(command.id);
-            return true;
+            return this.contractorRepository.read(query.id);
         } catch (EntityNotFoundException e) {
             System.out.println(e.getMessage());
-            return false;
+            return null;
         }
     }
 }
