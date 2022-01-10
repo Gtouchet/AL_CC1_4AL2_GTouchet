@@ -14,7 +14,6 @@ import al.cc2.gtouchet.domain.valueObjects.EntityId;
 import al.cc2.gtouchet.infrastructure.apis.PaymentMethodValidatorApi;
 import al.cc2.gtouchet.infrastructure.repositories.factories.DataRepositoriesFactory;
 
-import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -38,12 +37,11 @@ public class WorkerRoutes
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response create(@Valid CreateWorkerCommand createWorkerCommand) // TODO
+    public Response create(CreateWorkerCommand createWorkerCommand) // TODO
     {
         Worker worker = (Worker) this.handlersContainer.getCommandHandler(CreateWorkerCommandHandler.class).handle(createWorkerCommand);
         return Response.status(Response.Status.CREATED).entity(worker).build();
     }
-
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
